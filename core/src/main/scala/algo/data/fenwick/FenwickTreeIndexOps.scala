@@ -16,12 +16,12 @@ private trait FenwickTreeIndexOps[K] {
 
   def isInBoundCO(x: K): Boolean
 
-  final def outOfBoundCO(x: K): Boolean =
+  def outOfBoundCO(x: K): Boolean =
     !isInBoundCO(x)
 
   def isInBoundCC(x: K): Boolean
 
-  final def outOfBoundCC(x: K): Boolean =
+  def outOfBoundCC(x: K): Boolean =
     !isInBoundCC(x)
 
   def boundIterator(
