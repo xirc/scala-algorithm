@@ -5,7 +5,7 @@ trait FenwickTreeFactoryProxy[-E[V], +Collection[X, V]]
 
   protected def factory: FenwickTreeFactory[E, Collection]
 
-  final override def from[V: E](iterable: IterableOnce[V]): Collection[Int, V] =
+  override def from[V: E](iterable: IterableOnce[V]): Collection[Int, V] =
     factory.from(iterable)
 
 }
