@@ -19,7 +19,7 @@ trait SemigroupFenwickTreeOps[
     * @note Time Complexity: O(Log)
     */
   @throws[IndexOutOfBoundsException]
-  def combine(index: K, value: V): Unit
+  def combine(index: K, value: V): this.type
 
   override def clone(): Collection =
     super.clone().asInstanceOf[Collection]
