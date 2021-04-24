@@ -8,7 +8,7 @@ ThisBuild / scalacOptions ++= Seq(
 )
 ThisBuild / Compile / doc / autoAPIMappings := true
 
-val ScalaTestVersion = "3.2.7"
+val ScalaTestVersion = "3.2.8"
 val CatsVersion = "2.5.0"
 
 lazy val core = (project in file("core"))
