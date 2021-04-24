@@ -10,13 +10,14 @@ private trait GroupFenwickTreeOpsDefaults[
     with fenwick.GroupFenwickTreeOpsDefaults[K, V, Collection]
     with SemigroupFenwickTreeOpsDefaults[K, V, Collection] {
 
-  final override def update(index: K, value: V): Unit = {
+  final override def update(index: K, value: V): this.type = {
     if (indexOps.outOfBoundCO(index))
       throw new IndexOutOfBoundsException(
         s"Index out of range [$zero, $size): $index"
       )
     val delta = group.remove(value, this(index))
     combine(index, delta)
+    this
   }
 
 }
