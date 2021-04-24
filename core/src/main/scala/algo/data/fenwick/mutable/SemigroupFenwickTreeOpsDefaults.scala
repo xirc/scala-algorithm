@@ -9,7 +9,7 @@ private trait SemigroupFenwickTreeOpsDefaults[
 ] extends SemigroupFenwickTreeOps[K, V, Collection]
     with fenwick.SemigroupFenwickTreeOpsDefaults[K, V, Collection] {
 
-  final override def combine(index: K, value: V): Unit = {
+  final override def combine(index: K, value: V): this.type = {
     if (indexOps.outOfBoundCO(index))
       throw new IndexOutOfBoundsException(
         s"Index out of range [$zero, $size): $index"
@@ -17,6 +17,7 @@ private trait SemigroupFenwickTreeOpsDefaults[
     indexOps.upIterator(index).foreach { idx =>
       updateValue(idx, semigroup.combine(getValue(idx), value))
     }
+    this
   }
 
   @inline

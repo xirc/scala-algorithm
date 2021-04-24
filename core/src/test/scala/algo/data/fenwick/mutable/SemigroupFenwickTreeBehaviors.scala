@@ -25,7 +25,7 @@ trait SemigroupFenwickTreeBehaviors
 
       // [ 1, 2, 3, ... ]
       for (x <- Iterator.range(int.zero, size)) {
-        tree.combine(x, 1)
+        tree.combine(x, 1) shouldBe tree
       }
 
       for (x <- Iterator.range(int.one, size + int.one)) {

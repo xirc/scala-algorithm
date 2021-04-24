@@ -13,7 +13,7 @@ trait GroupFenwickTreeOps[
     *
     * @note Time Complexity: O(Log)
     */
-  def update(index: K, value: V): Unit
+  def update(index: K, value: V): this.type
 
   override def updated(index: K, value: V): Collection = {
     val clone = this.clone()
