@@ -9,7 +9,7 @@ ThisBuild / scalacOptions ++= Seq(
 ThisBuild / Compile / doc / autoAPIMappings := true
 
 val ScalaTestVersion = "3.2.7"
-val CatsVersion = "2.5.0"
+val CatsVersion = "2.6.0"
 
 lazy val core = (project in file("core"))
   .settings(
