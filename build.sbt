@@ -20,6 +20,29 @@ lazy val core = (project in file("core"))
     )
   )
 
+lazy val docs = (project in file("docs"))
+  .enablePlugins(
+    ParadoxSitePlugin,
+    ParadoxMaterialThemePlugin,
+    SiteScaladocPlugin,
+    ScalaUnidocPlugin
+  )
+  .aggregate(core)
+  .settings(
+    name := "Scala Algorithm",
+    Compile / paradoxMaterialTheme ~= {
+      _.withRepository(uri("https://github.com/xirc/scala-algorithm"))
+    },
+    Compile / paradoxProperties ++= Map(
+      "scaladoc.algo.base_url" -> s"/api"
+    ),
+    ScalaUnidoc / siteSubdirName := "api",
+    addMappingsToSiteDir(
+      ScalaUnidoc / packageDoc / mappings,
+      ScalaUnidoc / siteSubdirName
+    )
+  )
+
 addCommandAlias(
   name = "ciFormat",
   Seq(
