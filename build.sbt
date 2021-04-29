@@ -60,6 +60,7 @@ addCommandAlias(
     "scalafmtSbtCheck",
     "scalafmtCheckAll",
     "Test / compile",
-    "test"
+    "test",
+    "makeSite"
   ).mkString(";")
 )
