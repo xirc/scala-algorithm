@@ -9,7 +9,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    environment: gh-pages
+    environment: github-pages
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,10 +22,18 @@ jobs:
       - name: Cache Coursier
         uses: coursier/cache-action@v5
 
+      - name: Set up ssh-agent
+        uses: webfactory/ssh-agent@v0.5.2
+        with:
+          ssh-private-key: ${{ secrets.GIT_DEPLOY_KEY }}
+
+      - name: Configure git
+        run: |
+          git config --global user.email "5388508+xirc@users.noreply.github.com"
+          git config --global user.name "Taichi Yamakawa"
+
       - name: Publish GitHub Pages
         run: sbt makeSite ghpagesPushSite
-        env:
-          GIT_DEPLOY_KEY: ${{ secrets.GIT_DEPLOY_KEY }}
 
       - name: Cleanup
         run: |
