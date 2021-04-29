@@ -7,6 +7,7 @@ ThisBuild / scalacOptions ++= Seq(
   "-Werror"
 )
 ThisBuild / Compile / doc / autoAPIMappings := true
+ThisBuild / git.remoteRepo := "git@github.com:xirc/scala-algorithm.git"
 
 val ScalaTestVersion = "3.2.8"
 val CatsVersion = "2.5.0"
@@ -25,7 +26,8 @@ lazy val docs = (project in file("docs"))
     ParadoxSitePlugin,
     ParadoxMaterialThemePlugin,
     SiteScaladocPlugin,
-    ScalaUnidocPlugin
+    ScalaUnidocPlugin,
+    GhpagesPlugin
   )
   .aggregate(core)
   .settings(
