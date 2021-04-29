@@ -1,0 +1,11 @@
+# scala-algorithm
+
+Data Structures and Algorithms in Scala Programming Language
+
+@link:[Scaladoc](api/index.html)
+
+@@@ index
+
+* @ref:[Fenwick Tree](fenwick.md)
+
+@@@
