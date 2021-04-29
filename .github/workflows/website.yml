@@ -22,10 +22,13 @@ jobs:
       - name: Cache Coursier
         uses: coursier/cache-action@v5
 
+      - name: Set up ssh-agent
+        uses: webfactory/ssh-agent@v0.5.2
+        with:
+          ssh-private-key: ${{ secrets.GIT_DEPLOY_KEY }}
+
       - name: Publish GitHub Pages
         run: sbt makeSite ghpagesPushSite
-        env:
-          GIT_DEPLOY_KEY: ${{ secrets.GIT_DEPLOY_KEY }}
 
       - name: Cleanup
         run: |
