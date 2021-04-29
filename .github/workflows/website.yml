@@ -27,6 +27,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.GIT_DEPLOY_KEY }}
 
+      - name: Configure git
+        run: |
+          git config --global user.email "5388508+xirc@users.noreply.github.com"
+          git config --global user.name "Taichi Yamakawa"
+
       - name: Publish GitHub Pages
         run: sbt makeSite ghpagesPushSite
 
