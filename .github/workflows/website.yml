@@ -1,0 +1,44 @@
+name: Website
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ "*" ]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Cache Coursier
+        uses: coursier/cache-action@v5
+
+      - name: Set up ssh-agent
+        uses: webfactory/ssh-agent@v0.5.2
+        with:
+          ssh-private-key: ${{ secrets.GIT_DEPLOY_KEY }}
+
+      - name: Configure git
+        run: |
+          git config --global user.email "5388508+xirc@users.noreply.github.com"
+          git config --global user.name "Taichi Yamakawa"
+
+      - name: Publish GitHub Pages
+        run: sbt makeSite ghpagesPushSite
+
+      - name: Cleanup
+        run: |
+          rm -rf "$HOME/.ivy2/local" || true
+          find $HOME/Library/Caches/Coursier/v1        -name "ivydata-*.properties" -delete || true
+          find $HOME/.ivy2/cache                       -name "ivydata-*.properties" -delete || true
+          find $HOME/.cache/coursier/v1                -name "ivydata-*.properties" -delete || true
+          find $HOME/.sbt                              -name "*.lock"               -delete || true

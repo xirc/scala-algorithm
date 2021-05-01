@@ -24,7 +24,7 @@ trait GroupFenwickTreeBehaviors
       val size = tree.size
 
       for (x <- Iterator.range(int.zero, size)) {
-        tree(x) = 1
+        (tree(x) = 1) shouldBe tree
       }
       for (x <- Iterator.range(int.zero, size + int.one)) {
         tree.foldUntil(x) shouldBe x

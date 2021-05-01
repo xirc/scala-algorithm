@@ -7,9 +7,10 @@ ThisBuild / scalacOptions ++= Seq(
   "-Werror"
 )
 ThisBuild / Compile / doc / autoAPIMappings := true
+ThisBuild / git.remoteRepo := "git@github.com:xirc/scala-algorithm.git"
 
-val ScalaTestVersion = "3.2.7"
-val CatsVersion = "2.6.0"
+val ScalaTestVersion = "3.2.8"
+val CatsVersion = "2.5.0"
 
 lazy val core = (project in file("core"))
   .settings(
@@ -17,6 +18,30 @@ lazy val core = (project in file("core"))
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-core" % CatsVersion,
       "org.scalatest" %% "scalatest" % ScalaTestVersion % Test
+    )
+  )
+
+lazy val docs = (project in file("docs"))
+  .enablePlugins(
+    ParadoxSitePlugin,
+    ParadoxMaterialThemePlugin,
+    SiteScaladocPlugin,
+    ScalaUnidocPlugin,
+    GhpagesPlugin
+  )
+  .aggregate(core)
+  .settings(
+    name := "Scala Algorithm",
+    Compile / paradoxMaterialTheme ~= {
+      _.withRepository(uri("https://github.com/xirc/scala-algorithm"))
+    },
+    Compile / paradoxProperties ++= Map(
+      "scaladoc.algo.base_url" -> s"/api"
+    ),
+    ScalaUnidoc / siteSubdirName := "api",
+    addMappingsToSiteDir(
+      ScalaUnidoc / packageDoc / mappings,
+      ScalaUnidoc / siteSubdirName
     )
   )
 
@@ -35,6 +60,7 @@ addCommandAlias(
     "scalafmtSbtCheck",
     "scalafmtCheckAll",
     "Test / compile",
-    "test"
+    "test",
+    "makeSite"
   ).mkString(";")
 )
