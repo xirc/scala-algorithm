@@ -59,8 +59,10 @@ addCommandAlias(
     "clean",
     "scalafmtSbtCheck",
     "scalafmtCheckAll",
+    "coverage",
     "Test / compile",
     "test",
+    "coverageAggregate",
     "makeSite"
   ).mkString(";")
 )
