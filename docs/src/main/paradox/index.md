@@ -7,5 +7,6 @@ Data Structures and Algorithms in Scala Programming Language
 @@@ index
 
 * @ref:[Fenwick Tree](fenwick.md)
+* @ref:[Disjoint Set Union](dsu.md)
 
 @@@
