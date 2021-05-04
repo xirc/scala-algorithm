@@ -10,3 +10,4 @@ Data Structures and Algorithms in Scala
 
 ## Index
 - [Fenwick Tree](https://xirc.github.io/scala-algorithm/fenwick.html)
+- [Disjoint Set Union](https://xirc.github.io/scala-algorithm/dsu.html)
