@@ -25,10 +25,10 @@ final class SemigroupFenwickTreeSpec
 
   "SemigroupFenwickTree" should {
 
-    behave like factory(MonoidFenwickTree)
-    behave like treeHasSize1D(MonoidFenwickTree)
+    behave like factory(SemigroupFenwickTree)
+    behave like treeHasSize1D(SemigroupFenwickTree)
     behave like semigroup(
-      MonoidFenwickTree.tabulate(size = 1000)
+      SemigroupFenwickTree.tabulate(size = 1000)
     )
 
   }
