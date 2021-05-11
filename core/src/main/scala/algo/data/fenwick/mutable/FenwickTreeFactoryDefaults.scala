@@ -9,7 +9,7 @@ import scala.collection.mutable
 
 private trait FenwickTreeFactoryDefaults[
     -E[V] <: CommutativeSemigroup[V],
-    +Collection[K, V] <: SemigroupFenwickTree[K, V]
+    +Collection[K, V] <: SemigroupFenwickTreeOps[K, V, Collection[K, V]]
 ] extends fenwick.FenwickTreeFactory[E, Collection] {
 
   final override def from[V: E](
