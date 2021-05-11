@@ -1,8 +1,13 @@
 package algo.data.fenwick
 
+import cats.kernel.CommutativeSemigroup
+
 import scala.collection.Iterable
 
-trait FenwickTreeFactory[-E[V], +Collection[X, V]] {
+trait FenwickTreeFactory[
+    -E[V] <: CommutativeSemigroup[V],
+    +Collection[K, V] <: SemigroupFenwickTreeOps[K, V, Collection[K, V]]
+] {
 
   def from[V: E](iterable: IterableOnce[V]): Collection[Int, V]
 

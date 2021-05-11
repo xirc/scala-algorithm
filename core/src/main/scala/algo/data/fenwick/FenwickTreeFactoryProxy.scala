@@ -1,7 +1,11 @@
 package algo.data.fenwick
 
-trait FenwickTreeFactoryProxy[-E[V], +Collection[X, V]]
-    extends FenwickTreeFactory[E, Collection] {
+import cats.kernel.CommutativeSemigroup
+
+trait FenwickTreeFactoryProxy[
+    -E[V] <: CommutativeSemigroup[V],
+    +Collection[K, V] <: SemigroupFenwickTreeOps[K, V, Collection[K, V]]
+] extends FenwickTreeFactory[E, Collection] {
 
   protected def factory: FenwickTreeFactory[E, Collection]
 
