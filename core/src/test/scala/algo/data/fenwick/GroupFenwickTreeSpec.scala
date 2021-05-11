@@ -58,8 +58,8 @@ final class GroupFenwickTreeSpec
 
   "GroupFenwickTree" should {
 
-    behave like factory(MonoidFenwickTree)
-    behave like treeHasSize1D(MonoidFenwickTree)
+    behave like factory(GroupFenwickTree)
+    behave like treeHasSize1D(GroupFenwickTree)
     behave like semigroup[Int](
       GroupFenwickTree.tabulate(size = 100)
     )
