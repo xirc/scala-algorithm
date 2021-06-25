@@ -119,6 +119,40 @@ final class MinMaxStackSpec extends BaseSpec {
 
   }
 
+  "bottom" in {
+
+    val stack = MinMaxStack.empty[Int]
+    val bottomElement = Random.nextInt()
+    stack.push(bottomElement)
+    for (i <- 0 until 10) {
+      stack.push(i)
+      stack.bottom shouldBe bottomElement
+    }
+
+  }
+
+  "bottom of an empty stack" in {
+
+    val emptyStack = MinMaxStack.empty[Int]
+    a[NoSuchElementException] shouldBe thrownBy {
+      emptyStack.bottom
+    }
+
+  }
+
+  "bottomOption" in {
+
+    val stack = MinMaxStack.empty[Int]
+    stack.bottomOption shouldBe None
+    val bottomElement = Random.nextInt()
+    stack.push(bottomElement)
+    for (i <- 0 until 10) {
+      stack.push(i)
+      stack.bottomOption shouldBe Option(bottomElement)
+    }
+
+  }
+
   "clear" in {
 
     val stack = MinMaxStack(1, 2, 3, 4)

@@ -33,6 +33,15 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
     if (stack.isEmpty) None
     else Some(stack.top.value)
 
+  override def bottom: A =
+    bottomOption.getOrElse {
+      throw new NoSuchElementException("empty.bottom")
+    }
+
+  override def bottomOption: Option[A] =
+    if (stack.isEmpty) None
+    else Some(stack.last.value)
+
   override def min: A =
     minOption.getOrElse {
       throw new UnsupportedOperationException("empty.min")

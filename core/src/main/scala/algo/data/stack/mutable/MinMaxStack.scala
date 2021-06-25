@@ -34,6 +34,17 @@ trait MinMaxStack[A] {
     */
   def topOption: Option[A]
 
+  /** Return the bottom element of this stack
+    * @note Time Complexity: O(1)
+    */
+  @throws(classOf[NoSuchElementException])
+  def bottom: A
+
+  /** Return the bottom element of this stack
+    * @note Time Complexity: O(1)
+    */
+  def bottomOption: Option[A]
+
   /** Remove the all elements of this stack
     * @note Time Complexity: O(N)
     */
