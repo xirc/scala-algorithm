@@ -109,6 +109,11 @@ trait MinMaxStack[A] {
     */
   def iterator: Iterator[A]
 
+  /** Return a reverse iterator of this stack
+    * @note Time Complexity: O(1)
+    */
+  def reverseIterator: Iterator[A]
+
   /** Build a collection from this stack */
   def to[C](factory: Factory[A, C]): C
 

@@ -346,6 +346,16 @@ final class MinMaxStackSpec extends BaseSpec {
 
   }
 
+  "reverseIterator" in {
+
+    val stack = MinMaxStack.empty[Int]
+    stack.push(1)
+    stack.push(2)
+    stack.push(3)
+    stack.reverseIterator.toSeq shouldBe Seq(1, 2, 3)
+
+  }
+
   "to" in {
 
     val minmaxStack = MinMaxStack(1, 2, 3)

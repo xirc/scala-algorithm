@@ -86,6 +86,8 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
 
   override def iterator: Iterator[A] = stack.iterator.map(_.value)
 
+  override def reverseIterator: Iterator[A] = stack.reverseIterator.map(_.value)
+
   override def ordering: Ordering[A] = Ordering[A]
 
   override def to[C](factory: Factory[A, C]): C = factory.fromSpecific(iterator)
