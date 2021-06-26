@@ -248,6 +248,15 @@ final class MinMaxStackSpec extends BaseSpec {
 
   }
 
+  "max of an empty stack" in {
+
+    val stack = MinMaxStack.empty[Int]
+    a[UnsupportedOperationException] shouldBe thrownBy {
+      stack.max
+    }
+
+  }
+
   "maxOption" in {
 
     val stack = MinMaxStack.empty[Int]
@@ -261,15 +270,6 @@ final class MinMaxStackSpec extends BaseSpec {
       stack.pop()
     }
     stack.topOption shouldBe None
-
-  }
-
-  "max of an empty stack" in {
-
-    val stack = MinMaxStack.empty[Int]
-    a[UnsupportedOperationException] shouldBe thrownBy {
-      stack.max
-    }
 
   }
 
