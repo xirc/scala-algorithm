@@ -260,7 +260,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "maxOption" in {
 
     val stack = MinMaxStack.empty[Int]
-    stack.topOption shouldBe None
+    stack.maxOption shouldBe None
     for (_ <- 0 until 100) {
       stack.push(Random.nextInt())
       stack.maxOption shouldBe Option(stack.iterator.max)
@@ -269,7 +269,7 @@ final class MinMaxStackSpec extends BaseSpec {
       stack.maxOption shouldBe Option(stack.iterator.max)
       stack.pop()
     }
-    stack.topOption shouldBe None
+    stack.maxOption shouldBe None
 
   }
 
