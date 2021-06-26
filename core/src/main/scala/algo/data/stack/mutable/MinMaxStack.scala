@@ -45,6 +45,12 @@ trait MinMaxStack[A] {
     */
   def bottomOption: Option[A]
 
+  /** Get the element at the specified index
+    * @note Time Complexity: O(1)
+    */
+  @throws(classOf[IndexOutOfBoundsException])
+  def apply(index: Int): A
+
   /** Remove the all elements of this stack
     * @note Time Complexity: O(N)
     */

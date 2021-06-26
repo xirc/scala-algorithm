@@ -42,6 +42,14 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
     if (stack.isEmpty) None
     else Some(stack.last.value)
 
+  override def apply(index: Int): A = {
+    if (index < 0 || index >= size)
+      throw new IndexOutOfBoundsException(
+        s"Index out of range [0, $size): $index"
+      )
+    stack.apply(index).value
+  }
+
   override def min: A =
     minOption.getOrElse {
       throw new UnsupportedOperationException("empty.min")

@@ -153,6 +153,22 @@ final class MinMaxStackSpec extends BaseSpec {
 
   }
 
+  "apply" in {
+
+    val stack = MinMaxStack(3, 2, 1, 4)
+    a[IndexOutOfBoundsException] shouldBe thrownBy {
+      stack(-1)
+    }
+    stack(0) shouldBe 3
+    stack(1) shouldBe 2
+    stack(2) shouldBe 1
+    stack(3) shouldBe 4
+    a[IndexOutOfBoundsException] shouldBe thrownBy {
+      stack(4)
+    }
+
+  }
+
   "clear" in {
 
     val stack = MinMaxStack(1, 2, 3, 4)
