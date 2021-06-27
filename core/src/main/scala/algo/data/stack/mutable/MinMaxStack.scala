@@ -34,6 +34,9 @@ trait MinMaxStack[A] {
     */
   def popAll(): Seq[A]
 
+  /** Pop and return all elements from this stack which satisfies the given predicate */
+  def popWhile(f: A => Boolean): Seq[A]
+
   /** Return the top element of this stack
     * @note Time Complexity: O(1)
     */

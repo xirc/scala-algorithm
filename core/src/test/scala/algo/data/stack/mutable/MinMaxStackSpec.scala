@@ -126,6 +126,22 @@ final class MinMaxStackSpec extends BaseSpec {
 
   }
 
+  "popWhile" in {
+
+    val stack = MinMaxStack(1, 2, 3, 2, 1, 4, 5)
+    val elementsLessThanThree = stack.popWhile(_ < 3)
+    elementsLessThanThree shouldBe Seq(1, 2)
+
+    val noElements = stack.popWhile(_ < 3)
+    noElements.isEmpty shouldBe true
+
+    val elementsLessThanSix = stack.popWhile(_ < 6)
+    elementsLessThanSix shouldBe Seq(3, 2, 1, 4, 5)
+
+    stack.isEmpty shouldBe true
+
+  }
+
   "top" in {
 
     val stack = MinMaxStack.empty[Int]
