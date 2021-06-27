@@ -22,6 +22,12 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
     this
   }
 
+  override def push(value: A, values: A*): this.type = {
+    push(value)
+    values.foreach(push)
+    this
+  }
+
   override def pop(): A = stack.pop().value
 
   override def top: A =

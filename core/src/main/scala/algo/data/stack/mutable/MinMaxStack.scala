@@ -17,6 +17,9 @@ trait MinMaxStack[A] {
     */
   def push(value: A): this.type
 
+  /** Push the elements onto this stack */
+  def push(value: A, values: A*): this.type
+
   /** Remove the top element from this stack and return the element
     * @note Time Complexity: O(1)
     */

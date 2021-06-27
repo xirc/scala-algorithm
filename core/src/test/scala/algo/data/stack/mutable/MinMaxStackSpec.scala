@@ -69,6 +69,20 @@ final class MinMaxStackSpec extends BaseSpec {
 
   }
 
+  "push(value, ...)" in {
+
+    val stack = MinMaxStack.empty[Int]
+    val source = Seq.fill(10)(Random.nextInt())
+    stack.push(0, source.reverse: _*)
+    for (i <- source.indices) {
+      stack.min shouldBe stack.iterator.min
+      stack.max shouldBe stack.iterator.max
+      stack.pop() shouldBe source(i)
+    }
+    stack.pop() shouldBe 0
+
+  }
+
   "pop" in {
 
     val size = 100
