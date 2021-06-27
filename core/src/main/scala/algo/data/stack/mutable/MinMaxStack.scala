@@ -17,11 +17,25 @@ trait MinMaxStack[A] {
     */
   def push(value: A): this.type
 
+  /** Push the elements onto this stack */
+  def push(value: A, values: A*): this.type
+
+  /** Push all elements in the given iterable onto this stack */
+  def pushAll(iterable: IterableOnce[A]): this.type
+
   /** Remove the top element from this stack and return the element
     * @note Time Complexity: O(1)
     */
   @throws(classOf[NoSuchElementException])
   def pop(): A
+
+  /** Pop all elements from this stack and return the elements
+    * @note Time Complexity: O(N)
+    */
+  def popAll(): Seq[A]
+
+  /** Pop and return all elements from this stack which satisfies the given predicate */
+  def popWhile(f: A => Boolean): Seq[A]
 
   /** Return the top element of this stack
     * @note Time Complexity: O(1)
@@ -33,6 +47,23 @@ trait MinMaxStack[A] {
     * @note Time Complexity: O(1)
     */
   def topOption: Option[A]
+
+  /** Return the bottom element of this stack
+    * @note Time Complexity: O(1)
+    */
+  @throws(classOf[NoSuchElementException])
+  def bottom: A
+
+  /** Return the bottom element of this stack
+    * @note Time Complexity: O(1)
+    */
+  def bottomOption: Option[A]
+
+  /** Get the element at the specified index
+    * @note Time Complexity: O(1)
+    */
+  @throws(classOf[IndexOutOfBoundsException])
+  def apply(index: Int): A
 
   /** Remove the all elements of this stack
     * @note Time Complexity: O(N)
@@ -91,6 +122,11 @@ trait MinMaxStack[A] {
     * @note Time Complexity: O(1)
     */
   def iterator: Iterator[A]
+
+  /** Return a reverse iterator of this stack
+    * @note Time Complexity: O(1)
+    */
+  def reverseIterator: Iterator[A]
 
   /** Build a collection from this stack */
   def to[C](factory: Factory[A, C]): C

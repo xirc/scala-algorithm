@@ -22,7 +22,35 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
     this
   }
 
+  override def push(value: A, values: A*): this.type = {
+    push(value)
+    values.foreach(push)
+    this
+  }
+
+  override def pushAll(iterable: IterableOnce[A]): this.type = {
+    iterable.iterator.foreach(push)
+    this
+  }
+
   override def pop(): A = stack.pop().value
+
+  override def popAll(): Seq[A] = {
+    val builder = Seq.newBuilder[A]
+    builder.sizeHint(size)
+    while (nonEmpty) {
+      builder += pop()
+    }
+    builder.result()
+  }
+
+  override def popWhile(f: A => Boolean): Seq[A] = {
+    val builder = Seq.newBuilder[A]
+    while (nonEmpty && f(top)) {
+      builder += pop()
+    }
+    builder.result()
+  }
 
   override def top: A =
     topOption.getOrElse {
@@ -32,6 +60,23 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
   override def topOption: Option[A] =
     if (stack.isEmpty) None
     else Some(stack.top.value)
+
+  override def bottom: A =
+    bottomOption.getOrElse {
+      throw new NoSuchElementException("empty.bottom")
+    }
+
+  override def bottomOption: Option[A] =
+    if (stack.isEmpty) None
+    else Some(stack.last.value)
+
+  override def apply(index: Int): A = {
+    if (index < 0 || index >= size)
+      throw new IndexOutOfBoundsException(
+        s"Index out of range [0, $size): $index"
+      )
+    stack.apply(index).value
+  }
 
   override def min: A =
     minOption.getOrElse {
@@ -68,6 +113,8 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
   override def nonEmpty: Boolean = stack.nonEmpty
 
   override def iterator: Iterator[A] = stack.iterator.map(_.value)
+
+  override def reverseIterator: Iterator[A] = stack.reverseIterator.map(_.value)
 
   override def ordering: Ordering[A] = Ordering[A]
 
