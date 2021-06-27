@@ -35,6 +35,15 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
 
   override def pop(): A = stack.pop().value
 
+  override def popAll(): Seq[A] = {
+    val builder = Seq.newBuilder[A]
+    builder.sizeHint(size)
+    while (nonEmpty) {
+      builder += pop()
+    }
+    builder.result()
+  }
+
   override def top: A =
     topOption.getOrElse {
       throw new NoSuchElementException("empty.top")

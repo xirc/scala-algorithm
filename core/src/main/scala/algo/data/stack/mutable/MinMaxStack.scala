@@ -29,6 +29,11 @@ trait MinMaxStack[A] {
   @throws(classOf[NoSuchElementException])
   def pop(): A
 
+  /** Pop all elements from this stack and return the elements
+    * @note Time Complexity: O(N)
+    */
+  def popAll(): Seq[A]
+
   /** Return the top element of this stack
     * @note Time Complexity: O(1)
     */

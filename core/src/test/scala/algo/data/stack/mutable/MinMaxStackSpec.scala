@@ -116,6 +116,16 @@ final class MinMaxStackSpec extends BaseSpec {
 
   }
 
+  "popAll" in {
+
+    val source = Seq.fill(100)(Random.nextInt())
+    val stack = MinMaxStack.from(source)
+    val elements = stack.popAll()
+    elements shouldBe source
+    stack.isEmpty shouldBe true
+
+  }
+
   "top" in {
 
     val stack = MinMaxStack.empty[Int]
