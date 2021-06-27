@@ -28,6 +28,11 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
     this
   }
 
+  override def pushAll(iterable: IterableOnce[A]): this.type = {
+    iterable.iterator.foreach(push)
+    this
+  }
+
   override def pop(): A = stack.pop().value
 
   override def top: A =

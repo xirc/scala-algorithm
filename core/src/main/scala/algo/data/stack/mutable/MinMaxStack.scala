@@ -20,6 +20,9 @@ trait MinMaxStack[A] {
   /** Push the elements onto this stack */
   def push(value: A, values: A*): this.type
 
+  /** Push all elements in the given iterable onto this stack */
+  def pushAll(iterable: IterableOnce[A]): this.type
+
   /** Remove the top element from this stack and return the element
     * @note Time Complexity: O(1)
     */
