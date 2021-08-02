@@ -90,10 +90,10 @@ final class GroupFenwickTreeSpec
     behave like factory2D(GroupFenwickTree)
     behave like treeHasSizeLarge2D(GroupFenwickTree)
     behave like super[GroupFenwickTreeSparse2DBehaviors].semigroup(
-      GroupFenwickTree.tabulateS(size1 = 100, size2 = 200, _)
+      GroupFenwickTree.tabulateS(size1 = 10, size2 = 20, _)
     )
     behave like super[GroupFenwickTreeSparse2DBehaviors].monoid(
-      GroupFenwickTree.tabulateS(size1 = 200, size2 = 100, _)
+      GroupFenwickTree.tabulateS(size1 = 20, size2 = 10, _)
     )
 
   }

@@ -19,19 +19,19 @@ final class GroupFenwickTreeSpec
     behave like factory(GroupFenwickTree)
     behave like treeHasSize1D(GroupFenwickTree)
     behave like semigroup[Int](
-      GroupFenwickTree.tabulate(size = 100_000)
+      GroupFenwickTree.tabulate(size = 1_000)
     )
     behave like mutableSemigroup[Int](
-      GroupFenwickTree.tabulate(size = 100_000)
+      GroupFenwickTree.tabulate(size = 1_000)
     )
     behave like monoid[Int](
-      GroupFenwickTree.tabulate(size = 100_000)
+      GroupFenwickTree.tabulate(size = 1_000)
     )
     behave like group[Int](
-      GroupFenwickTree.tabulate(size = 100_000)
+      GroupFenwickTree.tabulate(size = 1_000)
     )
     behave like mutableGroup[Int](
-      GroupFenwickTree.tabulate(size = 100_000)
+      GroupFenwickTree.tabulate(size = 1_000)
     )
 
   }
@@ -41,13 +41,13 @@ final class GroupFenwickTreeSpec
     behave like factory1D(GroupFenwickTree)
     behave like treeHasSizeLarge1D(GroupFenwickTree)
     behave like semigroup[Long](
-      GroupFenwickTree.tabulateS(size = 10_000, _)
+      GroupFenwickTree.tabulateS(size = 1_000, _)
     )
     behave like monoid[Long](
-      GroupFenwickTree.tabulateS(size = 100_000, _)
+      GroupFenwickTree.tabulateS(size = 1_000, _)
     )
     behave like group[Long](
-      GroupFenwickTree.tabulateS(size = 10_000, _)
+      GroupFenwickTree.tabulateS(size = 1_000, _)
     )
 
   }
@@ -57,19 +57,19 @@ final class GroupFenwickTreeSpec
     behave like factory1D(GroupFenwickTree)
     behave like treeHasSizeLarge2D(GroupFenwickTree)
     behave like super[GroupFenwickTreeSparse2DBehaviors].semigroup(
-      GroupFenwickTree.tabulateS(200, 100, _)
+      GroupFenwickTree.tabulateS(20, 10, _)
     )
     behave like super[GroupFenwickTreeSparse2DBehaviors].mutableSemigroup(
-      GroupFenwickTree.tabulateS(200, 500, _)
+      GroupFenwickTree.tabulateS(20, 50, _)
     )
     behave like super[GroupFenwickTreeSparse2DBehaviors].monoid(
-      GroupFenwickTree.tabulateS(500, 200, _)
+      GroupFenwickTree.tabulateS(50, 20, _)
     )
     behave like super[GroupFenwickTreeSparse2DBehaviors].group(
-      GroupFenwickTree.tabulateS(100, 200, _)
+      GroupFenwickTree.tabulateS(10, 20, _)
     )
     behave like super[GroupFenwickTreeSparse2DBehaviors].mutableGroup(
-      GroupFenwickTree.tabulateS(200, 500, _)
+      GroupFenwickTree.tabulateS(20, 50, _)
     )
 
   }
