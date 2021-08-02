@@ -87,10 +87,10 @@ final class MonoidFenwickTreeSpec
     behave like factory2D(MonoidFenwickTree)
     behave like treeHasSizeLarge2D(MonoidFenwickTree)
     behave like super[MonoidFenwickTreeSparse2DBehaviors].semigroup(
-      MonoidFenwickTree.tabulateS(size1 = 100, size2 = 200, _)
+      MonoidFenwickTree.tabulateS(size1 = 10, size2 = 20, _)
     )
     behave like super[MonoidFenwickTreeSparse2DBehaviors].monoid(
-      MonoidFenwickTree.tabulateS(size1 = 200, size2 = 100, _)
+      MonoidFenwickTree.tabulateS(size1 = 20, size2 = 10, _)
     )
 
   }

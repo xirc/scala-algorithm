@@ -14,10 +14,10 @@ final class SemigroupFenwickTreeSpec
     behave like factory(SemigroupFenwickTree)
     behave like treeHasSize1D(SemigroupFenwickTree)
     behave like semigroup(
-      SemigroupFenwickTree.tabulate(size = 100_000)
+      SemigroupFenwickTree.tabulate(size = 1_000)
     )
     behave like mutableSemigroup(
-      SemigroupFenwickTree.tabulate(size = 100_000)
+      SemigroupFenwickTree.tabulate(size = 1_000)
     )
 
   }
