@@ -21,7 +21,7 @@ jobs:
           java-version: 11
 
       - name: Cache Coursier
-        uses: coursier/cache-action@v5
+        uses: coursier/cache-action@v6
 
       - name: Set up ssh-agent
         uses: webfactory/ssh-agent@v0.5.3
