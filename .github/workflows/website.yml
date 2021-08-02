@@ -24,7 +24,7 @@ jobs:
         uses: coursier/cache-action@v5
 
       - name: Set up ssh-agent
-        uses: webfactory/ssh-agent@v0.5.2
+        uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.GIT_DEPLOY_KEY }}
 
