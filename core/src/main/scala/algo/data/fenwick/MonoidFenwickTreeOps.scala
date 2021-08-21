@@ -12,14 +12,16 @@ trait MonoidFenwickTreeOps[
 
   /** Folds elements in specified range [`zero`, `until`)
     *
-    * @note Time Complexity: O(Log)
+    * @note
+    *   Time Complexity: O(Log)
     */
   @throws[IndexOutOfBoundsException]
   def foldUntil(until: K): V
 
   /** Folds elements in specified range [`zero`, `to`]
     *
-    * @note Time Complexity: O(Log)
+    * @note
+    *   Time Complexity: O(Log)
     */
   @throws[IndexOutOfBoundsException]
   def foldTo(to: K): V
