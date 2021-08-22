@@ -23,8 +23,10 @@ object BinaryExponentiationSyntax extends BinaryExponentiationSyntax
 final class BinaryExponentiationOps[A](private val a: A) extends AnyVal {
 
   /** Compute the value of `a` raised to the power of `n`
-    * @note Time Complexity: O(`log(N)`)
-    * @return `a ^ n`
+    * @note
+    *   Time Complexity: O(`log(N)`)
+    * @return
+    *   `a ^ n`
     */
   def binexp(n: Long)(implicit ev: BinaryExponentiation[A]): A = {
     ev.binexp(a, n)
@@ -47,8 +49,10 @@ trait BinaryExponentiation[@specialized A] {
   def monoid: Monoid[A]
 
   /** Compute the value of `a` raised to the power of `n`
-    * @note Time Complexity: O(`log(N)`)
-    * @return `a ^ n`
+    * @note
+    *   Time Complexity: O(`log(N)`)
+    * @return
+    *   `a ^ n`
     */
   def binexp(a: A, n: Long): A = {
     var ans = monoid.empty
@@ -73,7 +77,9 @@ object BinaryExponentiation {
       binexp: BinaryExponentiation[A]
   ): BinaryExponentiation[A] = binexp
 
-  /** Create a `BinaryExponentiation[A]` instance from the given function and the value */
+  /** Create a `BinaryExponentiation[A]` instance from the given function and
+    * the value
+    */
   @inline def instance[A](
       emptyValue: A,
       cmb: (A, A) => A

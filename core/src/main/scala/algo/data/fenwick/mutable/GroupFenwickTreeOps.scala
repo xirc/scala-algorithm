@@ -11,7 +11,8 @@ trait GroupFenwickTreeOps[
 
   /** Replaces element at specified index with a new value
     *
-    * @note Time Complexity: O(Log)
+    * @note
+    *   Time Complexity: O(Log)
     */
   def update(index: K, value: V): this.type
 

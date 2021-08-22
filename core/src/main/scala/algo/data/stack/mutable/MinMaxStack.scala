@@ -2,18 +2,21 @@ package algo.data.stack.mutable
 
 import scala.collection.{Factory, mutable}
 
-/** A data structure that allows to store and retrieve elements in a last-in-first-out (LIFO) fashion.
-  * This data structure also allows to retrieval of the minimum and maximum value efficiently.
+/** A data structure that allows to store and retrieve elements in a
+  * last-in-first-out (LIFO) fashion. This data structure also allows to
+  * retrieval of the minimum and maximum value efficiently.
   */
 trait MinMaxStack[A] {
 
   /** The size of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def size: Int
 
   /** Add the element to the top of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def push(value: A): this.type
 
@@ -24,107 +27,128 @@ trait MinMaxStack[A] {
   def pushAll(iterable: IterableOnce[A]): this.type
 
   /** Remove the top element from this stack and return the element
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   @throws(classOf[NoSuchElementException])
   def pop(): A
 
   /** Pop all elements from this stack and return the elements
-    * @note Time Complexity: O(N)
+    * @note
+    *   Time Complexity: O(N)
     */
   def popAll(): Seq[A]
 
-  /** Pop and return all elements from this stack which satisfies the given predicate */
+  /** Pop and return all elements from this stack which satisfies the given
+    * predicate
+    */
   def popWhile(f: A => Boolean): Seq[A]
 
   /** Return the top element of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   @throws(classOf[NoSuchElementException])
   def top: A
 
   /** Return the top element of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def topOption: Option[A]
 
   /** Return the bottom element of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   @throws(classOf[NoSuchElementException])
   def bottom: A
 
   /** Return the bottom element of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def bottomOption: Option[A]
 
   /** Get the element at the specified index
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   @throws(classOf[IndexOutOfBoundsException])
   def apply(index: Int): A
 
   /** Remove the all elements of this stack
-    * @note Time Complexity: O(N)
+    * @note
+    *   Time Complexity: O(N)
     */
   def clear(): Unit
 
   /** Return the ordering of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def ordering: Ordering[A]
 
   /** Return the minimum element of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   @throws(classOf[UnsupportedOperationException])
   def min: A
 
   /** Return the minimum element of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def minOption: Option[A]
 
   /** Return the maximum element of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   @throws(classOf[UnsupportedOperationException])
   def max: A
 
   /** Return the maximum element of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def maxOption: Option[A]
 
   /** Return the minimum and maximum elements of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   @throws(classOf[UnsupportedOperationException])
   def minmax: (A, A)
 
   /** Return the minimum and maximum elements of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def minmaxOption: Option[(A, A)]
 
   /** Return true if this stack is empty
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def isEmpty: Boolean
 
   /** Return true if this stack is not empty
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def nonEmpty: Boolean
 
   /** Return an iterator of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def iterator: Iterator[A]
 
   /** Return a reverse iterator of this stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def reverseIterator: Iterator[A]
 
@@ -136,13 +160,15 @@ trait MinMaxStack[A] {
 object MinMaxStack {
 
   /** An empty stack
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def empty[A: Ordering]: MinMaxStack[A] =
     new DefaultMinMaxStack[A]()
 
   /** Create a stack from the given collection
-    * @note Time Complexity: O(N)
+    * @note
+    *   Time Complexity: O(N)
     */
   def from[A: Ordering](iterable: IterableOnce[A]): MinMaxStack[A] = {
     val builder = newBuilder
@@ -151,7 +177,8 @@ object MinMaxStack {
   }
 
   /** Create a stack from the given elements
-    * @note Time Complexity: O(N)
+    * @note
+    *   Time Complexity: O(N)
     */
   def apply[A: Ordering](elems: A*): MinMaxStack[A] =
     from(elems)

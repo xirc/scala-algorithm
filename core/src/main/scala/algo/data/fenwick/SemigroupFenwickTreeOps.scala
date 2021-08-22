@@ -12,7 +12,8 @@ trait SemigroupFenwickTreeOps[
 
   /** Zero Bound
     *
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def zero: K
 
@@ -20,27 +21,31 @@ trait SemigroupFenwickTreeOps[
     *
     * Upper Bound
     *
-    * @note Time Complexity: O(1)
+    * @note
+    *   Time Complexity: O(1)
     */
   def size: K
 
   /** Reduces elements in specified range [`zero`, `until`)
     *
-    * @note Time Complexity: O(Log)
+    * @note
+    *   Time Complexity: O(Log)
     */
   @throws[IndexOutOfBoundsException]
   def reduceUntil(until: K): V
 
   /** Reduces elements in specified range [`zero`, `to`]
     *
-    * @note Time Complexity: O(Log)
+    * @note
+    *   Time Complexity: O(Log)
     */
   @throws[IndexOutOfBoundsException]
   def reduceTo(to: K): V
 
   /** Combines the element at specified index and specified value
     *
-    * @note Time Complexity: O(Log)
+    * @note
+    *   Time Complexity: O(Log)
     */
   @throws[IndexOutOfBoundsException]
   def combined(index: K, value: V): Collection

@@ -16,7 +16,8 @@ trait SemigroupFenwickTreeOps[
 
   /** Combines the element at specified index and specified value
     *
-    * @note Time Complexity: O(Log)
+    * @note
+    *   Time Complexity: O(Log)
     */
   @throws[IndexOutOfBoundsException]
   def combine(index: K, value: V): this.type
