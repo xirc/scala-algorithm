@@ -1,7 +1,6 @@
 val ScalaTestVersion = "3.2.10"
 val CatsVersion = "2.6.1"
 
-ThisBuild / version := "0.1"
 ThisBuild / scalaVersion := "2.13.6"
 ThisBuild / scalacOptions ++= Seq(
   "-deprecation",
