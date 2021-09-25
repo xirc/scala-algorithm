@@ -1,3 +1,6 @@
+val ScalaTestVersion = "3.2.10"
+val CatsVersion = "2.6.1"
+
 ThisBuild / version := "0.1"
 ThisBuild / scalaVersion := "2.13.6"
 ThisBuild / scalacOptions ++= Seq(
@@ -9,9 +12,6 @@ ThisBuild / scalacOptions ++= Seq(
 )
 ThisBuild / Compile / doc / autoAPIMappings := true
 ThisBuild / git.remoteRepo := "git@github.com:xirc/scala-algorithm.git"
-
-val ScalaTestVersion = "3.2.10"
-val CatsVersion = "2.6.1"
 
 lazy val core = (project in file("core"))
   .settings(
