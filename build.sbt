@@ -4,6 +4,7 @@ ThisBuild / scalacOptions ++= Seq(
   "-deprecation",
   "-unchecked",
   "-Xlint",
+  "-Xsource:3",
   "-Werror"
 )
 ThisBuild / Compile / doc / autoAPIMappings := true
