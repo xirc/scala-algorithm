@@ -10,7 +10,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "Factory|empty" in {
 
     val stack = MinMaxStack.empty[Int]
-    stack.size shouldBe 0
+    assert(stack.size === 0)
 
   }
 
@@ -19,7 +19,7 @@ final class MinMaxStackSpec extends BaseSpec {
     val source = Vector(1, 2, 3)
     val stack = MinMaxStack.from(source)
     for (elem <- source) {
-      stack.pop() shouldBe elem
+      assert(stack.pop() === elem)
     }
 
   }
@@ -29,7 +29,7 @@ final class MinMaxStackSpec extends BaseSpec {
     val source = Vector(1, 2, 3)
     val stack = MinMaxStack(source: _*)
     for (elem <- source) {
-      stack.pop() shouldBe elem
+      assert(stack.pop() === elem)
     }
 
   }
@@ -39,11 +39,11 @@ final class MinMaxStackSpec extends BaseSpec {
     val stack = mutable.Stack(1, 2, 3)
     val minmaxStack = stack.to(MinMaxStack)
 
-    minmaxStack.size shouldBe stack.size
+    assert(minmaxStack.size === stack.size)
     while (minmaxStack.nonEmpty) {
       val expectedMinMax = (minmaxStack.iterator.min, minmaxStack.iterator.max)
-      minmaxStack.minmax shouldBe expectedMinMax
-      minmaxStack.pop() shouldBe stack.pop()
+      assert(minmaxStack.minmax === expectedMinMax)
+      assert(minmaxStack.pop() === stack.pop())
     }
 
   }
@@ -52,7 +52,7 @@ final class MinMaxStackSpec extends BaseSpec {
 
     for (sz <- 0 until 100) {
       val stack = MinMaxStack.from(Seq.tabulate(sz)(identity))
-      stack.size shouldBe sz
+      assert(stack.size === sz)
     }
 
   }
@@ -63,8 +63,8 @@ final class MinMaxStackSpec extends BaseSpec {
     val stack = MinMaxStack.empty[Int]
     for (i <- 0 to size) {
       stack.push(i)
-      stack.top shouldBe i
-      stack.size shouldBe i + 1
+      assert(stack.top === i)
+      assert(stack.size === i + 1)
     }
 
   }
@@ -75,11 +75,11 @@ final class MinMaxStackSpec extends BaseSpec {
     val source = Seq.fill(10)(Random.nextInt())
     stack.push(0, source.reverse: _*)
     for (i <- source.indices) {
-      stack.min shouldBe stack.iterator.min
-      stack.max shouldBe stack.iterator.max
-      stack.pop() shouldBe source(i)
+      assert(stack.min === stack.iterator.min)
+      assert(stack.max === stack.iterator.max)
+      assert(stack.pop() === source(i))
     }
-    stack.pop() shouldBe 0
+    assert(stack.pop() === 0)
 
   }
 
@@ -89,9 +89,9 @@ final class MinMaxStackSpec extends BaseSpec {
     val source = Seq.fill(10)(Random.nextInt())
     stack.pushAll(source.reverse)
     for (i <- source.indices) {
-      stack.min shouldBe stack.iterator.min
-      stack.max shouldBe stack.iterator.max
-      stack.pop() shouldBe source(i)
+      assert(stack.min === stack.iterator.min)
+      assert(stack.max === stack.iterator.max)
+      assert(stack.pop() === source(i))
     }
 
   }
@@ -101,8 +101,8 @@ final class MinMaxStackSpec extends BaseSpec {
     val size = 100
     val stack = MinMaxStack.from(Seq.tabulate(size)(identity))
     for (s <- 0 until size) {
-      stack.pop() shouldBe s
-      stack.size shouldBe size - (s + 1)
+      assert(stack.pop() === s)
+      assert(stack.size === size - (s + 1))
     }
 
   }
@@ -110,7 +110,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "pop from an empty stack" in {
 
     val emptyStack = MinMaxStack.empty[Int]
-    a[NoSuchElementException] shouldBe thrownBy {
+    intercept[NoSuchElementException] {
       emptyStack.pop()
     }
 
@@ -121,8 +121,8 @@ final class MinMaxStackSpec extends BaseSpec {
     val source = Seq.fill(100)(Random.nextInt())
     val stack = MinMaxStack.from(source)
     val elements = stack.popAll()
-    elements shouldBe source
-    stack.isEmpty shouldBe true
+    assert(elements === source)
+    assert(stack.isEmpty)
 
   }
 
@@ -130,15 +130,15 @@ final class MinMaxStackSpec extends BaseSpec {
 
     val stack = MinMaxStack(1, 2, 3, 2, 1, 4, 5)
     val elementsLessThanThree = stack.popWhile(_ < 3)
-    elementsLessThanThree shouldBe Seq(1, 2)
+    assert(elementsLessThanThree === Seq(1, 2))
 
     val noElements = stack.popWhile(_ < 3)
-    noElements.isEmpty shouldBe true
+    assert(noElements.isEmpty)
 
     val elementsLessThanSix = stack.popWhile(_ < 6)
-    elementsLessThanSix shouldBe Seq(3, 2, 1, 4, 5)
+    assert(elementsLessThanSix === Seq(3, 2, 1, 4, 5))
 
-    stack.isEmpty shouldBe true
+    assert(stack.isEmpty)
 
   }
 
@@ -147,7 +147,7 @@ final class MinMaxStackSpec extends BaseSpec {
     val stack = MinMaxStack.empty[Int]
     for (i <- 0 until 100) {
       stack.push(i)
-      stack.top shouldBe i
+      assert(stack.top === i)
     }
 
   }
@@ -155,7 +155,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "top of an empty stack" in {
 
     val emptyStack = MinMaxStack.empty[Int]
-    a[NoSuchElementException] shouldBe thrownBy {
+    intercept[NoSuchElementException] {
       emptyStack.top
     }
 
@@ -164,10 +164,10 @@ final class MinMaxStackSpec extends BaseSpec {
   "topOption" in {
 
     val stack = MinMaxStack.empty[Int]
-    stack.topOption shouldBe None
+    assert(stack.topOption === None)
     for (i <- 0 until 100) {
       stack.push(i)
-      stack.topOption shouldBe Option(i)
+      assert(stack.topOption === Option(i))
     }
 
   }
@@ -179,7 +179,7 @@ final class MinMaxStackSpec extends BaseSpec {
     stack.push(bottomElement)
     for (i <- 0 until 10) {
       stack.push(i)
-      stack.bottom shouldBe bottomElement
+      assert(stack.bottom === bottomElement)
     }
 
   }
@@ -187,7 +187,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "bottom of an empty stack" in {
 
     val emptyStack = MinMaxStack.empty[Int]
-    a[NoSuchElementException] shouldBe thrownBy {
+    intercept[NoSuchElementException] {
       emptyStack.bottom
     }
 
@@ -196,12 +196,12 @@ final class MinMaxStackSpec extends BaseSpec {
   "bottomOption" in {
 
     val stack = MinMaxStack.empty[Int]
-    stack.bottomOption shouldBe None
+    assert(stack.bottomOption === None)
     val bottomElement = Random.nextInt()
     stack.push(bottomElement)
     for (i <- 0 until 10) {
       stack.push(i)
-      stack.bottomOption shouldBe Option(bottomElement)
+      assert(stack.bottomOption === Option(bottomElement))
     }
 
   }
@@ -209,14 +209,14 @@ final class MinMaxStackSpec extends BaseSpec {
   "apply" in {
 
     val stack = MinMaxStack(3, 2, 1, 4)
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       stack(-1)
     }
-    stack(0) shouldBe 3
-    stack(1) shouldBe 2
-    stack(2) shouldBe 1
-    stack(3) shouldBe 4
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    assert(stack(0) === 3)
+    assert(stack(1) === 2)
+    assert(stack(2) === 1)
+    assert(stack(3) === 4)
+    intercept[IndexOutOfBoundsException] {
       stack(4)
     }
 
@@ -226,7 +226,7 @@ final class MinMaxStackSpec extends BaseSpec {
 
     val stack = MinMaxStack(1, 2, 3, 4)
     stack.clear()
-    stack.size shouldBe 0
+    assert(stack.size === 0)
 
   }
 
@@ -234,17 +234,17 @@ final class MinMaxStackSpec extends BaseSpec {
 
     implicit val ordering: Ordering[Int] = Ordering.Int.reverse
     val stack = MinMaxStack.empty[Int]
-    stack.ordering shouldBe ordering
+    assert(stack.ordering === ordering)
 
     stack.push(2)
-    stack.min shouldBe 2
-    stack.max shouldBe 2
+    assert(stack.min === 2)
+    assert(stack.max === 2)
     stack.push(3)
-    stack.min shouldBe 3
-    stack.max shouldBe 2
+    assert(stack.min === 3)
+    assert(stack.max === 2)
     stack.push(1)
-    stack.min shouldBe 3
-    stack.max shouldBe 1
+    assert(stack.min === 3)
+    assert(stack.max === 1)
 
   }
 
@@ -253,10 +253,10 @@ final class MinMaxStackSpec extends BaseSpec {
     val stack = MinMaxStack.empty[Int]
     for (_ <- 0 until 100) {
       stack.push(Random.nextInt())
-      stack.min shouldBe stack.iterator.min
+      assert(stack.min === stack.iterator.min)
     }
     for (_ <- 0 until 100) {
-      stack.min shouldBe stack.iterator.min
+      assert(stack.min === stack.iterator.min)
       stack.pop()
     }
 
@@ -265,7 +265,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "min of an empty stack" in {
 
     val stack = MinMaxStack.empty[Int]
-    a[UnsupportedOperationException] shouldBe thrownBy {
+    intercept[UnsupportedOperationException] {
       stack.min
     }
 
@@ -274,16 +274,16 @@ final class MinMaxStackSpec extends BaseSpec {
   "minOption" in {
 
     val stack = MinMaxStack.empty[Int]
-    stack.minOption shouldBe None
+    assert(stack.minOption === None)
     for (_ <- 0 until 100) {
       stack.push(Random.nextInt())
-      stack.minOption shouldBe Option(stack.iterator.min)
+      assert(stack.minOption === Option(stack.iterator.min))
     }
     for (_ <- 0 until 100) {
-      stack.minOption shouldBe Option(stack.iterator.min)
+      assert(stack.minOption === Option(stack.iterator.min))
       stack.pop()
     }
-    stack.minOption shouldBe None
+    assert(stack.minOption === None)
 
   }
 
@@ -292,10 +292,10 @@ final class MinMaxStackSpec extends BaseSpec {
     val stack = MinMaxStack.empty[Int]
     for (_ <- 0 until 100) {
       stack.push(Random.nextInt())
-      stack.max shouldBe stack.iterator.max
+      assert(stack.max === stack.iterator.max)
     }
     for (_ <- 0 until 100) {
-      stack.max shouldBe stack.iterator.max
+      assert(stack.max === stack.iterator.max)
       stack.pop()
     }
 
@@ -304,7 +304,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "max of an empty stack" in {
 
     val stack = MinMaxStack.empty[Int]
-    a[UnsupportedOperationException] shouldBe thrownBy {
+    intercept[UnsupportedOperationException] {
       stack.max
     }
 
@@ -313,16 +313,16 @@ final class MinMaxStackSpec extends BaseSpec {
   "maxOption" in {
 
     val stack = MinMaxStack.empty[Int]
-    stack.maxOption shouldBe None
+    assert(stack.maxOption === None)
     for (_ <- 0 until 100) {
       stack.push(Random.nextInt())
-      stack.maxOption shouldBe Option(stack.iterator.max)
+      assert(stack.maxOption === Option(stack.iterator.max))
     }
     for (_ <- 0 until 100) {
-      stack.maxOption shouldBe Option(stack.iterator.max)
+      assert(stack.maxOption === Option(stack.iterator.max))
       stack.pop()
     }
-    stack.maxOption shouldBe None
+    assert(stack.maxOption === None)
 
   }
 
@@ -332,11 +332,11 @@ final class MinMaxStackSpec extends BaseSpec {
     for (_ <- 0 until 100) {
       stack.push(Random.nextInt())
       val expectedValue = (stack.iterator.min, stack.iterator.max)
-      stack.minmax shouldBe expectedValue
+      assert(stack.minmax === expectedValue)
     }
     for (_ <- 0 until 100) {
       val expectedValue = (stack.iterator.min, stack.iterator.max)
-      stack.minmax shouldBe expectedValue
+      assert(stack.minmax === expectedValue)
       stack.pop()
     }
 
@@ -345,7 +345,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "minmax of an empty stack" in {
 
     val stack = MinMaxStack.empty[Int]
-    a[UnsupportedOperationException] shouldBe thrownBy {
+    intercept[UnsupportedOperationException] {
       stack.minmax
     }
 
@@ -354,38 +354,38 @@ final class MinMaxStackSpec extends BaseSpec {
   "minmaxOption" in {
 
     val stack = MinMaxStack.empty[Int]
-    stack.minmaxOption shouldBe None
+    assert(stack.minmaxOption === None)
     for (_ <- 0 until 100) {
       stack.push(Random.nextInt())
       val expectedValue = Option((stack.iterator.min, stack.iterator.max))
-      stack.minmaxOption shouldBe expectedValue
+      assert(stack.minmaxOption === expectedValue)
     }
     for (_ <- 0 until 100) {
       val expectedValue = Option((stack.iterator.min, stack.iterator.max))
-      stack.minmaxOption shouldBe expectedValue
+      assert(stack.minmaxOption === expectedValue)
       stack.pop()
     }
-    stack.minmaxOption shouldBe None
+    assert(stack.minmaxOption === None)
 
   }
 
   "isEmpty" in {
 
     val emptyStack = MinMaxStack.empty[Int]
-    emptyStack.isEmpty shouldBe true
+    assert(emptyStack.isEmpty)
 
     val nonEmptyStack = MinMaxStack(1)
-    nonEmptyStack.isEmpty shouldBe false
+    assert(!nonEmptyStack.isEmpty)
 
   }
 
   "nonEmpty" in {
 
     val emptyStack = MinMaxStack.empty[Int]
-    emptyStack.nonEmpty shouldBe false
+    assert(!emptyStack.nonEmpty)
 
     val nonEmptyStack = MinMaxStack(1)
-    nonEmptyStack.nonEmpty shouldBe true
+    assert(nonEmptyStack.nonEmpty)
 
   }
 
@@ -395,7 +395,7 @@ final class MinMaxStackSpec extends BaseSpec {
     stack.push(1)
     stack.push(2)
     stack.push(3)
-    stack.iterator.toSeq shouldBe Seq(3, 2, 1)
+    assert(stack.iterator.toSeq === Seq(3, 2, 1))
 
   }
 
@@ -405,7 +405,7 @@ final class MinMaxStackSpec extends BaseSpec {
     stack.push(1)
     stack.push(2)
     stack.push(3)
-    stack.reverseIterator.toSeq shouldBe Seq(1, 2, 3)
+    assert(stack.reverseIterator.toSeq === Seq(1, 2, 3))
 
   }
 
@@ -414,9 +414,9 @@ final class MinMaxStackSpec extends BaseSpec {
     val minmaxStack = MinMaxStack(1, 2, 3)
     val stack = minmaxStack.to(mutable.Stack)
 
-    stack.size shouldBe minmaxStack.size
+    assert(stack.size === minmaxStack.size)
     while (stack.nonEmpty) {
-      stack.pop() shouldBe minmaxStack.pop()
+      assert(stack.pop() === minmaxStack.pop())
     }
 
   }
