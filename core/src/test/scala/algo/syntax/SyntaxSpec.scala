@@ -5,10 +5,9 @@ import algo.testing.BaseSpec
 import cats.kernel.Monoid
 
 final class SyntaxSpec extends BaseSpec {
+  import algo.syntax.all.*
 
-  "binexp" that {
-
-    import algo.syntax.binexp._
+  "BinaryExponentiation" that {
 
     "binexp" in {
 
@@ -27,8 +26,6 @@ final class SyntaxSpec extends BaseSpec {
   }
 
   "QuickSelect" in {
-
-    import algo.syntax.QuickSelect.*
 
     val xs = IndexedSeq(4, 3, 5, 1, 2)
     xs.select(0) shouldBe 1

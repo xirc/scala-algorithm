@@ -5,7 +5,6 @@ import algo.util.QuickSelectSyntax
 
 package object syntax {
 
-  object binexp extends BinaryExponentiationSyntax
-  object QuickSelect extends QuickSelectSyntax
+  object all extends BinaryExponentiationSyntax with QuickSelectSyntax
 
 }
