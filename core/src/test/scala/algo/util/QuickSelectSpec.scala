@@ -10,20 +10,20 @@ final class QuickSelectSpec extends BaseSpec {
   "selects k-th smallest element in small cases" in {
 
     val n1 = IndexedSeq(1)
-    n1.select(0) shouldBe 1
+    assert(n1.select(0) === 1)
 
     val n21 = IndexedSeq(2, 1)
-    n21.select(0) shouldBe 1
-    n21.select(1) shouldBe 2
+    assert(n21.select(0) === 1)
+    assert(n21.select(1) === 2)
 
     val n11 = IndexedSeq(1, 1)
-    n11.select(0) shouldBe 1
-    n11.select(1) shouldBe 1
+    assert(n11.select(0) === 1)
+    assert(n11.select(1) === 1)
 
     val n121 = IndexedSeq(1, 2, 1)
-    n121.select(0) shouldBe 1
-    n121.select(1) shouldBe 1
-    n121.select(2) shouldBe 2
+    assert(n121.select(0) === 1)
+    assert(n121.select(1) === 1)
+    assert(n121.select(2) === 2)
 
   }
 
@@ -35,7 +35,7 @@ final class QuickSelectSpec extends BaseSpec {
       val values = Random.shuffle((1 to 100).toIndexedSeq)
       for (i <- 0 until 100) {
         val expectedValue = i + 1
-        values.select(i) shouldBe expectedValue
+        assert(values.select(i) === expectedValue)
       }
     }
 
@@ -50,7 +50,7 @@ final class QuickSelectSpec extends BaseSpec {
       val values = Random.shuffle((1 to 100).toIndexedSeq)
       for (i <- 0 until 100) {
         val expectedValue = 100 - i
-        values.select(i) shouldBe expectedValue
+        assert(values.select(i) === expectedValue)
       }
     }
 
@@ -65,7 +65,7 @@ final class QuickSelectSpec extends BaseSpec {
       val sorted = values.sorted
       for (i <- 0 until 100) {
         val expectedValue = sorted(i)
-        values.select(i) shouldBe expectedValue
+        assert(values.select(i) === expectedValue)
       }
     }
 
@@ -81,7 +81,7 @@ final class QuickSelectSpec extends BaseSpec {
       for (i <- 0 until 100) {
         implicit val ordering: Ordering[Int] = Ordering.Int.reverse
         val expectedValue = sorted(100 - 1 - i)
-        values.select(i) shouldBe expectedValue
+        assert(values.select(i) === expectedValue)
       }
     }
 
@@ -91,11 +91,11 @@ final class QuickSelectSpec extends BaseSpec {
 
     val values = IndexedSeq.tabulate(10)(identity)
 
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       values.select(-1)
     }
 
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       values.select(values.size)
     }
 
