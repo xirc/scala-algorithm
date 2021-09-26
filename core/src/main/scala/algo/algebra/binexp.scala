@@ -2,9 +2,8 @@ package algo.algebra
 
 import cats.Monoid
 
-import scala.language.implicitConversions
-
 trait BinaryExponentiationSyntax {
+  import scala.language.implicitConversions
 
   implicit final def binaryExponentiationSyntax[A: BinaryExponentiation](
       a: A
