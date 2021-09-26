@@ -6,13 +6,13 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   "size" in {
 
-    DisjointSetUnion.fill(1)(1).size shouldBe 1
-    DisjointSetUnion.fill(10)(1).size shouldBe 10
-    DisjointSetUnion.fill(100)(1).size shouldBe 100
-    DisjointSetUnion.fill(1_000)(1).size shouldBe 1_000
-    DisjointSetUnion.fill(10_000)(1).size shouldBe 10_000
-    DisjointSetUnion.fill(100_000)(1).size shouldBe 100_000
-    DisjointSetUnion.fill(1_000_000)(1).size shouldBe 1_000_000
+    assert(DisjointSetUnion.fill(1)(1).size === 1)
+    assert(DisjointSetUnion.fill(10)(1).size === 10)
+    assert(DisjointSetUnion.fill(100)(1).size === 100)
+    assert(DisjointSetUnion.fill(1_000)(1).size === 1_000)
+    assert(DisjointSetUnion.fill(10_000)(1).size === 10_000)
+    assert(DisjointSetUnion.fill(100_000)(1).size === 100_000)
+    assert(DisjointSetUnion.fill(1_000_000)(1).size === 1_000_000)
 
   }
 
@@ -20,21 +20,21 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
     inside(DisjointSetUnion.fill(100)(1)) { dsu =>
       for (v <- 0 until 100) {
-        dsu(v) shouldBe 1
+        assert(dsu(v) === 1)
       }
     }
 
     inside(DisjointSetUnion.tabulate(100)(identity)) { dsu =>
       for (v <- 0 until 100) {
-        dsu(v) shouldBe v
+        assert(dsu(v) === v)
       }
     }
 
     inside(DisjointSetUnion.fill(10)(1)) { dsu =>
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         dsu(-1)
       }
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         dsu(dsu.size)
       }
     }
@@ -45,21 +45,21 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
     inside(DisjointSetUnion.fill(100)(1)) { dsu =>
       for (v <- 0 until 100) {
-        dsu.find(v) shouldBe 1
+        assert(dsu.find(v) === 1)
       }
     }
 
     inside(DisjointSetUnion.tabulate(100)(identity)) { dsu =>
       for (v <- 0 until 100) {
-        dsu.find(v) shouldBe v
+        assert(dsu.find(v) === v)
       }
     }
 
     inside(DisjointSetUnion.fill(10)(1)) { dsu =>
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         dsu.find(-1)
       }
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         dsu.find(dsu.size)
       }
     }
@@ -75,25 +75,25 @@ final class DisjointSetUnionSpec extends BaseSpec {
       v <- 0 until dsu.size
     } {
       if (u == v) {
-        dsu.isSame(u, v) shouldBe true
+        assert(dsu.isSame(u, v))
       } else {
-        dsu.isSame(u, v) shouldBe false
+        assert(!dsu.isSame(u, v))
       }
     }
 
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       dsu.isSame(-1, 1)
     }
 
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       dsu.isSame(dsu.size, 1)
     }
 
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       dsu.isSame(1, -1)
     }
 
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       dsu.isSame(1, dsu.size)
     }
 
@@ -103,26 +103,26 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
     val dsu = DisjointSetUnion.fill(10)(1)
     dsu.unite(1, 3)
-    dsu.isSame(1, 3) shouldBe true
-    dsu(1) shouldBe dsu(3)
+    assert(dsu.isSame(1, 3))
+    assert(dsu(1) === dsu(3))
 
     // Unite elements in same group
     dsu.unite(3, 1)
-    dsu.isSame(1, 3) shouldBe true
+    assert(dsu.isSame(1, 3))
 
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       dsu.unite(-1, 3)
     }
 
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       dsu.unite(dsu.size, 3)
     }
 
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       dsu.unite(-1, -1)
     }
 
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       dsu.unite(1, dsu.size)
     }
 
@@ -132,9 +132,9 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
     val xs = Vector(1, 2, 3, 4, 5)
     val dsu = DisjointSetUnion.from(xs.iterator)
-    dsu.size shouldBe 5
+    assert(dsu.size === 5)
     for (v <- 0 until dsu.size) {
-      dsu(v) shouldBe (v + 1)
+      assert(dsu(v) === (v + 1))
     }
 
   }
@@ -142,9 +142,9 @@ final class DisjointSetUnionSpec extends BaseSpec {
   "factory:apply" in {
 
     val dsu = DisjointSetUnion(1, 2, 3, 4, 5)
-    dsu.size shouldBe 5
+    assert(dsu.size === 5)
     for (v <- 0 until dsu.size) {
-      dsu(v) shouldBe (v + 1)
+      assert(dsu(v) === (v + 1))
     }
 
   }
@@ -152,9 +152,9 @@ final class DisjointSetUnionSpec extends BaseSpec {
   "factory:iterate" in {
 
     val dsu = DisjointSetUnion.iterate(1, 10)(_ * 2)
-    dsu.size shouldBe 10
+    assert(dsu.size === 10)
     for (v <- 0 until dsu.size) {
-      dsu(v) shouldBe (1 << v)
+      assert(dsu(v) === (1 << v))
     }
 
   }
@@ -165,9 +165,9 @@ final class DisjointSetUnionSpec extends BaseSpec {
       if (s < 1000) Option((s, s * 2))
       else None
     }
-    dsu.size shouldBe 10
+    assert(dsu.size === 10)
     for (v <- 0 until dsu.size) {
-      dsu(v) shouldBe (1 << v)
+      assert(dsu(v) === (1 << v))
     }
 
   }
@@ -177,12 +177,12 @@ final class DisjointSetUnionSpec extends BaseSpec {
     val xs = Vector(1, 2, 3)
     val ys = Vector(4, 5, 6)
     val dsu = DisjointSetUnion.concat(xs, ys)
-    dsu.size shouldBe (xs.size + ys.size)
+    assert(dsu.size === (xs.size + ys.size))
     for (v <- xs.indices) {
-      dsu(v) shouldBe xs(v)
+      assert(dsu(v) === xs(v))
     }
     for (v <- ys.indices) {
-      dsu(xs.size + v) shouldBe ys(v)
+      assert(dsu(xs.size + v) === ys(v))
     }
 
   }
@@ -190,9 +190,9 @@ final class DisjointSetUnionSpec extends BaseSpec {
   "factory:fill" in {
 
     val dsu = DisjointSetUnion.fill(100)(1)
-    dsu.size shouldBe 100
+    assert(dsu.size === 100)
     for (v <- 0 until dsu.size) {
-      dsu(v) shouldBe 1
+      assert(dsu(v) === 1)
     }
 
   }
@@ -200,9 +200,9 @@ final class DisjointSetUnionSpec extends BaseSpec {
   "factory:tabulate" in {
 
     val dsu = DisjointSetUnion.tabulate(100)(identity)
-    dsu.size shouldBe 100
+    assert(dsu.size === 100)
     for (v <- 0 until dsu.size) {
-      dsu(v) shouldBe v
+      assert(dsu(v) === v)
     }
 
   }
@@ -216,9 +216,9 @@ final class DisjointSetUnionSpec extends BaseSpec {
       v <- 0 until dsu.size
     } {
       if (u == v) {
-        dsu.isSame(u, v) shouldBe true
+        assert(dsu.isSame(u, v))
       } else {
-        dsu.isSame(u, v) shouldBe false
+        assert(!dsu.isSame(u, v))
       }
     }
 
@@ -234,12 +234,12 @@ final class DisjointSetUnionSpec extends BaseSpec {
       v <- 0 until dsu.size
     } {
       val expectedSameGroup = expectedGroup(u) == expectedGroup(v)
-      dsu.isSame(u, v) shouldBe expectedSameGroup
+      assert(dsu.isSame(u, v) === expectedSameGroup)
     }
 
     val expectedValue = Vector(1, 3, 3, 3, 2, 2, 1, 2, 2, 1)
     for (u <- 0 until dsu.size) {
-      dsu(u) shouldBe expectedValue(u)
+      assert(dsu(u) === expectedValue(u))
     }
 
   }
