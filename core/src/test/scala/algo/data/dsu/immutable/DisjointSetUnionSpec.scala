@@ -3,6 +3,7 @@ package algo.data.dsu.immutable
 import algo.testing.BaseSpec
 import cats.Monoid
 import cats.data.State
+import org.scalatest.{Assertion, Succeeded}
 
 final class DisjointSetUnionSpec extends BaseSpec {
   import DisjointSetUnion._
@@ -15,6 +16,8 @@ final class DisjointSetUnionSpec extends BaseSpec {
       cur *> next
     )
   }
+  implicit val assertionMonoid: Monoid[Assertion] =
+    Monoid.instance(Succeeded, (_, rhs) => rhs)
 
   "size" in {
 
@@ -35,7 +38,6 @@ final class DisjointSetUnionSpec extends BaseSpec {
         (0 until 100).map { index =>
           find[Int](index).map { value =>
             assert(value === 1)
-            ()
           }
         }
       )
@@ -47,7 +49,6 @@ final class DisjointSetUnionSpec extends BaseSpec {
         (0 until 100).map { index =>
           find[Int](index).map { value =>
             assert(value === index)
-            ()
           }
         }
       )
@@ -78,7 +79,6 @@ final class DisjointSetUnionSpec extends BaseSpec {
         isSame[Int](u, v)
           .map { same =>
             assert(same === expectedSame)
-            ()
           }
       }
     )
@@ -155,7 +155,6 @@ final class DisjointSetUnionSpec extends BaseSpec {
       _ <- sequence(for (v <- 0 until dsu.size) yield {
         find[Int](v).map { value =>
           assert(value === (v + 1))
-          ()
         }
       })
     } yield ()
@@ -172,7 +171,6 @@ final class DisjointSetUnionSpec extends BaseSpec {
       _ <- sequence(for (v <- 0 until dsu.size) yield {
         find[Int](v).map { value =>
           assert(value === (v + 1))
-          ()
         }
       })
     } yield ()
@@ -189,7 +187,6 @@ final class DisjointSetUnionSpec extends BaseSpec {
       _ <- sequence(for (v <- 0 until dsu.size) yield {
         find[Int](v).map { value =>
           assert(value === (1 << v))
-          ()
         }
       })
     } yield ()
@@ -209,7 +206,6 @@ final class DisjointSetUnionSpec extends BaseSpec {
       _ <- sequence(for (v <- 0 until dsu.size) yield {
         find[Int](v).map { value =>
           assert(value === (1 << v))
-          ()
         }
       })
     } yield ()
@@ -230,18 +226,14 @@ final class DisjointSetUnionSpec extends BaseSpec {
       _ <- sequence(for (v <- xs.indices) yield {
         find[Int](v).map { value =>
           assert(value === xs(v))
-          ()
         }
       })
       _ <- sequence(for (v <- ys.indices) yield {
         find[Int](xs.size + v).map { value =>
           assert(value === ys(v))
-          ()
         }
       })
-    } yield {
-      ()
-    }
+    } yield ()
     checkConcat.run(dsu).value
 
   }
@@ -272,7 +264,6 @@ final class DisjointSetUnionSpec extends BaseSpec {
       _ <- sequence(for (v <- 0 until dsu.size) yield {
         find[Int](v).map { value =>
           assert(value === v)
-          ()
         }
       })
     } yield ()
@@ -292,7 +283,6 @@ final class DisjointSetUnionSpec extends BaseSpec {
         val expectedSame = u == v
         isSame[Int](u, v).map { same =>
           assert(same === expectedSame)
-          ()
         }
       }
     )
@@ -314,7 +304,6 @@ final class DisjointSetUnionSpec extends BaseSpec {
         val expectedSameGroup = expectedGroup(u) == expectedGroup(v)
         isSame[Int](u, v).map { same =>
           assert(same === expectedSameGroup)
-          ()
         }
       }
     )
@@ -324,7 +313,6 @@ final class DisjointSetUnionSpec extends BaseSpec {
       for (u <- 0 until dsu.size) yield {
         find[Int](u).map { value =>
           assert(value === expectedValue(u))
-          ()
         }
       }
     )
