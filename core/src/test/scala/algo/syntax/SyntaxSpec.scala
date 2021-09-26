@@ -26,4 +26,17 @@ final class SyntaxSpec extends BaseSpec {
 
   }
 
+  "QuickSelect" in {
+
+    import algo.syntax.QuickSelect.*
+
+    val xs = IndexedSeq(4, 3, 5, 1, 2)
+    xs.select(0) shouldBe 1
+    xs.select(1) shouldBe 2
+    xs.select(2) shouldBe 3
+    xs.select(3) shouldBe 4
+    xs.select(4) shouldBe 5
+
+  }
+
 }
