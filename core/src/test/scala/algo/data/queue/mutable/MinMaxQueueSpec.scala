@@ -10,7 +10,7 @@ final class MinMaxQueueSpec extends BaseSpec {
   "Factory|empty" in {
 
     val queue = MinMaxQueue.empty[Int]
-    queue.size shouldBe 0
+    assert(queue.size === 0)
 
   }
 
@@ -19,7 +19,7 @@ final class MinMaxQueueSpec extends BaseSpec {
     val source = Vector(1, 2, 3)
     val queue = MinMaxQueue.from(source)
     for (elem <- source) {
-      queue.dequeue() shouldBe elem
+      assert(queue.dequeue() === elem)
     }
 
   }
@@ -29,7 +29,7 @@ final class MinMaxQueueSpec extends BaseSpec {
     val source = Vector(1, 2, 3)
     val queue = MinMaxQueue(source: _*)
     for (elem <- source) {
-      queue.dequeue() shouldBe elem
+      assert(queue.dequeue() === elem)
     }
 
   }
@@ -39,11 +39,11 @@ final class MinMaxQueueSpec extends BaseSpec {
     val queue = mutable.Queue(1, 2, 3)
     val minmaxQueue = queue.to(MinMaxQueue)
 
-    minmaxQueue.size shouldBe queue.size
+    assert(minmaxQueue.size === queue.size)
     while (minmaxQueue.nonEmpty) {
       val expectedMinMax = (minmaxQueue.iterator.min, minmaxQueue.iterator.max)
-      minmaxQueue.minmax shouldBe expectedMinMax
-      minmaxQueue.dequeue() shouldBe queue.dequeue()
+      assert(minmaxQueue.minmax === expectedMinMax)
+      assert(minmaxQueue.dequeue() === queue.dequeue())
     }
 
   }
@@ -52,7 +52,7 @@ final class MinMaxQueueSpec extends BaseSpec {
 
     for (sz <- 0 until 100) {
       val queue = MinMaxQueue.from(Seq.tabulate(sz)(identity))
-      queue.size shouldBe sz
+      assert(queue.size === sz)
     }
 
   }
@@ -63,7 +63,7 @@ final class MinMaxQueueSpec extends BaseSpec {
     val queue = MinMaxQueue.empty[Int]
     for (i <- 0 to size) {
       queue.enqueue(i)
-      queue.size shouldBe i + 1
+      assert(queue.size === i + 1)
     }
 
   }
@@ -74,9 +74,9 @@ final class MinMaxQueueSpec extends BaseSpec {
     val source = Seq.fill(100)(Random.nextInt())
     queue.enqueue(0, source: _*)
     for (elem <- 0 +: source) {
-      queue.min shouldBe queue.iterator.min
-      queue.max shouldBe queue.iterator.max
-      queue.dequeue() shouldBe elem
+      assert(queue.min === queue.iterator.min)
+      assert(queue.max === queue.iterator.max)
+      assert(queue.dequeue() === elem)
     }
 
   }
@@ -87,9 +87,9 @@ final class MinMaxQueueSpec extends BaseSpec {
     val source = Seq.fill(100)(Random.nextInt())
     queue.enqueueAll(source)
     for (elem <- source) {
-      queue.min shouldBe queue.iterator.min
-      queue.max shouldBe queue.iterator.max
-      queue.dequeue() shouldBe elem
+      assert(queue.min === queue.iterator.min)
+      assert(queue.max === queue.iterator.max)
+      assert(queue.dequeue() === elem)
     }
 
   }
@@ -99,8 +99,8 @@ final class MinMaxQueueSpec extends BaseSpec {
     val size = 100
     val queue = MinMaxQueue.from(Seq.tabulate(size)(identity))
     for (s <- 0 until size) {
-      queue.dequeue() shouldBe s
-      queue.size shouldBe size - (s + 1)
+      assert(queue.dequeue() === s)
+      assert(queue.size === size - (s + 1))
     }
 
   }
@@ -108,7 +108,7 @@ final class MinMaxQueueSpec extends BaseSpec {
   "dequeue from an empty queue" in {
 
     val emptyQueue = MinMaxQueue.empty[Int]
-    a[NoSuchElementException] shouldBe thrownBy {
+    intercept[NoSuchElementException] {
       emptyQueue.dequeue()
     }
 
@@ -119,8 +119,8 @@ final class MinMaxQueueSpec extends BaseSpec {
     val source = Seq.fill(10)(Random.nextInt())
     val queue = MinMaxQueue.from(source)
     val elements = queue.dequeueAll()
-    elements shouldBe source
-    queue.isEmpty shouldBe true
+    assert(elements === source)
+    assert(queue.isEmpty)
 
   }
 
@@ -129,15 +129,15 @@ final class MinMaxQueueSpec extends BaseSpec {
     val queue = MinMaxQueue(2, 1, 3, 2, 1, 4, 5)
 
     val elementsLessThanThree = queue.dequeueWhile(_ < 3)
-    elementsLessThanThree shouldBe Seq(2, 1)
+    assert(elementsLessThanThree === Seq(2, 1))
 
     val noElements = queue.dequeueWhile(_ < 3)
-    noElements.isEmpty shouldBe true
+    assert(noElements.isEmpty)
 
     val elementsLessThanSix = queue.dequeueWhile(_ < 6)
-    elementsLessThanSix shouldBe Seq(3, 2, 1, 4, 5)
+    assert(elementsLessThanSix === Seq(3, 2, 1, 4, 5))
 
-    queue.isEmpty shouldBe true
+    assert(queue.isEmpty)
 
   }
 
@@ -148,7 +148,7 @@ final class MinMaxQueueSpec extends BaseSpec {
     queue.enqueue(frontElement)
     for (i <- 0 until 100) {
       queue.enqueue(i)
-      queue.front shouldBe frontElement
+      assert(queue.front === frontElement)
     }
 
   }
@@ -156,7 +156,7 @@ final class MinMaxQueueSpec extends BaseSpec {
   "front of an empty queue" in {
 
     val emptyStack = MinMaxQueue.empty[Int]
-    a[NoSuchElementException] shouldBe thrownBy {
+    intercept[NoSuchElementException] {
       emptyStack.front
     }
 
@@ -165,12 +165,12 @@ final class MinMaxQueueSpec extends BaseSpec {
   "frontOption" in {
 
     val queue = MinMaxQueue.empty[Int]
-    queue.frontOption shouldBe None
+    assert(queue.frontOption === None)
     val frontElement = Random.nextInt()
     queue.enqueue(frontElement)
     for (i <- 0 until 100) {
       queue.enqueue(i)
-      queue.frontOption shouldBe Option(frontElement)
+      assert(queue.frontOption === Option(frontElement))
     }
 
   }
@@ -180,7 +180,7 @@ final class MinMaxQueueSpec extends BaseSpec {
     val queue = MinMaxQueue.empty[Int]
     for (i <- 0 until 10) {
       queue.enqueue(i)
-      queue.back shouldBe i
+      assert(queue.back === i)
     }
 
   }
@@ -188,7 +188,7 @@ final class MinMaxQueueSpec extends BaseSpec {
   "back of an empty queue" in {
 
     val emptyQueue = MinMaxQueue.empty[Int]
-    a[NoSuchElementException] shouldBe thrownBy {
+    intercept[NoSuchElementException] {
       emptyQueue.back
     }
 
@@ -199,7 +199,7 @@ final class MinMaxQueueSpec extends BaseSpec {
     val queue = MinMaxQueue.empty[Int]
     for (i <- 0 until 10) {
       queue.enqueue(i)
-      queue.backOption shouldBe Option(i)
+      assert(queue.backOption === Option(i))
     }
 
   }
@@ -216,14 +216,14 @@ final class MinMaxQueueSpec extends BaseSpec {
     queue.enqueue(5)
 
     // queue: [2, 3, 4, 5]
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    intercept[IndexOutOfBoundsException] {
       queue(-1)
     }
-    queue(0) shouldBe 2
-    queue(1) shouldBe 3
-    queue(2) shouldBe 4
-    queue(3) shouldBe 5
-    a[IndexOutOfBoundsException] shouldBe thrownBy {
+    assert(queue(0) === 2)
+    assert(queue(1) === 3)
+    assert(queue(2) === 4)
+    assert(queue(3) === 5)
+    intercept[IndexOutOfBoundsException] {
       queue(4)
     }
 
@@ -233,7 +233,7 @@ final class MinMaxQueueSpec extends BaseSpec {
 
     val queue = MinMaxQueue(1, 2, 3, 4)
     queue.clear()
-    queue.size shouldBe 0
+    assert(queue.size === 0)
 
   }
 
@@ -241,32 +241,32 @@ final class MinMaxQueueSpec extends BaseSpec {
 
     implicit val ordering: Ordering[Int] = Ordering.Int.reverse
     val queue = MinMaxQueue.empty[Int]
-    queue.ordering shouldBe ordering
+    assert(queue.ordering === ordering)
 
     // [2]
     queue.enqueue(2)
-    queue.min shouldBe 2
-    queue.max shouldBe 2
+    assert(queue.min === 2)
+    assert(queue.max === 2)
 
     // [2,3]
     queue.enqueue(3)
-    queue.min shouldBe 3
-    queue.max shouldBe 2
+    assert(queue.min === 3)
+    assert(queue.max === 2)
 
     // [2,3,1]
     queue.enqueue(1)
-    queue.min shouldBe 3
-    queue.max shouldBe 1
+    assert(queue.min === 3)
+    assert(queue.max === 1)
 
     // [3,1]
     queue.dequeue()
-    queue.min shouldBe 3
-    queue.max shouldBe 1
+    assert(queue.min === 3)
+    assert(queue.max === 1)
 
     // [3,1,4]
     queue.enqueue(4)
-    queue.min shouldBe 4
-    queue.max shouldBe 1
+    assert(queue.min === 4)
+    assert(queue.max === 1)
 
   }
 
@@ -275,18 +275,18 @@ final class MinMaxQueueSpec extends BaseSpec {
     val queue = MinMaxQueue.empty[Int]
     for (_ <- 0 until 100) {
       queue.enqueue(Random.nextInt())
-      queue.min shouldBe queue.iterator.min
+      assert(queue.min === queue.iterator.min)
     }
     for (_ <- 0 until 50) {
-      queue.min shouldBe queue.iterator.min
+      assert(queue.min === queue.iterator.min)
       queue.dequeue()
     }
     for (_ <- 0 until 50) {
       queue.enqueue(Random.nextInt())
-      queue.min shouldBe queue.iterator.min
+      assert(queue.min === queue.iterator.min)
     }
     for (_ <- 0 until 100) {
-      queue.min shouldBe queue.iterator.min
+      assert(queue.min === queue.iterator.min)
       queue.dequeue()
     }
 
@@ -295,7 +295,7 @@ final class MinMaxQueueSpec extends BaseSpec {
   "min of an empty queue" in {
 
     val queue = MinMaxQueue.empty[Int]
-    a[UnsupportedOperationException] shouldBe thrownBy {
+    intercept[UnsupportedOperationException] {
       queue.min
     }
 
@@ -304,24 +304,24 @@ final class MinMaxQueueSpec extends BaseSpec {
   "minOption" in {
 
     val queue = MinMaxQueue.empty[Int]
-    queue.minOption shouldBe None
+    assert(queue.minOption === None)
     for (_ <- 0 until 100) {
       queue.enqueue(Random.nextInt())
-      queue.minOption shouldBe Option(queue.iterator.min)
+      assert(queue.minOption === Option(queue.iterator.min))
     }
     for (_ <- 0 until 50) {
-      queue.minOption shouldBe Option(queue.iterator.min)
+      assert(queue.minOption === Option(queue.iterator.min))
       queue.dequeue()
     }
     for (_ <- 0 until 50) {
       queue.enqueue(Random.nextInt())
-      queue.minOption shouldBe Option(queue.iterator.min)
+      assert(queue.minOption === Option(queue.iterator.min))
     }
     for (_ <- 0 until 100) {
-      queue.minOption shouldBe Option(queue.iterator.min)
+      assert(queue.minOption === Option(queue.iterator.min))
       queue.dequeue()
     }
-    queue.minOption shouldBe None
+    assert(queue.minOption === None)
 
   }
 
@@ -330,18 +330,18 @@ final class MinMaxQueueSpec extends BaseSpec {
     val queue = MinMaxQueue.empty[Int]
     for (_ <- 0 until 100) {
       queue.enqueue(Random.nextInt())
-      queue.max shouldBe queue.iterator.max
+      assert(queue.max === queue.iterator.max)
     }
     for (_ <- 0 until 50) {
-      queue.max shouldBe queue.iterator.max
+      assert(queue.max === queue.iterator.max)
       queue.dequeue()
     }
     for (_ <- 0 until 50) {
       queue.enqueue(Random.nextInt())
-      queue.max shouldBe queue.iterator.max
+      assert(queue.max === queue.iterator.max)
     }
     for (_ <- 0 until 100) {
-      queue.max shouldBe queue.iterator.max
+      assert(queue.max === queue.iterator.max)
       queue.dequeue()
     }
 
@@ -350,31 +350,31 @@ final class MinMaxQueueSpec extends BaseSpec {
   "maxOption" in {
 
     val queue = MinMaxQueue.empty[Int]
-    queue.maxOption shouldBe None
+    assert(queue.maxOption === None)
     for (_ <- 0 until 100) {
       queue.enqueue(Random.nextInt())
-      queue.maxOption shouldBe Option(queue.iterator.max)
+      assert(queue.maxOption === Option(queue.iterator.max))
     }
     for (_ <- 0 until 50) {
-      queue.maxOption shouldBe Option(queue.iterator.max)
+      assert(queue.maxOption === Option(queue.iterator.max))
       queue.dequeue()
     }
     for (_ <- 0 until 50) {
       queue.enqueue(Random.nextInt())
-      queue.maxOption shouldBe Option(queue.iterator.max)
+      assert(queue.maxOption === Option(queue.iterator.max))
     }
     for (_ <- 0 until 100) {
-      queue.maxOption shouldBe Option(queue.iterator.max)
+      assert(queue.maxOption === Option(queue.iterator.max))
       queue.dequeue()
     }
-    queue.maxOption shouldBe None
+    assert(queue.maxOption === None)
 
   }
 
   "max of an empty queue" in {
 
     val queue = MinMaxQueue.empty[Int]
-    a[UnsupportedOperationException] shouldBe thrownBy {
+    intercept[UnsupportedOperationException] {
       queue.max
     }
 
@@ -386,21 +386,21 @@ final class MinMaxQueueSpec extends BaseSpec {
     for (_ <- 0 until 100) {
       queue.enqueue(Random.nextInt())
       val expectedValue = (queue.iterator.min, queue.iterator.max)
-      queue.minmax shouldBe expectedValue
+      assert(queue.minmax === expectedValue)
     }
     for (_ <- 0 until 50) {
       val expectedValue = (queue.iterator.min, queue.iterator.max)
-      queue.minmax shouldBe expectedValue
+      assert(queue.minmax === expectedValue)
       queue.dequeue()
     }
     for (_ <- 0 until 50) {
       queue.enqueue(Random.nextInt())
       val expectedValue = (queue.iterator.min, queue.iterator.max)
-      queue.minmax shouldBe expectedValue
+      assert(queue.minmax === expectedValue)
     }
     for (_ <- 0 until 100) {
       val expectedValue = (queue.iterator.min, queue.iterator.max)
-      queue.minmax shouldBe expectedValue
+      assert(queue.minmax === expectedValue)
       queue.dequeue()
     }
 
@@ -409,7 +409,7 @@ final class MinMaxQueueSpec extends BaseSpec {
   "minmax of an empty queue" in {
 
     val queue = MinMaxQueue.empty[Int]
-    a[UnsupportedOperationException] shouldBe thrownBy {
+    intercept[UnsupportedOperationException] {
       queue.minmax
     }
 
@@ -418,48 +418,48 @@ final class MinMaxQueueSpec extends BaseSpec {
   "minmaxOption" in {
 
     val queue = MinMaxQueue.empty[Int]
-    queue.minmaxOption shouldBe None
+    assert(queue.minmaxOption === None)
     for (_ <- 0 until 100) {
       queue.enqueue(Random.nextInt())
       val expectedValue = Option((queue.iterator.min, queue.iterator.max))
-      queue.minmaxOption shouldBe expectedValue
+      assert(queue.minmaxOption === expectedValue)
     }
     for (_ <- 0 until 50) {
       val expectedValue = Option((queue.iterator.min, queue.iterator.max))
-      queue.minmaxOption shouldBe expectedValue
+      assert(queue.minmaxOption === expectedValue)
       queue.dequeue()
     }
     for (_ <- 0 until 50) {
       queue.enqueue(Random.nextInt())
       val expectedValue = Option((queue.iterator.min, queue.iterator.max))
-      queue.minmaxOption shouldBe expectedValue
+      assert(queue.minmaxOption === expectedValue)
     }
     for (_ <- 0 until 100) {
       val expectedValue = Option((queue.iterator.min, queue.iterator.max))
-      queue.minmaxOption shouldBe expectedValue
+      assert(queue.minmaxOption === expectedValue)
       queue.dequeue()
     }
-    queue.minmaxOption shouldBe None
+    assert(queue.minmaxOption === None)
 
   }
 
   "isEmpty" in {
 
     val emptyQueue = MinMaxQueue.empty[Int]
-    emptyQueue.isEmpty shouldBe true
+    assert(emptyQueue.isEmpty)
 
     val nonEmptyQueue = MinMaxQueue(1)
-    nonEmptyQueue.isEmpty shouldBe false
+    assert(!nonEmptyQueue.isEmpty)
 
   }
 
   "nonEmpty" in {
 
     val emptyQueue = MinMaxQueue.empty[Int]
-    emptyQueue.nonEmpty shouldBe false
+    assert(!emptyQueue.nonEmpty)
 
     val nonEmptyQueue = MinMaxQueue(1)
-    nonEmptyQueue.nonEmpty shouldBe true
+    assert(nonEmptyQueue.nonEmpty)
 
   }
 
@@ -469,7 +469,7 @@ final class MinMaxQueueSpec extends BaseSpec {
     queue.enqueue(1)
     queue.enqueue(2)
     queue.enqueue(3)
-    queue.iterator.toSeq shouldBe Seq(1, 2, 3)
+    assert(queue.iterator.toSeq === Seq(1, 2, 3))
 
   }
 
@@ -479,7 +479,7 @@ final class MinMaxQueueSpec extends BaseSpec {
     queue.enqueue(1)
     queue.enqueue(2)
     queue.enqueue(3)
-    queue.reverseIterator.toSeq shouldBe Seq(3, 2, 1)
+    assert(queue.reverseIterator.toSeq === Seq(3, 2, 1))
 
   }
 
@@ -488,9 +488,9 @@ final class MinMaxQueueSpec extends BaseSpec {
     val minmaxQueue = MinMaxQueue(1, 2, 3)
     val queue = minmaxQueue.to(mutable.Queue)
 
-    queue.size shouldBe minmaxQueue.size
+    assert(queue.size === minmaxQueue.size)
     while (queue.nonEmpty) {
-      queue.dequeue() shouldBe minmaxQueue.dequeue()
+      assert(queue.dequeue() === minmaxQueue.dequeue())
     }
 
   }
