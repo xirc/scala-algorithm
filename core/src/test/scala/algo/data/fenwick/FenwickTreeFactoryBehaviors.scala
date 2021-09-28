@@ -32,10 +32,10 @@ trait FenwickTreeFactoryBehaviors extends BaseSpec {
     s"${factory.getClass.getSimpleName}.from" in {
 
       val tree = factory.from(Array(1, 2, 3, 4, 5))
-      tree.size shouldBe 5
+      assert(tree.size === 5)
       for (x <- 1 to tree.size) {
         val expectedSum = sumOfArithmeticProgression(1, x + 1)
-        tree.reduceUntil(x) shouldBe expectedSum
+        assert(tree.reduceUntil(x).toLong === expectedSum)
       }
 
     }
@@ -48,10 +48,10 @@ trait FenwickTreeFactoryBehaviors extends BaseSpec {
   ): Unit = s"${factory.getClass.getSimpleName}.apply" in {
 
     val tree = factory(1, 2, 3, 4, 5)
-    tree.size shouldBe 5
+    assert(tree.size === 5)
     for (x <- 1 to tree.size) {
       val expectedSum = sumOfArithmeticProgression(1, x + 1)
-      tree.reduceUntil(x) shouldBe expectedSum
+      assert(tree.reduceUntil(x).toLong === expectedSum)
     }
 
   }
@@ -65,10 +65,10 @@ trait FenwickTreeFactoryBehaviors extends BaseSpec {
 
     // [ 1, 2, 3, ... , 9, 10 ]
     val tree = factory.iterate(1, 10)(_ + 1)
-    tree.size shouldBe 10
+    assert(tree.size === 10)
     for (x <- 1 to tree.size) {
       val expectedSum = sumOfArithmeticProgression(1, x + 1)
-      tree.reduceUntil(x) shouldBe expectedSum
+      assert(tree.reduceUntil(x).toLong === expectedSum)
     }
 
   }
@@ -85,10 +85,10 @@ trait FenwickTreeFactoryBehaviors extends BaseSpec {
       factory.unfold(1) { s =>
         Option(s).filter(_ <= 10).map(s => (s, s + 1))
       }
-    tree.size shouldBe 10
+    assert(tree.size === 10)
     for (x <- 1 to tree.size) {
       val expectedSum = sumOfArithmeticProgression(1, x + 1)
-      tree.reduceUntil(x) shouldBe expectedSum
+      assert(tree.reduceUntil(x).toLong === expectedSum)
     }
 
   }
@@ -103,10 +103,10 @@ trait FenwickTreeFactoryBehaviors extends BaseSpec {
     // [ 100, 101, 102, ..., 198, 199 ]
     val tree = factory.range(100, 200)
     val values = (100 until 200).toVector
-    tree.size shouldBe values.size
+    assert(tree.size === values.size)
     for (x <- 1 to tree.size) {
       val expectedSum = values.view.take(x).sum
-      tree.reduceUntil(x) shouldBe expectedSum
+      assert(tree.reduceUntil(x) === expectedSum)
     }
 
   }
@@ -121,10 +121,10 @@ trait FenwickTreeFactoryBehaviors extends BaseSpec {
     // [ 100, 103, 106, ..., 193, 196, 199 ]
     val tree = factory.range(100, 200, 3)
     val values = (100 until 200 by 3).toVector
-    tree.size shouldBe values.size
+    assert(tree.size === values.size)
     for (x <- 1 to tree.size) {
       val expectedSum = values.view.take(x).sum
-      tree.reduceUntil(x) shouldBe expectedSum
+      assert(tree.reduceUntil(x) === expectedSum)
     }
 
   }
@@ -142,10 +142,10 @@ trait FenwickTreeFactoryBehaviors extends BaseSpec {
     val iterable2 = Vector.tabulate(100)(_ + 100 + 1)
     val tree = factory.concat(iterable1, iterable2)
     val expectedSize = (iterable1.size + iterable2.size)
-    tree.size shouldBe expectedSize
+    assert(tree.size === expectedSize)
     for (x <- 1 to tree.size) {
       val expectedSum = sumOfArithmeticProgression(1, x + 1)
-      tree.reduceUntil(x) shouldBe expectedSum
+      assert(tree.reduceUntil(x).toLong === expectedSum)
     }
 
   }
@@ -163,7 +163,7 @@ trait FenwickTreeFactoryBehaviors extends BaseSpec {
       val tree = factory.fill(100)(filledValue)
       for (x <- 1 to 100) {
         val expectedSum = filledValue * x
-        tree.reduceUntil(x) shouldBe expectedSum
+        assert(tree.reduceUntil(x) === expectedSum)
       }
 
     }
@@ -179,7 +179,7 @@ trait FenwickTreeFactoryBehaviors extends BaseSpec {
     val tree = factory.tabulate(100)(_ + 1)
     for (x <- 1 to 100) {
       val expectedSum = sumOfArithmeticProgression(1, x + 1)
-      tree.reduceUntil(x) shouldBe expectedSum
+      assert(tree.reduceUntil(x).toLong === expectedSum)
     }
 
   }

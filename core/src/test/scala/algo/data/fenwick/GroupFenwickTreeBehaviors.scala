@@ -38,28 +38,28 @@ trait GroupFenwickTreeBehaviors
         // sum of [0, 1, ..., l-1]
         val sumLs = sumOfArithmeticProgression(0, l)
         val expectedSum = if (l < r) sumRs - sumLs else 0
-        tree.foldRange(int.fromInt(l), int.fromInt(r)) shouldBe expectedSum
+        assert(tree.foldRange(int.fromInt(l), int.fromInt(r)) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldRange(int.fromInt(-1), size)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldRange(int.zero, size + int.one)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
-        tree.foldRange(int.fromInt(-1), int.fromInt(-2)) shouldBe 0
+      intercept[IndexOutOfBoundsException] {
+        tree.foldRange(int.fromInt(-1), int.fromInt(-2))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
-        tree.foldRange(size + int.fromInt(2), size + int.one) shouldBe 0
+      intercept[IndexOutOfBoundsException] {
+        tree.foldRange(size + int.fromInt(2), size + int.one)
       }
 
       assume(size.toLong >= 10)
-      tree.foldRange(int.fromInt(10), int.fromInt(9)) shouldBe 0
-      tree.foldRange(int.fromInt(10), int.fromInt(10)) shouldBe 0
+      assert(tree.foldRange(int.fromInt(10), int.fromInt(9)) === 0L)
+      assert(tree.foldRange(int.fromInt(10), int.fromInt(10)) === 0L)
 
     }
 
@@ -74,14 +74,14 @@ trait GroupFenwickTreeBehaviors
       val size = tree.size
 
       for (x <- Iterator.range(int.zero, size)) {
-        tree(x) shouldBe x.toLong
+        assert(tree(x) === x.toLong)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree(int.fromInt(-1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree(size)
       }
 
@@ -102,14 +102,14 @@ trait GroupFenwickTreeBehaviors
         tree = tree.updated(x, 1)
       }
       for (x <- Iterator.range(int.zero, size + int.one)) {
-        tree.foldUntil(x) shouldBe x.toLong
+        assert(tree.foldUntil(x) === x.toLong)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.updated(int.fromInt(-1), 123)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.updated(size, 123)
       }
 
@@ -121,7 +121,7 @@ trait GroupFenwickTreeBehaviors
     "asMonoidFenwickTree" in {
 
       val monoidFenwickTree: MonoidFenwickTree[K, V] = groupFenwickTree
-      monoidFenwickTree shouldBe a[GroupFenwickTree[_, _]]
+      assert(monoidFenwickTree.isInstanceOf[GroupFenwickTree[_, _]])
 
     }
 

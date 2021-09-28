@@ -24,17 +24,17 @@ trait GroupFenwickTreeBehaviors
       val size = tree.size
 
       for (x <- Iterator.range(int.zero, size)) {
-        (tree(x) = 1) shouldBe tree
+        assert((tree(x) = 1) === tree)
       }
       for (x <- Iterator.range(int.zero, size + int.one)) {
-        tree.foldUntil(x) shouldBe x
+        assert(tree.foldUntil(x) === x.toLong)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree(int.fromInt(-1)) = 123
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree(size) = 123
       }
 

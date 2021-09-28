@@ -30,14 +30,14 @@ trait MonoidFenwickTreeBehaviors
       for (x <- Iterator.range(int.zero, size + int.one)) {
         // sum of [0, 1, ..., x-1]
         val expectedSum = sumOfArithmeticProgression(0, x.toLong)
-        tree.foldUntil(x) shouldBe expectedSum
+        assert(tree.foldUntil(x) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceUntil(int.fromInt(-1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceUntil(size + int.one)
       }
 
@@ -56,14 +56,14 @@ trait MonoidFenwickTreeBehaviors
       for (x <- Iterator.range(int.zero, size)) {
         // sum of [0, 1, ..., x]
         val expectedSum = sumOfArithmeticProgression(0, x.toLong + 1)
-        tree.foldTo(x) shouldBe expectedSum
+        assert(tree.foldTo(x) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo(int.fromInt(-1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo(size)
       }
 
@@ -75,7 +75,7 @@ trait MonoidFenwickTreeBehaviors
     "asSemigroupFenwickTree" in {
 
       val semigroupFenwickTree: SemigroupFenwickTree[K, V] = monoidFenwickTree
-      semigroupFenwickTree shouldBe a[MonoidFenwickTree[_, _]]
+      assert(semigroupFenwickTree.isInstanceOf[MonoidFenwickTree[_, _]])
 
     }
 

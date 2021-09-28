@@ -50,38 +50,38 @@ trait GroupFenwickTreeSparse2DBehaviors
         yr <- Iterable.fill(20)(Random.between(0L, size2 + 1))
       } yield {
         val expectedSum = sum((xl, yl), (xr, yr))
-        tree.foldRange((xl, yl), (xr, yr)) shouldBe expectedSum
+        assert(tree.foldRange((xl, yl), (xr, yr)) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldRange((-1, 1), (0, 0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldRange((size1 + 1, 1), (0, 0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldRange((1, -1), (0, 0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldRange((1, size2 + 1), (0, 0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldRange((0, 0), (-1, 1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldRange((0, 0), (size1 + 1, 1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldRange((0, 0), (1, -1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldRange((0, 0), (1, size2 + 1))
       }
 
@@ -105,22 +105,22 @@ trait GroupFenwickTreeSparse2DBehaviors
         x <- Iterable.fill(500)(Random.between(0L, size1))
         y <- Iterable.fill(500)(Random.between(0L, size2))
       } yield {
-        tree((x, y)) shouldBe (x + y)
+        assert(tree((x, y)) === (x + y))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree((-1, 0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree((size1, 0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree((0, -1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree((0, size2))
       }
 
@@ -163,22 +163,22 @@ trait GroupFenwickTreeSparse2DBehaviors
         yr <- Iterable.fill(20)(Random.between(0L, size2 + 1))
       } yield {
         val expectedSum = sum((xl, yl), (xr, yr))
-        tree.foldRange((xl, yl), (xr, yr)) shouldBe expectedSum
+        assert(tree.foldRange((xl, yl), (xr, yr)) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.updated((-1, 0), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.updated((size1, 0), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.updated((0, -1), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.updated((0, size2), 1)
       }
 

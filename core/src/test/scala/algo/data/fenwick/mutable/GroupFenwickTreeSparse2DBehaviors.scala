@@ -58,22 +58,22 @@ trait GroupFenwickTreeSparse2DBehaviors
         yr <- Iterable.fill(20)(Random.between(0L, size2 + 1))
       } yield {
         val expectedSum = sum((xl, yl), (xr, yr))
-        tree.foldRange((xl, yl), (xr, yr)) shouldBe expectedSum
+        assert(tree.foldRange((xl, yl), (xr, yr)) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.updated((-1, 0), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.updated((size1, 0), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.updated((0, -1), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.updated((0, size2), 1)
       }
 

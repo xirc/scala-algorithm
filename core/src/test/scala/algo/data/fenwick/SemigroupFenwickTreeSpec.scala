@@ -11,7 +11,7 @@ final class SemigroupFenwickTreeSpec
   "SemigroupFenwickTree|default" in {
 
     val instance = SemigroupFenwickTree.tabulate(size = 10)(_.toLong)
-    instance shouldBe a[immutable.SemigroupFenwickTree[Int, _]]
+    assert(instance.isInstanceOf[immutable.SemigroupFenwickTree[Int, _]])
 
   }
 
@@ -19,7 +19,7 @@ final class SemigroupFenwickTreeSpec
 
     val instance: SemigroupFenwickTree[Int, Long] =
       mutable.SemigroupFenwickTree.tabulate(size = 10)(_.toLong)
-    instance shouldBe a[mutable.SemigroupFenwickTree[_, _]]
+    assert(instance.isInstanceOf[mutable.SemigroupFenwickTree[_, _]])
 
   }
 

@@ -25,20 +25,20 @@ trait SemigroupFenwickTreeBehaviors
 
       // [ 1, 2, 3, ... ]
       for (x <- Iterator.range(int.zero, size)) {
-        tree.combine(x, 1) shouldBe tree
+        assert(tree.combine(x, 1) === tree)
       }
 
       for (x <- Iterator.range(int.one, size + int.one)) {
         // sum of [1, 2, ..., x]
         val expectedSum = x.toLong * (x.toLong + 1) / 2
-        tree.reduceUntil(x) shouldBe expectedSum
+        assert(tree.reduceUntil(x) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combine(int.fromInt(-1), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combine(size, 1)
       }
 

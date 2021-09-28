@@ -28,18 +28,18 @@ trait SemigroupFenwickTreeBehaviors extends BaseSpec with FenwickTreeBehaviors {
       for (x <- Iterator.range(int.one, size + int.one)) {
         // sum of [0, 1, ..., x-1]
         val expectedSum = sumOfArithmeticProgression(0, x.toLong)
-        tree.reduceUntil(x) shouldBe expectedSum
+        assert(tree.reduceUntil(x) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceUntil(int.fromInt(0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceUntil(int.fromInt(-1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceUntil(size + int.one)
       }
 
@@ -58,14 +58,14 @@ trait SemigroupFenwickTreeBehaviors extends BaseSpec with FenwickTreeBehaviors {
       for (x <- Iterator.range(int.zero, size)) {
         // sum of [0, 1, ..., x]
         val expectedSum = sumOfArithmeticProgression(0, x.toLong + 1)
-        tree.reduceTo(x) shouldBe expectedSum
+        assert(tree.reduceTo(x) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo(int.fromInt(-1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo(size)
       }
 
@@ -89,14 +89,14 @@ trait SemigroupFenwickTreeBehaviors extends BaseSpec with FenwickTreeBehaviors {
       for (x <- Iterator.range(int.one, size + int.one)) {
         // sum of [1, 2, ..., x]
         val expectedSum = sumOfArithmeticProgression(1, x.toLong + 1)
-        tree.reduceUntil(x) shouldBe expectedSum
+        assert(tree.reduceUntil(x) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combined(int.fromInt(-1), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combined(size, 1)
       }
 

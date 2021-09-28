@@ -11,7 +11,7 @@ final class SyntaxSpec extends BaseSpec {
 
     "binexp" in {
 
-      2.binexp(10) shouldBe 1024
+      assert(2.binexp(10) === 1024)
 
     }
 
@@ -19,7 +19,7 @@ final class SyntaxSpec extends BaseSpec {
 
       implicit val plus: BinaryExponentiation[Int] =
         Monoid[Int].toBinaryExponentiation
-      2.binexp(10) shouldBe 20
+      assert(2.binexp(10) === 20)
 
     }
 
@@ -28,11 +28,11 @@ final class SyntaxSpec extends BaseSpec {
   "QuickSelect" in {
 
     val xs = IndexedSeq(4, 3, 5, 1, 2)
-    xs.select(0) shouldBe 1
-    xs.select(1) shouldBe 2
-    xs.select(2) shouldBe 3
-    xs.select(3) shouldBe 4
-    xs.select(4) shouldBe 5
+    assert(xs.select(0) === 1)
+    assert(xs.select(1) === 2)
+    assert(xs.select(2) === 3)
+    assert(xs.select(3) === 4)
+    assert(xs.select(4) === 5)
 
   }
 

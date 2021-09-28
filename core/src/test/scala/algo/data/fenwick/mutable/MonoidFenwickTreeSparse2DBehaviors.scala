@@ -46,22 +46,22 @@ trait MonoidFenwickTreeSparse2DBehaviors
         y <- Iterable.fill(1_000)(Random.between(1L, size2 + 1))
       } {
         val expectedSum = sumOfArithmeticProgression(1, x + 1) * y
-        tree.reduceUntil((x, y)) shouldBe expectedSum
+        assert(tree.reduceUntil((x, y)) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combined((-1, 0), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combined((size1, 0), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combined((0, -1), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combined((0, size2), 1)
       }
 
