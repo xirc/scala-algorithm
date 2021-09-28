@@ -17,7 +17,7 @@ lazy val core = (project in file("core"))
     name := "core",
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-core" % CatsVersion,
-      "org.scalatest" %% "scalatest" % ScalaTestVersion % Test
+      "org.scalatest" %% "scalatest-wordspec" % ScalaTestVersion % Test
     )
   )
 
