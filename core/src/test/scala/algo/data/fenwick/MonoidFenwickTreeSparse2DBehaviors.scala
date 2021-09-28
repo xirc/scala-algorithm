@@ -40,30 +40,30 @@ trait MonoidFenwickTreeSparse2DBehaviors extends BaseSpec {
         y <- Iterable.fill(1000)(Random.between(1L, size2 + 1))
       } {
         val expectedSum = sumOfArithmeticProgression(1, x + 1) * y
-        tree.reduceUntil((x, y)) shouldBe expectedSum
+        assert(tree.reduceUntil((x, y)) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceUntil((0, 1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceUntil((-1, 1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceUntil((size1 + 1, 1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceUntil((1, 0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceUntil((1, -1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceUntil((1, size2 + 1))
       }
 
@@ -87,22 +87,22 @@ trait MonoidFenwickTreeSparse2DBehaviors extends BaseSpec {
         y <- Iterable.fill(1_000)(Random.between(0L, size2))
       } {
         val expectedSum = sumOfArithmeticProgression(1, x + 1) * (y + 1)
-        tree.reduceTo((x, y)) shouldBe expectedSum
+        assert(tree.reduceTo((x, y)) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo((-1, 0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo((size1, 1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo((-1, 0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo((0, size2))
       }
 
@@ -133,22 +133,22 @@ trait MonoidFenwickTreeSparse2DBehaviors extends BaseSpec {
         y <- Iterable.fill(1_000)(Random.between(1L, size2 + 1))
       } {
         val expectedSum = sumOfArithmeticProgression(1, x + 1) * y
-        tree.reduceUntil((x, y)) shouldBe expectedSum
+        assert(tree.reduceUntil((x, y)) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combined((-1, 0), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combined((size1, 0), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combined((0, -1), 1)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.combined((0, size2), 1)
       }
 
@@ -172,22 +172,22 @@ trait MonoidFenwickTreeSparse2DBehaviors extends BaseSpec {
         y <- Iterable.fill(1_000)(Random.between(0L, size2 + 1))
       } {
         val expectedSum = sumOfArithmeticProgression(1, x + 1) * y
-        tree.foldUntil((x, y)) shouldBe expectedSum
+        assert(tree.foldUntil((x, y)) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldUntil((-1, 1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldUntil((size1 + 1, 1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldUntil((1, -1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.foldUntil((1, size2 + 1))
       }
 
@@ -211,22 +211,22 @@ trait MonoidFenwickTreeSparse2DBehaviors extends BaseSpec {
         y <- Iterable.fill(1_000)(Random.between(0L, size2))
       } {
         val expectedSum = sumOfArithmeticProgression(1, x + 1) * (y + 1)
-        tree.foldTo((x, y)) shouldBe expectedSum
+        assert(tree.foldTo((x, y)) === expectedSum)
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo((-1, 0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo((size1, 1))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo((-1, 0))
       }
 
-      a[IndexOutOfBoundsException] shouldBe thrownBy {
+      intercept[IndexOutOfBoundsException] {
         tree.reduceTo((0, size2))
       }
 

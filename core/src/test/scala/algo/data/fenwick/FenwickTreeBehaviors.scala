@@ -15,14 +15,14 @@ trait FenwickTreeBehaviors extends BaseSpec {
   ): Unit =
     "size" in {
 
-      factory.tabulate(0)(identity).size shouldBe 0
-      factory.tabulate(1)(identity).size shouldBe 1
-      factory.tabulate(2)(identity).size shouldBe 2
-      factory.tabulate(3)(identity).size shouldBe 3
-      factory.tabulate(100)(identity).size shouldBe 100
-      factory.tabulate(1_000)(identity).size shouldBe 1_000
-      factory.tabulate(10_000)(identity).size shouldBe 10_000
-      factory.tabulate(100_000)(identity).size shouldBe 100_000
+      assert(factory.tabulate(0)(identity).size === 0)
+      assert(factory.tabulate(1)(identity).size === 1)
+      assert(factory.tabulate(2)(identity).size === 2)
+      assert(factory.tabulate(3)(identity).size === 3)
+      assert(factory.tabulate(100)(identity).size === 100)
+      assert(factory.tabulate(1_000)(identity).size === 1_000)
+      assert(factory.tabulate(10_000)(identity).size === 10_000)
+      assert(factory.tabulate(100_000)(identity).size === 100_000)
 
     }
 
@@ -34,21 +34,21 @@ trait FenwickTreeBehaviors extends BaseSpec {
   ): Unit =
     "size" in {
 
-      factory[Long](0).size shouldBe 0
-      factory[Long](1).size shouldBe 1
-      factory[Long](2).size shouldBe 2
-      factory[Long](3).size shouldBe 3
-      factory[Long](100).size shouldBe 100
-      factory[Long](1_000).size shouldBe 1_000
-      factory[Long](10_000).size shouldBe 10_000
-      factory[Long](100_000).size shouldBe 100_000
-      factory[Long](1_000_000).size shouldBe 1_000_000
-      factory[Long](10_000_000).size shouldBe 10_000_000
-      factory[Long](100_000_000).size shouldBe 100_000_000
-      factory[Long](1000_000_000L).size shouldBe 1000_000_000L
-      factory[Long](10_000_000_000L).size shouldBe 10_000_000_000L
-      factory[Long](100_000_000_000L).size shouldBe 100_000_000_000L
-      factory[Long](1000_000_000_000L).size shouldBe 1000_000_000_000L
+      assert(factory[Long](0).size === 0L)
+      assert(factory[Long](1).size === 1L)
+      assert(factory[Long](2).size === 2L)
+      assert(factory[Long](3).size === 3L)
+      assert(factory[Long](100).size === 100L)
+      assert(factory[Long](1_000).size === 1_000L)
+      assert(factory[Long](10_000).size === 10_000L)
+      assert(factory[Long](100_000).size === 100_000L)
+      assert(factory[Long](1_000_000).size === 1_000_000L)
+      assert(factory[Long](10_000_000).size === 10_000_000L)
+      assert(factory[Long](100_000_000).size === 100_000_000L)
+      assert(factory[Long](1000_000_000L).size === 1000_000_000L)
+      assert(factory[Long](10_000_000_000L).size === 10_000_000_000L)
+      assert(factory[Long](100_000_000_000L).size === 100_000_000_000L)
+      assert(factory[Long](1000_000_000_000L).size === 1000_000_000_000L)
 
     }
 
@@ -65,7 +65,7 @@ trait FenwickTreeBehaviors extends BaseSpec {
         size2 <- Iterator.fill(1000)(Random.between(0, 1000_000_000_000L))
       } {
         val expectedSize = (size1, size2)
-        factory[Long](size1, size2).size shouldBe expectedSize
+        assert(factory[Long](size1, size2).size === expectedSize)
       }
 
     }

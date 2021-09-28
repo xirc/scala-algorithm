@@ -30,12 +30,12 @@ trait FenwickTreeSparseFactoryBehaviors extends BaseSpec {
     val tree = factory.from(size, values)
     for (x <- 1L to size) {
       val expectedSum = sumOfArithmeticProgression(1, x + 1)
-      tree.reduceUntil(x) shouldBe expectedSum
+      assert(tree.reduceUntil(x) === expectedSum)
     }
 
-    factory.from[Long](0, Iterator.empty).size shouldBe 0
+    assert(factory.from[Long](0, Iterator.empty).size === 0L)
 
-    a[IllegalArgumentException] shouldBe thrownBy {
+    intercept[IllegalArgumentException] {
       factory.from[Long](-1, Iterator.empty)
     }
 
@@ -55,12 +55,12 @@ trait FenwickTreeSparseFactoryBehaviors extends BaseSpec {
     val tree = factory(size, values: _*)
     for (x <- 1L to size) {
       val expectedSum = sumOfArithmeticProgression(1, x + 1)
-      tree.reduceUntil(x) shouldBe expectedSum
+      assert(tree.reduceUntil(x) === expectedSum)
     }
 
-    factory[Long](0).size shouldBe 0
+    assert(factory[Long](0).size === 0L)
 
-    a[IllegalArgumentException] shouldBe thrownBy {
+    intercept[IllegalArgumentException] {
       factory[Long](-1)
     }
 
@@ -96,17 +96,17 @@ trait FenwickTreeSparseFactoryBehaviors extends BaseSpec {
     for (x <- 1L to size1) {
       for (y <- 1L to size2) {
         val expectedSum = sumOfArithmeticProgression(1, x + 1) * y
-        tree.reduceUntil((x, y)) shouldBe expectedSum
+        assert(tree.reduceUntil((x, y)) === expectedSum)
       }
     }
 
-    factory.from[Long](0, 0, Iterator.empty).size shouldBe (0 -> 0)
+    assert(factory.from[Long](0, 0, Iterator.empty).size === (0L -> 0L))
 
-    a[IllegalArgumentException] shouldBe thrownBy {
+    intercept[IllegalArgumentException] {
       factory.from[Long](-1, 0, Iterator.empty)
     }
 
-    a[IllegalArgumentException] shouldBe thrownBy {
+    intercept[IllegalArgumentException] {
       factory.from[Long](0, -1, Iterator.empty)
     }
 
@@ -132,15 +132,15 @@ trait FenwickTreeSparseFactoryBehaviors extends BaseSpec {
     for (x <- 1L to size1) {
       for (y <- 1L to size2) {
         val expectedSum = sumOfArithmeticProgression(1, x + 1) * y
-        tree.reduceUntil((x, y)) shouldBe expectedSum
+        assert(tree.reduceUntil((x, y)) === expectedSum)
       }
     }
 
-    a[IllegalArgumentException] shouldBe thrownBy {
+    intercept[IllegalArgumentException] {
       factory[Long](-1, 0)
     }
 
-    a[IllegalArgumentException] shouldBe thrownBy {
+    intercept[IllegalArgumentException] {
       factory[Long](0, -1)
     }
 
