@@ -1,5 +1,5 @@
 val ScalaTestVersion = "3.2.10"
-val CatsVersion = "2.6.1"
+val CatsVersion = "2.7.0"
 
 ThisBuild / scalaVersion := "2.13.7"
 ThisBuild / scalacOptions ++= Seq(
