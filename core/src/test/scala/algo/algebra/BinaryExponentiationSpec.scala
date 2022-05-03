@@ -4,7 +4,7 @@ import algo.testing.BaseSpec
 import cats.Monoid
 
 final class BinaryExponentiationSpec extends BaseSpec {
-  import BinaryExponentiationSyntax._
+  import BinaryExponentiationSyntax.*
 
   "use the default instance of BinaryExponentiation[Int]" in {
 

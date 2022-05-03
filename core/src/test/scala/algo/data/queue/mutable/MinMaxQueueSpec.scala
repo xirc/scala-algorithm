@@ -27,7 +27,7 @@ final class MinMaxQueueSpec extends BaseSpec {
   "Factory|apply" in {
 
     val source = Vector(1, 2, 3)
-    val queue = MinMaxQueue(source: _*)
+    val queue = MinMaxQueue(source*)
     for (elem <- source) {
       assert(queue.dequeue() === elem)
     }
@@ -72,7 +72,7 @@ final class MinMaxQueueSpec extends BaseSpec {
 
     val queue = MinMaxQueue.empty[Int]
     val source = Seq.fill(100)(Random.nextInt())
-    queue.enqueue(0, source: _*)
+    queue.enqueue(0, source*)
     for (elem <- 0 +: source) {
       assert(queue.min === queue.iterator.min)
       assert(queue.max === queue.iterator.max)

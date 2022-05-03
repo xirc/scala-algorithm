@@ -6,7 +6,7 @@ import algo.data.fenwick.{
   IntFenwickTreeIndexOps,
   SemigroupFenwickTreeOpsDefaults
 }
-import cats.syntax.semigroup._
+import cats.syntax.semigroup.*
 
 import scala.collection.immutable
 

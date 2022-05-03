@@ -2,7 +2,7 @@ package algo.data.fenwick.immutable
 
 import algo.data.fenwick
 import algo.testing.BaseSpec
-import cats.instances.long._
+import cats.instances.long.*
 
 final class GroupFenwickTreeSpec
     extends BaseSpec
@@ -11,7 +11,7 @@ final class GroupFenwickTreeSpec
     with fenwick.GroupFenwickTreeBehaviors
     with fenwick.GroupFenwickTreeSparse2DBehaviors {
 
-  import fenwick.FenwickTreeSparseFactorySyntax._
+  import fenwick.FenwickTreeSparseFactorySyntax.*
 
   "immutable|GroupFenwickTree" should {
 

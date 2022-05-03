@@ -27,7 +27,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "Factory|apply" in {
 
     val source = Vector(1, 2, 3)
-    val stack = MinMaxStack(source: _*)
+    val stack = MinMaxStack(source*)
     for (elem <- source) {
       assert(stack.pop() === elem)
     }
@@ -73,7 +73,7 @@ final class MinMaxStackSpec extends BaseSpec {
 
     val stack = MinMaxStack.empty[Int]
     val source = Seq.fill(10)(Random.nextInt())
-    stack.push(0, source.reverse: _*)
+    stack.push(0, source.reverse*)
     for (i <- source.indices) {
       assert(stack.min === stack.iterator.min)
       assert(stack.max === stack.iterator.max)

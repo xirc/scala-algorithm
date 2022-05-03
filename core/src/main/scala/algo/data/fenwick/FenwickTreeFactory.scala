@@ -27,7 +27,7 @@ trait FenwickTreeFactory[
     from(Iterator.range(start, end, step))
 
   def concat[V: E](xss: Iterable[V]*): Collection[Int, V] =
-    from(Iterator.concat(xss: _*))
+    from(Iterator.concat(xss*))
 
   def fill[V: E](size: Int)(elem: => V): Collection[Int, V] =
     from(Iterator.fill(size)(elem))

@@ -9,26 +9,26 @@ final class MonoidFenwickTreeSpec
     with MonoidFenwickTreeBehaviors
     with MonoidFenwickTreeSparse2DBehaviors {
 
-  import FenwickTreeSparseFactorySyntax._
+  import FenwickTreeSparseFactorySyntax.*
 
   "MonoidFenwickTree|default" in {
 
     val instance = MonoidFenwickTree.tabulate(size = 10)(_.toLong)
-    assert(instance.isInstanceOf[immutable.MonoidFenwickTree[Int, _]])
+    assert(instance.isInstanceOf[immutable.MonoidFenwickTree[Int, ?]])
 
   }
 
   "MonoidFenwickTree|Sparse1D|default" in {
 
     val instance = MonoidFenwickTree[Long](size = 10)
-    assert(instance.isInstanceOf[immutable.MonoidFenwickTree[Long, _]])
+    assert(instance.isInstanceOf[immutable.MonoidFenwickTree[Long, ?]])
 
   }
 
   "MonoidFenwickTree|Sparse2D|default" in {
 
     val instance = MonoidFenwickTree[Long](size1 = 10, size2 = 10)
-    assert(instance.isInstanceOf[immutable.MonoidFenwickTree[(Long, Long), _]])
+    assert(instance.isInstanceOf[immutable.MonoidFenwickTree[(Long, Long), ?]])
 
   }
 
@@ -36,7 +36,7 @@ final class MonoidFenwickTreeSpec
 
     val instance: MonoidFenwickTree[Int, Long] =
       mutable.MonoidFenwickTree.tabulate(size = 10)(_.toLong)
-    assert(instance.isInstanceOf[mutable.MonoidFenwickTree[_, _]])
+    assert(instance.isInstanceOf[mutable.MonoidFenwickTree[?, ?]])
 
   }
 
@@ -44,7 +44,7 @@ final class MonoidFenwickTreeSpec
 
     val instance: MonoidFenwickTree[Long, Long] =
       mutable.MonoidFenwickTree[Long](size = 10)
-    assert(instance.isInstanceOf[mutable.MonoidFenwickTree[_, _]])
+    assert(instance.isInstanceOf[mutable.MonoidFenwickTree[?, ?]])
 
   }
 
@@ -52,7 +52,7 @@ final class MonoidFenwickTreeSpec
 
     val instance: MonoidFenwickTree[(Long, Long), Long] =
       mutable.MonoidFenwickTree[Long](size1 = 10, size2 = 10)
-    assert(instance.isInstanceOf[mutable.MonoidFenwickTree[_, _]])
+    assert(instance.isInstanceOf[mutable.MonoidFenwickTree[?, ?]])
 
   }
 

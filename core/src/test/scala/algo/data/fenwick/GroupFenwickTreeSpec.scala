@@ -9,26 +9,26 @@ final class GroupFenwickTreeSpec
     with GroupFenwickTreeBehaviors
     with GroupFenwickTreeSparse2DBehaviors {
 
-  import FenwickTreeSparseFactorySyntax._
+  import FenwickTreeSparseFactorySyntax.*
 
   "GroupFenwickTree|default" in {
 
     val instance = GroupFenwickTree.tabulate(size = 10)(_.toLong)
-    assert(instance.isInstanceOf[immutable.GroupFenwickTree[Int, _]])
+    assert(instance.isInstanceOf[immutable.GroupFenwickTree[Int, ?]])
 
   }
 
   "GroupFenwickTree|Sparse1D|default" in {
 
     val instance = GroupFenwickTree[Long](size = 10)
-    assert(instance.isInstanceOf[immutable.GroupFenwickTree[Long, _]])
+    assert(instance.isInstanceOf[immutable.GroupFenwickTree[Long, ?]])
 
   }
 
   "GroupFenwickTree|Sparse2D|default" in {
 
     val instance = GroupFenwickTree[Long](size1 = 10, size2 = 10)
-    assert(instance.isInstanceOf[immutable.GroupFenwickTree[(Long, Long), _]])
+    assert(instance.isInstanceOf[immutable.GroupFenwickTree[(Long, Long), ?]])
 
   }
 
@@ -36,7 +36,7 @@ final class GroupFenwickTreeSpec
 
     val instance: GroupFenwickTree[Int, Long] =
       mutable.GroupFenwickTree.tabulate(size = 10)(_.toLong)
-    assert(instance.isInstanceOf[mutable.GroupFenwickTree[_, _]])
+    assert(instance.isInstanceOf[mutable.GroupFenwickTree[?, ?]])
 
   }
 
@@ -44,7 +44,7 @@ final class GroupFenwickTreeSpec
 
     val instance: GroupFenwickTree[Long, Long] =
       mutable.GroupFenwickTree[Long](size = 10)
-    assert(instance.isInstanceOf[mutable.GroupFenwickTree[_, _]])
+    assert(instance.isInstanceOf[mutable.GroupFenwickTree[?, ?]])
 
   }
 
@@ -52,7 +52,7 @@ final class GroupFenwickTreeSpec
 
     val instance: GroupFenwickTree[(Long, Long), Long] =
       mutable.GroupFenwickTree[Long](size1 = 10, size2 = 10)
-    assert(instance.isInstanceOf[mutable.GroupFenwickTree[_, _]])
+    assert(instance.isInstanceOf[mutable.GroupFenwickTree[?, ?]])
 
   }
 

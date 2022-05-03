@@ -2,7 +2,7 @@ package algo.data.fenwick.immutable
 
 import algo.data.fenwick
 import algo.testing.BaseSpec
-import cats.instances.long._
+import cats.instances.long.*
 
 final class SemigroupFenwickTreeSpec
     extends BaseSpec

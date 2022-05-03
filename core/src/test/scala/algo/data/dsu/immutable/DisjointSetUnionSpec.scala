@@ -6,7 +6,7 @@ import cats.data.State
 import org.scalatest.{Assertion, Succeeded}
 
 final class DisjointSetUnionSpec extends BaseSpec {
-  import DisjointSetUnion._
+  import DisjointSetUnion.*
 
   def sequence[V, U: Monoid](
       iterable: Iterable[State[DisjointSetUnion[V], U]]
