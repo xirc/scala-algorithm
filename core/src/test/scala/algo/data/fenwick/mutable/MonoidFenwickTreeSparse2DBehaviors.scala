@@ -1,7 +1,7 @@
 package algo.data.fenwick.mutable
 
 import algo.data.fenwick
-import algo.data.fenwick.TestKit._
+import algo.data.fenwick.TestKit.*
 
 import scala.util.Random
 

@@ -1,7 +1,7 @@
 package algo.data.dsu
 
 import cats.kernel.CommutativeSemigroup
-import cats.syntax.semigroup._
+import cats.syntax.semigroup.*
 
 private final case class DisjointSetUnionNode[V](
     leader: Int,

@@ -2,7 +2,7 @@ package algo.data.fenwick.mutable
 
 import algo.data.fenwick
 import algo.testing.BaseSpec
-import cats.instances.long._
+import cats.instances.long.*
 
 final class MonoidFenwickTreeSpec
     extends BaseSpec
@@ -12,7 +12,7 @@ final class MonoidFenwickTreeSpec
     with SemigroupFenwickTreeBehaviors
     with MonoidFenwickTreeSparse2DBehaviors {
 
-  import fenwick.FenwickTreeSparseFactorySyntax._
+  import fenwick.FenwickTreeSparseFactorySyntax.*
 
   "mutable|MonoidFenwickTree" should {
 

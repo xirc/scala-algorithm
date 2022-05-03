@@ -2,7 +2,7 @@ package algo.data.queue.mutable
 import algo.data.stack.mutable
 import cats.Semigroupal
 import cats.kernel.Semigroup
-import cats.syntax.semigroup._
+import cats.syntax.semigroup.*
 
 import scala.collection.Factory
 

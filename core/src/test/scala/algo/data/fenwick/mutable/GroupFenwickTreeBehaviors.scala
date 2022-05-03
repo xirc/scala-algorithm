@@ -2,7 +2,7 @@ package algo.data.fenwick.mutable
 
 import algo.data.fenwick
 
-import scala.Integral.Implicits._
+import scala.Integral.Implicits.*
 
 trait GroupFenwickTreeBehaviors
     extends fenwick.GroupFenwickTreeBehaviors

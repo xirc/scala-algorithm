@@ -1,9 +1,9 @@
 package algo.data.fenwick
 
-import algo.data.fenwick.TestKit._
+import algo.data.fenwick.TestKit.*
 import algo.testing.BaseSpec
 
-import scala.Integral.Implicits._
+import scala.Integral.Implicits.*
 
 trait MonoidFenwickTreeBehaviors
     extends BaseSpec
@@ -75,7 +75,7 @@ trait MonoidFenwickTreeBehaviors
     "asSemigroupFenwickTree" in {
 
       val semigroupFenwickTree: SemigroupFenwickTree[K, V] = monoidFenwickTree
-      assert(semigroupFenwickTree.isInstanceOf[MonoidFenwickTree[_, _]])
+      assert(semigroupFenwickTree.isInstanceOf[MonoidFenwickTree[?, ?]])
 
     }
 

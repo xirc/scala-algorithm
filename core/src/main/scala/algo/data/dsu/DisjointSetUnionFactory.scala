@@ -24,7 +24,7 @@ trait DisjointSetUnionFactory[Collection[_]] {
     from(Iterator.unfold(init)(f))
 
   def concat[V: CommutativeSemigroup](xss: Iterable[V]*): Collection[V] =
-    from(Iterator.concat(xss: _*))
+    from(Iterator.concat(xss*))
 
   def fill[V: CommutativeSemigroup](size: Int)(
       elem: => V

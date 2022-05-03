@@ -1,6 +1,6 @@
 package algo.data.fenwick
 
-import algo.data.fenwick.TestKit._
+import algo.data.fenwick.TestKit.*
 import algo.testing.BaseSpec
 import cats.kernel.CommutativeGroup
 

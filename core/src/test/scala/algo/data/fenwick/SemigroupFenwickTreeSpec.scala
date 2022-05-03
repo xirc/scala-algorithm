@@ -1,7 +1,7 @@
 package algo.data.fenwick
 
 import algo.testing.BaseSpec
-import cats.instances.long._
+import cats.instances.long.*
 
 final class SemigroupFenwickTreeSpec
     extends BaseSpec
@@ -11,7 +11,7 @@ final class SemigroupFenwickTreeSpec
   "SemigroupFenwickTree|default" in {
 
     val instance = SemigroupFenwickTree.tabulate(size = 10)(_.toLong)
-    assert(instance.isInstanceOf[immutable.SemigroupFenwickTree[Int, _]])
+    assert(instance.isInstanceOf[immutable.SemigroupFenwickTree[Int, ?]])
 
   }
 
@@ -19,7 +19,7 @@ final class SemigroupFenwickTreeSpec
 
     val instance: SemigroupFenwickTree[Int, Long] =
       mutable.SemigroupFenwickTree.tabulate(size = 10)(_.toLong)
-    assert(instance.isInstanceOf[mutable.SemigroupFenwickTree[_, _]])
+    assert(instance.isInstanceOf[mutable.SemigroupFenwickTree[?, ?]])
 
   }
 

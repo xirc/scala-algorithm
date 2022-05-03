@@ -1,9 +1,9 @@
 package algo.data.fenwick
 
-import algo.data.fenwick.TestKit._
+import algo.data.fenwick.TestKit.*
 import algo.testing.BaseSpec
 
-import scala.Integral.Implicits._
+import scala.Integral.Implicits.*
 
 trait SemigroupFenwickTreeBehaviors extends BaseSpec with FenwickTreeBehaviors {
 

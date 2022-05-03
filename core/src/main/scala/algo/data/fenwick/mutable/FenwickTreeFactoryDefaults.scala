@@ -3,7 +3,7 @@ package algo.data.fenwick.mutable
 import algo.data.fenwick
 import algo.data.fenwick.IntFenwickTreeIndexOps
 import cats.kernel.CommutativeSemigroup
-import cats.syntax.semigroup._
+import cats.syntax.semigroup.*
 
 import scala.collection.mutable
 

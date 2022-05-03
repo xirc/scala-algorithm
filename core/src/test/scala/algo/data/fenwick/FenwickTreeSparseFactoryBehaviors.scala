@@ -1,6 +1,6 @@
 package algo.data.fenwick
 
-import algo.data.fenwick.TestKit._
+import algo.data.fenwick.TestKit.*
 import algo.testing.BaseSpec
 import cats.kernel.CommutativeGroup
 
@@ -52,7 +52,7 @@ trait FenwickTreeSparseFactoryBehaviors extends BaseSpec {
     val size = 10_000L
     val values = (0L until size).map(i => i -> (i + 1))
 
-    val tree = factory(size, values: _*)
+    val tree = factory(size, values*)
     for (x <- 1L to size) {
       val expectedSum = sumOfArithmeticProgression(1, x + 1)
       assert(tree.reduceUntil(x) === expectedSum)
@@ -128,7 +128,7 @@ trait FenwickTreeSparseFactoryBehaviors extends BaseSpec {
       (x, y) -> (x + 1)
     }
 
-    val tree = factory(size1, size2, values: _*)
+    val tree = factory(size1, size2, values*)
     for (x <- 1L to size1) {
       for (y <- 1L to size2) {
         val expectedSum = sumOfArithmeticProgression(1, x + 1) * y

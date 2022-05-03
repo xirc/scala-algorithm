@@ -1,9 +1,9 @@
 package algo.data.fenwick
 
-import algo.data.fenwick.TestKit._
+import algo.data.fenwick.TestKit.*
 import algo.testing.BaseSpec
 
-import scala.Integral.Implicits._
+import scala.Integral.Implicits.*
 import scala.util.Random
 
 trait GroupFenwickTreeBehaviors
@@ -121,7 +121,7 @@ trait GroupFenwickTreeBehaviors
     "asMonoidFenwickTree" in {
 
       val monoidFenwickTree: MonoidFenwickTree[K, V] = groupFenwickTree
-      assert(monoidFenwickTree.isInstanceOf[GroupFenwickTree[_, _]])
+      assert(monoidFenwickTree.isInstanceOf[GroupFenwickTree[?, ?]])
 
     }
 
