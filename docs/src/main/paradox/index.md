@@ -10,6 +10,7 @@ Data Structures and Algorithms in Scala Programming Language
 * @ref:[Quick Select](quick-select.md)
 * @ref:[Stack](stack.md)
 * @ref:[Queue](queue.md)
+* @ref:[Heap](heap.md)
 * @ref:[Fenwick Tree](fenwick.md)
 * @ref:[Disjoint Set Union](dsu.md)
 
