@@ -3,11 +3,15 @@ package algo.data.dsu.mutable
 import algo.data.dsu.DisjointSetUnionNode
 import cats.kernel.CommutativeSemigroup
 
+import java.util.ConcurrentModificationException
+import scala.collection.AbstractIterator
 import scala.collection.mutable.ArrayBuffer
 
 private final class DefaultDisjointSetUnion[V: CommutativeSemigroup] private (
     val nodes: ArrayBuffer[DisjointSetUnionNode[V]]
-) extends DisjointSetUnion[V] {
+) extends DisjointSetUnion[V] { self =>
+
+  @transient private var mutationCount: Int = 0
 
   def this(values: IterableOnce[V]) = {
     this(
@@ -48,9 +52,31 @@ private final class DefaultDisjointSetUnion[V: CommutativeSemigroup] private (
         DisjointSetUnionNode.unite(nodes(leader), nodes(follower))
       nodes(follower) = newFollower
       nodes(leader) = newLeader
+      mutationCount += 1
       this
     }
   }
+
+  override def iterator: Iterator[V] = new AbstractIterator[V] {
+    private val mutationCountAtCreation: Int = mutationCount
+    private var index: Int = 0
+    override def knownSize: Int = self.size - index
+    override def hasNext: Boolean = {
+      if (mutationCount != mutationCountAtCreation) {
+        throw new ConcurrentModificationException(
+          "Mutation occurred during iteration."
+        )
+      }
+      index < self.size
+    }
+    override def next(): V = {
+      val value = self.find(index)
+      index += 1
+      value
+    }
+  }
+
+  override def knownSize: Int = size
 
   private def findNode(v: Int): DisjointSetUnionNode[V] = {
     if (v != nodes(v).leader) {

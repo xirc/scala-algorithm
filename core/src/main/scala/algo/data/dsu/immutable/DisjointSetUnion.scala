@@ -4,7 +4,7 @@ import algo.data.dsu.DisjointSetUnionFactory
 import cats.kernel.CommutativeSemigroup
 
 /** @see [[algo.data.dsu.mutable.DisjointSetUnion]] */
-trait DisjointSetUnion[V] {
+trait DisjointSetUnion[V] extends IterableOnce[V] {
 
   /** Returns the number of members
     *

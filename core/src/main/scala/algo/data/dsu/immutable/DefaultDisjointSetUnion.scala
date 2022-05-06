@@ -3,6 +3,8 @@ package algo.data.dsu.immutable
 import algo.data.dsu.DisjointSetUnionNode
 import cats.kernel.CommutativeSemigroup
 
+import scala.collection.AbstractIterator
+
 private final class DefaultDisjointSetUnion[V: CommutativeSemigroup] private (
     val nodes: Vector[DisjointSetUnionNode[V]]
 ) extends DisjointSetUnion[V] {
@@ -49,6 +51,21 @@ private final class DefaultDisjointSetUnion[V: CommutativeSemigroup] private (
       new DefaultDisjointSetUnion(nodes)
     }
   }
+
+  override def iterator: Iterator[V] = new AbstractIterator[V] {
+    private var self: DisjointSetUnion[V] = DefaultDisjointSetUnion.this
+    private var index = 0
+    override def knownSize: Int = self.size - index
+    override def hasNext: Boolean = index < self.size
+    override def next(): V = {
+      val (value, newSelf) = self.find(index)
+      self = newSelf
+      index += 1
+      value
+    }
+  }
+
+  override def knownSize: Int = size
 
   @inline private def compress(
       nodes: Vector[DisjointSetUnionNode[V]],

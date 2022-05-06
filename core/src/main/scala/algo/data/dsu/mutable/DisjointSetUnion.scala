@@ -26,7 +26,7 @@ import cats.kernel.CommutativeSemigroup
   * @tparam V
   *   Type of the members in the sets
   */
-trait DisjointSetUnion[V] {
+trait DisjointSetUnion[V] extends IterableOnce[V] {
 
   /** Returns the number of members
     *

@@ -2,6 +2,8 @@ package algo.data.dsu.mutable
 
 import algo.testing.BaseSpec
 
+import java.util.ConcurrentModificationException
+
 final class DisjointSetUnionSpec extends BaseSpec {
 
   "size" in {
@@ -125,6 +127,55 @@ final class DisjointSetUnionSpec extends BaseSpec {
     intercept[IndexOutOfBoundsException] {
       dsu.unite(1, dsu.size)
     }
+
+  }
+
+  "iterator" in {
+
+    val dsu = DisjointSetUnion.fill(6)(1)
+    assert(dsu.iterator.toSeq === Seq(1, 1, 1, 1, 1, 1))
+
+    dsu.unite(0, 1)
+    dsu.unite(2, 3)
+    dsu.unite(3, 4)
+    assert(dsu.iterator.toSeq === Seq(2, 2, 3, 3, 3, 1))
+
+  }
+
+  "iterator| mutation during iteration" in {
+
+    val dsu = DisjointSetUnion.fill(3)(1)
+    dsu.unite(1, 2)
+
+    val iterator = dsu.iterator
+    assert(iterator.hasNext)
+
+    // Method calls will not mutate the state (groups and values).
+    assert(dsu.size == 3)
+    assert(dsu.find(0) === 1)
+    assert(dsu.find(1) === 2)
+    assert(dsu.find(2) === 2)
+    assert(dsu.isSame(0, 1) === false)
+    assert(dsu.isSame(1, 2) === true)
+    dsu.unite(1, 2)
+
+    // Iterator should work until method calls mutate the state.
+    assert(iterator.hasNext)
+
+    // Method call will mutate the state.
+    dsu.unite(0, 1)
+    intercept[ConcurrentModificationException] {
+      iterator.hasNext
+    }
+
+  }
+
+  "knownSize" in {
+
+    assert(DisjointSetUnion.fill(1)(1).knownSize === 1)
+    assert(DisjointSetUnion.fill(10)(1).knownSize === 10)
+    assert(DisjointSetUnion.fill(100)(1).knownSize === 100)
+    assert(DisjointSetUnion.fill(1_000)(1).knownSize === 1_000)
 
   }
 

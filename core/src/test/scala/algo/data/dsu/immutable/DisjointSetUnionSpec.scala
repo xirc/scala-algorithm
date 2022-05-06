@@ -138,6 +138,33 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   }
 
+  "iterator" in {
+
+    val dsu = DisjointSetUnion.fill(6)(1)
+    val iteratorSpec = for {
+      _ <- iterator[Int].map(_.toSeq).map { values =>
+        assert(values === Seq(1, 1, 1, 1, 1, 1))
+      }
+      _ <- unite(0, 1)
+      _ <- unite(2, 3)
+      _ <- unite(3, 4)
+      _ <- iterator[Int].map(_.toSeq).map { values =>
+        assert(values === Seq(2, 2, 3, 3, 3, 1))
+      }
+    } yield ()
+    iteratorSpec.run(dsu).value
+
+  }
+
+  "knownSize" in {
+
+    assert(knownSize.runA(DisjointSetUnion.fill(1)(1)).value === 1)
+    assert(knownSize.runA(DisjointSetUnion.fill(10)(1)).value === 10)
+    assert(knownSize.runA(DisjointSetUnion.fill(100)(1)).value === 100)
+    assert(knownSize.runA(DisjointSetUnion.fill(1_000)(1)).value === 1_000)
+
+  }
+
   "factory|from" in {
 
     val xs = Vector(1, 2, 3, 4, 5)

@@ -26,4 +26,15 @@ trait DisjointSetUnionSyntax {
       s.unite(u, v)
     }
 
+  /** @see [[DisjointSetUnion.iterator]] */
+  def iterator[V]: State[DisjointSetUnion[V], Iterator[V]] = State.inspect {
+    s =>
+      s.iterator
+  }
+
+  /** @see [[DisjointSetUnion.knownSize]] */
+  def knownSize[V]: State[DisjointSetUnion[V], Int] = State.inspect { s =>
+    s.knownSize
+  }
+
 }
