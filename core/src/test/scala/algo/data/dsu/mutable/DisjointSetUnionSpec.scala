@@ -128,7 +128,7 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   }
 
-  "factory:from" in {
+  "factory|from" in {
 
     val xs = Vector(1, 2, 3, 4, 5)
     val dsu = DisjointSetUnion.from(xs.iterator)
@@ -139,7 +139,14 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   }
 
-  "factory:apply" in {
+  "factory|empty" in {
+
+    val dsu = DisjointSetUnion.empty[Int]
+    assert(dsu.size === 0)
+
+  }
+
+  "factory|apply" in {
 
     val dsu = DisjointSetUnion(1, 2, 3, 4, 5)
     assert(dsu.size === 5)
@@ -149,7 +156,7 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   }
 
-  "factory:iterate" in {
+  "factory|iterate" in {
 
     val dsu = DisjointSetUnion.iterate(1, 10)(_ * 2)
     assert(dsu.size === 10)
@@ -159,7 +166,7 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   }
 
-  "factory:unfold" in {
+  "factory|unfold" in {
 
     val dsu = DisjointSetUnion.unfold(1) { s =>
       if (s < 1000) Option((s, s * 2))
@@ -172,7 +179,7 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   }
 
-  "factory:concat" in {
+  "factory|concat" in {
 
     val xs = Vector(1, 2, 3)
     val ys = Vector(4, 5, 6)
@@ -187,7 +194,7 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   }
 
-  "factory:fill" in {
+  "factory|fill" in {
 
     val dsu = DisjointSetUnion.fill(100)(1)
     assert(dsu.size === 100)
@@ -197,7 +204,7 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   }
 
-  "factory:tabulate" in {
+  "factory|tabulate" in {
 
     val dsu = DisjointSetUnion.tabulate(100)(identity)
     assert(dsu.size === 100)
@@ -207,7 +214,33 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   }
 
-  "case:simple" in {
+  "factory|to" in {
+
+    val dsu = Seq(1, 2, 3, 4, 5).to(DisjointSetUnion)
+    assert(dsu.size === 5)
+    for (i <- 0 until 5) {
+      assert(dsu(i) === i + 1)
+    }
+
+  }
+
+  "factory|newBuilder" in {
+
+    val builder = DisjointSetUnion.newBuilder[Int]
+    builder.addOne(4)
+    builder.clear()
+    builder.addOne(1)
+    builder.addAll(Seq(2, 3, 4, 5))
+
+    val dsu = builder.result()
+    assert(dsu.size === 5)
+    for (i <- 0 until 5) {
+      assert(dsu(i) === i + 1)
+    }
+
+  }
+
+  "case|simple" in {
 
     val dsu = DisjointSetUnion.fill(10)(1)
 

@@ -3,7 +3,7 @@ package algo.data.dsu.immutable
 import algo.data.dsu.DisjointSetUnionNode
 import cats.kernel.CommutativeSemigroup
 
-private final class DefaultDisjointSetUnion[V: CommutativeSemigroup](
+private final class DefaultDisjointSetUnion[V: CommutativeSemigroup] private (
     val nodes: Vector[DisjointSetUnionNode[V]]
 ) extends DisjointSetUnion[V] {
 
@@ -18,17 +18,22 @@ private final class DefaultDisjointSetUnion[V: CommutativeSemigroup](
   override def size: Int = nodes.size
 
   override def find(v: Int): (V, DisjointSetUnion[V]) = {
+    throwIfOutOfBounds(v)
     val nodes = compress(this.nodes, v)
     (nodes(v).value, new DefaultDisjointSetUnion(nodes))
   }
 
   override def isSame(u: Int, v: Int): (Boolean, DisjointSetUnion[V]) = {
+    throwIfOutOfBounds(u)
+    throwIfOutOfBounds(v)
     val nodes = compress(this.nodes, u, v)
     val hasSameLeader = nodes(u).leader == nodes(v).leader
     (hasSameLeader, new DefaultDisjointSetUnion(nodes))
   }
 
-  override def united(u: Int, v: Int): DisjointSetUnion[V] = {
+  override def unite(u: Int, v: Int): DisjointSetUnion[V] = {
+    throwIfOutOfBounds(u)
+    throwIfOutOfBounds(v)
     var nodes = compress(this.nodes, u, v)
     val lu = nodes(u).leader
     val lv = nodes(v).leader
@@ -45,11 +50,11 @@ private final class DefaultDisjointSetUnion[V: CommutativeSemigroup](
     }
   }
 
-  private def compress(
+  @inline private def compress(
       nodes: Vector[DisjointSetUnionNode[V]],
-      indice: Int*
+      indices: Int*
   ): Vector[DisjointSetUnionNode[V]] = {
-    indice.foldLeft(nodes) { (nodes, index) =>
+    indices.foldLeft(nodes) { (nodes, index) =>
       compress(nodes, index)
     }
   }
@@ -58,8 +63,6 @@ private final class DefaultDisjointSetUnion[V: CommutativeSemigroup](
       nodes: Vector[DisjointSetUnionNode[V]],
       v: Int
   ): Vector[DisjointSetUnionNode[V]] = {
-    if (v < 0 || v >= size)
-      throw new IndexOutOfBoundsException(s"Index out of range [0, $size): $v")
     if (v != nodes(v).leader) {
       // Path Compression
       val leader = nodes(v).leader
@@ -67,6 +70,12 @@ private final class DefaultDisjointSetUnion[V: CommutativeSemigroup](
       nodes.updated(v, compressed(leader))
     } else {
       nodes
+    }
+  }
+
+  @inline private def throwIfOutOfBounds(v: Int): Unit = {
+    if (v < 0 || v >= size) {
+      throw new IndexOutOfBoundsException(s"Index out of range [0, $size): $v")
     }
   }
 

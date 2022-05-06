@@ -4,26 +4,26 @@ import cats.data.State
 
 trait DisjointSetUnionSyntax {
 
-  /** Size of the given [[DisjointSetUnion]] */
+  /** @see [[DisjointSetUnion.size]] */
   def size[V]: State[DisjointSetUnion[V], Int] = State.inspect { s =>
     s.size
   }
 
-  /** Finds a value of the given element */
+  /** @see [[DisjointSetUnion.find]] */
   def find[V](v: Int): State[DisjointSetUnion[V], V] = State { s =>
     s.find(v).swap
   }
 
-  /** Checks whether given elements belong to the same group */
+  /** @see [[DisjointSetUnion.isSame]] */
   def isSame[V](u: Int, v: Int): State[DisjointSetUnion[V], Boolean] = State {
     s =>
       s.isSame(u, v).swap
   }
 
-  /** Checks whether given elements belong to the same group */
+  /** @see [[DisjointSetUnion.unite]] */
   def unite[V](u: Int, v: Int): State[DisjointSetUnion[V], Unit] =
     State.modify { s =>
-      s.united(u, v)
+      s.unite(u, v)
     }
 
 }
