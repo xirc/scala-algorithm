@@ -123,6 +123,8 @@ private final class DefaultHeap[V: Ordering] private (
     }
   }
 
+  override def knownSize: Int = size
+
   override def to[C](factory: Factory[V, C]): C = {
     factory.fromSpecific(iterator)
   }
