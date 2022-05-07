@@ -3,44 +3,74 @@ package algo.data.dsu.immutable
 import algo.data.dsu.DisjointSetUnionFactory
 import cats.kernel.CommutativeSemigroup
 
-trait DisjointSetUnion[V] {
+/** @see [[algo.data.dsu.mutable.DisjointSetUnion]] */
+trait DisjointSetUnion[V] extends IterableOnce[V] {
 
-  /** Size of the [[DisjointSetUnion]]
+  /** Returns the number of members
+    *
     * @note
     *   Time Complexity: O(1)
     */
   def size: Int
 
-  /** Finds a value of the given element
+  /** Finds a value of the representative of the group containing the given
+    * member index
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if the index is out of bounds
+    *
     * @note
-    *   Time Complexity: O(a(N))
+    *   Time Complexity: O(a(N)) amortized
     */
-  @throws[IndexOutOfBoundsException]
   def find(v: Int): (V, DisjointSetUnion[V])
 
-  /** Checks whether given elements belong to the same group
+  /** Returns true if the same group containing the given member indices
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if the index is out of bounds
+    *
     * @note
-    *   Time Complexity: O(a(N))
+    *   Time Complexity: O(a(N)) amortized
     */
-  @throws[IndexOutOfBoundsException]
   def isSame(u: Int, v: Int): (Boolean, DisjointSetUnion[V])
 
-  /** Makes given elements to belong to the same group
+  /** Merge two groups into a single group containing the given member indices
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if the index is out of bounds
+    *
     * @note
-    *   Time Complexity: O(a(N))
+    *   Time Complexity: O(a(N)) amortized
     */
-  @throws[IndexOutOfBoundsException]
-  def united(u: Int, v: Int): DisjointSetUnion[V]
+  def unite(u: Int, v: Int): DisjointSetUnion[V]
+
+  /** Returns the number of groups
+    *
+    * @note
+    *   Time Complexity: O(1)
+    */
+  def groupCount: Int
+
+  /** Return groups containing its member indices
+    *
+    * @note
+    *   Time Complexity: ~= O(a(N) N)
+    */
+  def groups: Set[Set[Int]]
 
 }
 
-object DisjointSetUnion
-    extends DisjointSetUnionFactory[DisjointSetUnion]
-    with DisjointSetUnionSyntax {
+object DisjointSetUnion extends DisjointSetUnionFactory[DisjointSetUnion] {
 
   override def from[V: CommutativeSemigroup](
       iterable: IterableOnce[V]
   ): DisjointSetUnion[V] =
-    new DefaultDisjointSetUnion(iterable)
+    DefaultDisjointSetUnion(iterable)
+
+  override def empty[A](implicit
+      evidence$6: CommutativeSemigroup[A]
+  ): DisjointSetUnion[A] = {
+    from(Iterable.empty)
+  }
 
 }

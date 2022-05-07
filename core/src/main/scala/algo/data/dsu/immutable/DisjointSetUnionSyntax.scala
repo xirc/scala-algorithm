@@ -4,26 +4,48 @@ import cats.data.State
 
 trait DisjointSetUnionSyntax {
 
-  /** Size of the given [[DisjointSetUnion]] */
+  /** @see [[DisjointSetUnion.size]] */
   def size[V]: State[DisjointSetUnion[V], Int] = State.inspect { s =>
     s.size
   }
 
-  /** Finds a value of the given element */
+  /** @see [[DisjointSetUnion.find]] */
   def find[V](v: Int): State[DisjointSetUnion[V], V] = State { s =>
     s.find(v).swap
   }
 
-  /** Checks whether given elements belong to the same group */
+  /** @see [[DisjointSetUnion.isSame]] */
   def isSame[V](u: Int, v: Int): State[DisjointSetUnion[V], Boolean] = State {
     s =>
       s.isSame(u, v).swap
   }
 
-  /** Checks whether given elements belong to the same group */
+  /** @see [[DisjointSetUnion.unite]] */
   def unite[V](u: Int, v: Int): State[DisjointSetUnion[V], Unit] =
     State.modify { s =>
-      s.united(u, v)
+      s.unite(u, v)
     }
+
+  /** @see [[DisjointSetUnion.groupCount]] */
+  def groupCount[V]: State[DisjointSetUnion[V], Int] = State.inspect { s =>
+    s.groupCount
+  }
+
+  /** @see [[DisjointSetUnion.groups]] */
+  def groups[V]: State[DisjointSetUnion[V], Set[Set[Int]]] =
+    State.inspect { s =>
+      s.groups
+    }
+
+  /** @see [[DisjointSetUnion.iterator]] */
+  def iterator[V]: State[DisjointSetUnion[V], Iterator[V]] = State.inspect {
+    s =>
+      s.iterator
+  }
+
+  /** @see [[DisjointSetUnion.knownSize]] */
+  def knownSize[V]: State[DisjointSetUnion[V], Int] = State.inspect { s =>
+    s.knownSize
+  }
 
 }
