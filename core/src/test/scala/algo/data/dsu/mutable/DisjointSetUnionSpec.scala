@@ -130,6 +130,42 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   }
 
+  "groupCount" in {
+
+    assert(DisjointSetUnion.empty[Int].groupCount === 0)
+
+    val dsu = DisjointSetUnion.fill(5)(1)
+    assert(dsu.groupCount === 5)
+
+    dsu.unite(1, 2)
+    assert(dsu.groupCount === 4)
+
+    dsu.unite(3, 4)
+    assert(dsu.groupCount === 3)
+
+    dsu.unite(2, 3)
+    assert(dsu.groupCount === 2)
+
+    dsu.unite(0, 4)
+    assert(dsu.groupCount === 1)
+
+  }
+
+  "groups" in {
+
+    assert(DisjointSetUnion.empty[Int].groups.isEmpty)
+
+    val dsu = DisjointSetUnion.fill(7)(1)
+    assert(dsu.groups === Set.tabulate(7)(i => Set(i)))
+
+    dsu.unite(0, 1)
+    dsu.unite(2, 3)
+    dsu.unite(5, 6)
+    dsu.unite(3, 5)
+    assert(dsu.groups === Set(Set(0, 1), Set(2, 3, 5, 6), Set(4)))
+
+  }
+
   "iterator" in {
 
     val dsu = DisjointSetUnion.fill(6)(1)

@@ -138,6 +138,51 @@ final class DisjointSetUnionSpec extends BaseSpec {
 
   }
 
+  "groupCount" in {
+
+    assert(groupCount.runA(DisjointSetUnion.empty[Int]).value === 0)
+
+    val dsu = DisjointSetUnion.fill(5)(1)
+    val groupSizeSpec = for {
+      _ <- groupCount[Int].map(groupSize => assert(groupSize === 5))
+      _ <- unite(1, 2)
+      _ <- groupCount.map(groupSize => assert(groupSize === 4))
+      _ <- unite(3, 4)
+      _ <- groupCount.map(groupSize => assert(groupSize === 3))
+      _ <- unite(2, 3)
+      _ <- groupCount.map(groupSize => assert(groupSize === 2))
+      _ <- unite(0, 4)
+      _ <- groupCount.map(groupSize => assert(groupSize === 1))
+    } yield ()
+    groupSizeSpec.run(dsu).value
+
+  }
+
+  "groups" in {
+
+    assert(groups.runA(DisjointSetUnion.empty[Int]).value.isEmpty)
+
+    val dsu = DisjointSetUnion.fill(7)(1)
+    val groupSizeSpec = for {
+      _ <- groups[Int]
+        .map { groups =>
+          assert(groups === Set.tabulate(7)(i => Set(i)))
+        }
+      _ <- unite(0, 1)
+      _ <- unite(2, 3)
+      _ <- unite(5, 6)
+      _ <- unite(3, 5)
+      _ <- groups
+        .map { groups =>
+          assert(
+            groups === Set(Set(0, 1), Set(2, 3, 5, 6), Set(4))
+          )
+        }
+    } yield ()
+    groupSizeSpec.run(dsu).value
+
+  }
+
   "iterator" in {
 
     val dsu = DisjointSetUnion.fill(6)(1)

@@ -26,6 +26,17 @@ trait DisjointSetUnionSyntax {
       s.unite(u, v)
     }
 
+  /** @see [[DisjointSetUnion.groupCount]] */
+  def groupCount[V]: State[DisjointSetUnion[V], Int] = State.inspect { s =>
+    s.groupCount
+  }
+
+  /** @see [[DisjointSetUnion.groups]] */
+  def groups[V]: State[DisjointSetUnion[V], Set[Set[Int]]] =
+    State.inspect { s =>
+      s.groups
+    }
+
   /** @see [[DisjointSetUnion.iterator]] */
   def iterator[V]: State[DisjointSetUnion[V], Iterator[V]] = State.inspect {
     s =>

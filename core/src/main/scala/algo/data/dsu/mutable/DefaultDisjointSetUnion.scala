@@ -5,23 +5,15 @@ import cats.kernel.CommutativeSemigroup
 
 import java.util.ConcurrentModificationException
 import scala.collection.AbstractIterator
+import scala.collection.immutable.IntMap
 import scala.collection.mutable.ArrayBuffer
 
 private final class DefaultDisjointSetUnion[V: CommutativeSemigroup] private (
-    val nodes: ArrayBuffer[DisjointSetUnionNode[V]]
+    val nodes: ArrayBuffer[DisjointSetUnionNode[V]],
+    var _groupCount: Int
 ) extends DisjointSetUnion[V] { self =>
 
   @transient private var mutationCount: Int = 0
-
-  def this(values: IterableOnce[V]) = {
-    this(
-      values.iterator.zipWithIndex
-        .map { case (value, index) =>
-          DisjointSetUnionNode(index, 0, value)
-        }
-        .to(ArrayBuffer)
-    )
-  }
 
   override def size: Int = nodes.size
 
@@ -52,9 +44,22 @@ private final class DefaultDisjointSetUnion[V: CommutativeSemigroup] private (
         DisjointSetUnionNode.unite(nodes(leader), nodes(follower))
       nodes(follower) = newFollower
       nodes(leader) = newLeader
+      _groupCount -= 1
       mutationCount += 1
       this
     }
+  }
+
+  override def groupCount: Int = _groupCount
+
+  override def groups: Set[Set[Int]] = {
+    val _groups = (0 until size).foldLeft(IntMap.empty[Set[Int]]) {
+      (_groups, index) =>
+        val leader = findNode(index).leader
+        val group = _groups.getOrElse(leader, Set.empty)
+        _groups + (leader -> (group + index))
+    }
+    _groups.values.toSet
   }
 
   override def iterator: Iterator[V] = new AbstractIterator[V] {
@@ -90,6 +95,21 @@ private final class DefaultDisjointSetUnion[V: CommutativeSemigroup] private (
     if (v < 0 || v >= size) {
       throw new IndexOutOfBoundsException(s"Index out of range [0, $size): $v")
     }
+  }
+
+}
+
+private object DefaultDisjointSetUnion {
+
+  def apply[V: CommutativeSemigroup](
+      values: IterableOnce[V]
+  ): DefaultDisjointSetUnion[V] = {
+    val buffer = values.iterator.zipWithIndex
+      .map { case (value, index) =>
+        DisjointSetUnionNode(index, 0, value)
+      }
+      .to(ArrayBuffer)
+    new DefaultDisjointSetUnion(buffer, buffer.size)
   }
 
 }

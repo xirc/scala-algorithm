@@ -69,6 +69,20 @@ trait DisjointSetUnion[V] extends IterableOnce[V] {
     */
   def unite(u: Int, v: Int): this.type
 
+  /** Returns the number of groups
+    *
+    * @note
+    *   Time Complexity: O(1)
+    */
+  def groupCount: Int
+
+  /** Return groups containing its member indices
+    *
+    * @note
+    *   Time Complexity: ~= O(a(N) N)
+    */
+  def groups: Set[Set[Int]]
+
 }
 
 object DisjointSetUnion extends DisjointSetUnionFactory[DisjointSetUnion] {
@@ -76,7 +90,7 @@ object DisjointSetUnion extends DisjointSetUnionFactory[DisjointSetUnion] {
   override def from[V: CommutativeSemigroup](
       iterable: IterableOnce[V]
   ): DisjointSetUnion[V] =
-    new DefaultDisjointSetUnion(iterable)
+    DefaultDisjointSetUnion(iterable)
 
   override def empty[V: CommutativeSemigroup]: DisjointSetUnion[V] = {
     from(Iterable.empty)
