@@ -85,4 +85,9 @@ trait HeapSyntax {
     s.iterator
   }
 
+  /** @see [[Heap.knownSize]] */
+  def knownSize[V]: State[Heap[V], Int] = State.inspect { s =>
+    s.knownSize
+  }
+
 }

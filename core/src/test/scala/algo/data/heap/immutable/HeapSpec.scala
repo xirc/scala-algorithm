@@ -440,6 +440,15 @@ final class HeapSpec extends BaseSpec {
 
   }
 
+  "knownSize" in {
+
+    for (sz <- 0 until 100) {
+      val heap = Heap.from(Seq.tabulate(sz)(identity))
+      assert(knownSize.runA(heap).value === sz)
+    }
+
+  }
+
   "to" in {
 
     val heap = Heap(1, 2, 3, 4, 5)

@@ -7,7 +7,7 @@ import scala.collection.{Factory, SortedIterableFactory, mutable}
   * @see
   *   [[algo.data.heap.mutable.Heap]]
   */
-trait Heap[A] {
+trait Heap[A] extends IterableOnce[A] {
 
   /** Returns the size of this heap
     *
@@ -140,12 +140,6 @@ trait Heap[A] {
     *   Time Complexity: O(n)
     */
   def reverse: Heap[A]
-
-  /** Returns an iterator of this heap
-    * @note
-    *   Time Complexity: O(1)
-    */
-  def iterator: Iterator[A]
 
   /** Build a collection from this heap */
   def to[C](factory: Factory[A, C]): C

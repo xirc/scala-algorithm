@@ -1,6 +1,6 @@
 package algo.data.heap.immutable
 
-import scala.collection.Factory
+import scala.collection.{AbstractIterator, Factory}
 import scala.collection.immutable.{HashMap, HashSet}
 
 private final class DefaultHeap[V: Ordering] private (
@@ -114,14 +114,19 @@ private final class DefaultHeap[V: Ordering] private (
     newHeap(newBuffer, newIndexOfElement)(reverseOrdering)
   }
 
-  override def iterator: Iterator[V] = {
-    Iterator.unfold(this.asInstanceOf[Heap[V]]) { heap =>
-      if (heap.isEmpty) None
-      else {
-        Some(heap.pop())
+  override def iterator: Iterator[V] =
+    new AbstractIterator[V] {
+      private var self: Heap[V] = DefaultHeap.this
+      override def knownSize: Int = self.size
+      override def hasNext: Boolean = self.nonEmpty
+      override def next(): V = {
+        val (value, newSelf) = self.pop()
+        self = newSelf
+        value
       }
     }
-  }
+
+  override def knownSize: Int = size
 
   override def to[C](factory: Factory[V, C]): C = {
     factory.fromSpecific(iterator)
