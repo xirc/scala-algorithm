@@ -141,7 +141,7 @@ trait FenwickTreeFactoryBehaviors extends BaseSpec {
     // [ 101, 102, 103, ..., 199, 200 ]
     val iterable2 = Vector.tabulate(100)(_ + 100 + 1)
     val tree = factory.concat(iterable1, iterable2)
-    val expectedSize = (iterable1.size + iterable2.size)
+    val expectedSize = iterable1.size + iterable2.size
     assert(tree.size === expectedSize)
     for (x <- 1 to tree.size) {
       val expectedSum = sumOfArithmeticProgression(1, x + 1)
