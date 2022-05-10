@@ -6,7 +6,7 @@ object FenwickTreeSparseFactorySyntax {
 
   implicit class RichFenwickTreeSparseFactory[
       E[V] <: CommutativeMonoid[V],
-      Collection[K, V]
+      Collection[_, _]
   ](factory: FenwickTreeSparseFactory[E, Collection]) {
 
     def tabulateS(
