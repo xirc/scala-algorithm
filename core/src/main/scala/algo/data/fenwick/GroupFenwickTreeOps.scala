@@ -10,26 +10,34 @@ trait GroupFenwickTreeOps[
 
   implicit def group: CommutativeGroup[V]
 
-  /** Folds elements in specified range [`from`, `until`)
+  /** Folds elements in the given range [`from`, `until`)
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   - if `from` is less than `zero` or greater than or equal to `size`
+    *   - if `until` is less than `zero` or greater than `size`
     *
     * @note
-    *   Time Complexity: O(Log)
+    *   Time Complexity: O(log N)
     */
-  @throws[IndexOutOfBoundsException]
   def foldRange(from: K, until: K): V
 
-  /** Gets the element at the specified index
+  /** Returns the element at the given index
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if `index` is less than `zero` or greater than or equal to `size`
     *
     * @note
-    *   Time Complexity: O(Log)
+    *   Time Complexity: O(log N)
     */
-  @throws[IndexOutOfBoundsException]
   def apply(index: K): V
 
-  /** Replaces element at specified index with a new value
+  /** Updates the element at the given index to the given value
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if `index` is less than `zero` or greater than or equal to `size`
     *
     * @note
-    *   Time Complexity: O(Log)
+    *   Time Complexity: O(log N)
     */
   def updated(index: K, value: V): Collection
 

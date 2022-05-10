@@ -4,7 +4,7 @@ import cats.kernel.CommutativeMonoid
 
 trait FenwickTreeSparseFactoryProxy[
     -E[V] <: CommutativeMonoid[V],
-    +Collection[K, V]
+    +Collection[_, _]
 ] extends FenwickTreeSparseFactory[E, Collection] {
 
   protected def sparseFactory: FenwickTreeSparseFactory[E, Collection]
