@@ -9,10 +9,13 @@ trait GroupFenwickTreeOps[
 ] extends fenwick.GroupFenwickTreeOps[K, V, Collection]
     with MonoidFenwickTreeOps[K, V, Collection] {
 
-  /** Replaces element at specified index with a new value
+  /** Updates the element at the given index to the given value
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if `index` is less than `zero` or greater than or equal to `size`
     *
     * @note
-    *   Time Complexity: O(Log)
+    *   Time Complexity: O(log N)
     */
   def update(index: K, value: V): this.type
 

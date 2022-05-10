@@ -14,12 +14,14 @@ trait SemigroupFenwickTreeOps[
     newInstance
   }
 
-  /** Combines the element at specified index and specified value
+  /** Updates the element at the given index to the given value
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if `index` is less than `zero` or greater than or equal to `size`
     *
     * @note
-    *   Time Complexity: O(Log)
+    *   Time Complexity: O(log N)
     */
-  @throws[IndexOutOfBoundsException]
   def combine(index: K, value: V): this.type
 
   override def clone(): Collection =

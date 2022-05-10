@@ -10,44 +10,48 @@ trait SemigroupFenwickTreeOps[
 
   implicit def semigroup: CommutativeSemigroup[V]
 
-  /** Zero Bound
+  /** Returns the zero
     *
     * @note
     *   Time Complexity: O(1)
     */
   def zero: K
 
-  /** Size of Tree
-    *
-    * Upper Bound
+  /** Returns the size of this tree
     *
     * @note
     *   Time Complexity: O(1)
     */
   def size: K
 
-  /** Reduces elements in specified range [`zero`, `until`)
+  /** Reduces elements in the given range [`zero`, `until`)
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if `until` is less than `zero` or greater than `size`
     *
     * @note
-    *   Time Complexity: O(Log)
+    *   Time Complexity: O(log N)
     */
-  @throws[IndexOutOfBoundsException]
   def reduceUntil(until: K): V
 
-  /** Reduces elements in specified range [`zero`, `to`]
+  /** Reduces elements in the given range [`zero`, `to`]
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if `to` is less than `zero` or greater than or equal to `size`
     *
     * @note
-    *   Time Complexity: O(Log)
+    *   Time Complexity: O(log N)
     */
-  @throws[IndexOutOfBoundsException]
   def reduceTo(to: K): V
 
-  /** Combines the element at specified index and specified value
+  /** Updates the element at the given index to the given value
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if `index` is less than `zero` or greater than or equal to `size`
     *
     * @note
-    *   Time Complexity: O(Log)
+    *   Time Complexity: O(log N)
     */
-  @throws[IndexOutOfBoundsException]
   def combined(index: K, value: V): Collection
 
 }

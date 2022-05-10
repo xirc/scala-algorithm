@@ -10,20 +10,24 @@ trait MonoidFenwickTreeOps[
 
   implicit def monoid: CommutativeMonoid[V]
 
-  /** Folds elements in specified range [`zero`, `until`)
+  /** Folds elements in the given range [`zero`, `until`)
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if `until` is less than `zero` or greater than `size`
     *
     * @note
-    *   Time Complexity: O(Log)
+    *   Time Complexity: O(log N)
     */
-  @throws[IndexOutOfBoundsException]
   def foldUntil(until: K): V
 
-  /** Folds elements in specified range [`zero`, `to`]
+  /** Folds elements in the given range [`zero`, `to`]
+    *
+    * @throws java.lang.IndexOutOfBoundsException
+    *   if `to` is less than `zero` or greater than or equal to `size`
     *
     * @note
-    *   Time Complexity: O(Log)
+    *   Time Complexity: O(log N)
     */
-  @throws[IndexOutOfBoundsException]
   def foldTo(to: K): V
 
 }
