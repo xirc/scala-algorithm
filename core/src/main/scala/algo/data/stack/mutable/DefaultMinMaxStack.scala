@@ -2,22 +2,20 @@ package algo.data.stack.mutable
 
 import scala.collection.{Factory, mutable}
 
-private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
-
-  case class Entry(value: A, minimum: A, maximum: A)
-
-  private val stack: mutable.Stack[Entry] =
-    mutable.Stack.empty
+private final class DefaultMinMaxStack[A: Ordering] private (
+    private val stack: mutable.Stack[DefaultMinMaxStack.Entry[A]]
+) extends MinMaxStack[A] {
+  import DefaultMinMaxStack.Entry
 
   override def size: Int = stack.size
 
   override def push(value: A): this.type = {
     if (stack.isEmpty) {
-      stack.push(Entry(value, value, value))
+      stack.push(new Entry(value, value, value))
     } else {
       val minimum = Ordering[A].min(value, stack.top.minimum)
       val maximum = Ordering[A].max(value, stack.top.maximum)
-      stack.push(Entry(value, minimum, maximum))
+      stack.push(new Entry(value, minimum, maximum))
     }
     this
   }
@@ -35,8 +33,8 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
 
   override def pop(): A = stack.pop().value
 
-  override def popAll(): Seq[A] = {
-    val builder = Seq.newBuilder[A]
+  override def popAll(): IndexedSeq[A] = {
+    val builder = IndexedSeq.newBuilder[A]
     builder.sizeHint(size)
     while (nonEmpty) {
       builder += pop()
@@ -44,8 +42,8 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
     builder.result()
   }
 
-  override def popWhile(f: A => Boolean): Seq[A] = {
-    val builder = Seq.newBuilder[A]
+  override def popWhile(f: A => Boolean): IndexedSeq[A] = {
+    val builder = IndexedSeq.newBuilder[A]
     while (nonEmpty && f(top)) {
       builder += pop()
     }
@@ -54,7 +52,7 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
 
   override def top: A =
     topOption.getOrElse {
-      throw new NoSuchElementException("empty.top")
+      throw new NoSuchElementException("The heap is empty.")
     }
 
   override def topOption: Option[A] =
@@ -63,7 +61,7 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
 
   override def bottom: A =
     bottomOption.getOrElse {
-      throw new NoSuchElementException("empty.bottom")
+      throw new NoSuchElementException("The heap is empty.")
     }
 
   override def bottomOption: Option[A] =
@@ -75,12 +73,12 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
       throw new IndexOutOfBoundsException(
         s"Index out of range [0, $size): $index"
       )
-    stack.apply(index).value
+    stack(index).value
   }
 
   override def min: A =
     minOption.getOrElse {
-      throw new UnsupportedOperationException("empty.min")
+      throw new NoSuchElementException("The heap is empty.")
     }
 
   override def minOption: Option[A] =
@@ -89,7 +87,7 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
 
   override def max: A =
     maxOption.getOrElse {
-      throw new UnsupportedOperationException("empty.max")
+      throw new NoSuchElementException("The heap is empty.")
     }
 
   override def maxOption: Option[A] =
@@ -98,7 +96,7 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
 
   override def minmax: (A, A) =
     minmaxOption.getOrElse {
-      throw new UnsupportedOperationException("empty.minmax")
+      throw new NoSuchElementException("The heap is empty.")
     }
 
   override def minmaxOption: Option[(A, A)] = {
@@ -114,10 +112,25 @@ private final class DefaultMinMaxStack[A: Ordering]() extends MinMaxStack[A] {
 
   override def iterator: Iterator[A] = stack.iterator.map(_.value)
 
+  override def knownSize: Int = stack.size
+
   override def reverseIterator: Iterator[A] = stack.reverseIterator.map(_.value)
 
   override def ordering: Ordering[A] = Ordering[A]
 
   override def to[C](factory: Factory[A, C]): C = factory.fromSpecific(iterator)
+
+  override def clone(): MinMaxStack[A] = {
+    new DefaultMinMaxStack[A](stack.clone())
+  }
+
+}
+
+private object DefaultMinMaxStack {
+
+  private final class Entry[A](val value: A, val minimum: A, val maximum: A)
+
+  def empty[A: Ordering]: DefaultMinMaxStack[A] =
+    new DefaultMinMaxStack[A](mutable.Stack.empty)
 
 }
