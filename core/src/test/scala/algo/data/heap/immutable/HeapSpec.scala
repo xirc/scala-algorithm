@@ -36,9 +36,9 @@ final class HeapSpec extends BaseSpec {
 
   "Factory|fill" in {
 
-    val xs = IndexedSeq(1, 5, 3, 2, 4)
+    val source = IndexedSeq(1, 5, 3, 2, 4)
     val heap = {
-      val it = xs.iterator
+      val it = source.iterator
       Heap.fill(5) { it.next() }
     }
     assert(size.runA(heap).value === 5)
@@ -173,16 +173,16 @@ final class HeapSpec extends BaseSpec {
   "top" in {
 
     val heap = Heap.empty[Int]
-    val xs = IndexedSeq(1, 3, 5, 2, 4, 6, 8, 9, 7, 10)
+    val source = IndexedSeq(1, 3, 5, 2, 4, 6, 8, 9, 7, 10)
     val expected = IndexedSeq(1, 3, 5, 5, 5, 6, 8, 9, 9, 10)
 
-    val topSpec = xs.indices
+    val topSpec = source.indices
       .map { i =>
         for {
-          _ <- push(xs(i))
-          v <- top
+          _ <- push(source(i))
+          top <- top
         } yield {
-          assert(v === expected(i))
+          assert(top === expected(i))
         }
       }
       .toList
@@ -192,7 +192,7 @@ final class HeapSpec extends BaseSpec {
 
   }
 
-  "top from an empty heap" in {
+  "top of an empty heap" in {
 
     intercept[NoSuchElementException] {
       top.runA(Heap.empty[Int]).value
@@ -203,16 +203,16 @@ final class HeapSpec extends BaseSpec {
   "topOption" in {
 
     val heap = Heap.empty[Int]
-    val xs = IndexedSeq(1, 3, 5, 2, 4, 6, 8, 9, 7, 10)
+    val source = IndexedSeq(1, 3, 5, 2, 4, 6, 8, 9, 7, 10)
     val expected = IndexedSeq(1, 3, 5, 5, 5, 6, 8, 9, 9, 10)
 
-    val topOptionSpec = xs.indices
+    val topOptionSpec = source.indices
       .map { i =>
         for {
-          _ <- push(xs(i))
-          v <- topOption
+          _ <- push(source(i))
+          topOption <- topOption
         } yield {
-          assert(v.contains(expected(i)))
+          assert(topOption === Option(expected(i)))
         }
       }
       .toList
@@ -222,7 +222,7 @@ final class HeapSpec extends BaseSpec {
 
   }
 
-  "topOption from an empty heap" in {
+  "topOption of an empty heap" in {
 
     assert(topOption.runA(Heap.empty[Int]).value === None)
 
@@ -249,21 +249,21 @@ final class HeapSpec extends BaseSpec {
 
   }
 
-  "popAll from non-empty heap" in {
+  "popAll" in {
 
     val heap = Heap(1, 5, 3, 2, 4)
     val popAllSpec = for {
-      xs <- popAll[Int]
-      sz <- size
+      values <- popAll[Int]
+      size <- size
     } yield {
-      assert(xs === Seq(5, 4, 3, 2, 1))
-      assert(sz === 0)
+      assert(values === Seq(5, 4, 3, 2, 1))
+      assert(size === 0)
     }
     popAllSpec.run(heap).value
 
   }
 
-  "popAll from empty heap" in {
+  "popAll from an empty heap" in {
 
     assert(popAll[Int].runA(Heap.empty[Int]).value === Seq.empty)
 
@@ -390,7 +390,7 @@ final class HeapSpec extends BaseSpec {
 
   }
 
-  "clear non-empty heap" in {
+  "clear" in {
 
     val heap = Heap(1, 2, 3, 4, 5)
     val clearSpec = for {
@@ -402,7 +402,7 @@ final class HeapSpec extends BaseSpec {
 
   }
 
-  "clear empty heap" in {
+  "clear an empty heap" in {
 
     val heap = Heap.empty[Int]
     val clearSpec = for {
@@ -459,18 +459,19 @@ final class HeapSpec extends BaseSpec {
   "randomized|push,top,pop,contains" in {
 
     val seed = System.nanoTime()
-    withClue(seed) {
+    withClue(s"seed=[$seed]") {
       val random = new Random(seed)
-      val heap = Heap.empty[Int]
-      val xs = random.shuffle(IndexedSeq.from(1 to 10_000))
-      val expected = xs.scan(0)(math.max).drop(1)
 
-      val pushSpec = xs.indices
+      val source = random.shuffle(IndexedSeq.from(1 to 10_000))
+      val heap = Heap.empty[Int]
+      val expected = source.scan(0)(math.max).drop(1)
+
+      val pushSpec = source.indices
         .map { i =>
           for {
-            _ <- push(xs(i))
+            _ <- push(source(i))
             _ <- top[Int].map(v => assert(v === expected(i)))
-            _ <- contains(xs(i)).map(c => assert(c === true))
+            _ <- contains(source(i)).map(c => assert(c === true))
           } yield ()
         }
         .toList
@@ -498,11 +499,13 @@ final class HeapSpec extends BaseSpec {
   "randomized|remove" in {
 
     val seed = System.nanoTime()
-    withClue(seed) {
+    withClue(s"seed=[$seed]") {
       val random = new Random(seed)
-      val xs = random.shuffle(IndexedSeq.from(1 to 10_000))
-      val heap = Heap.from(xs)
-      val spec = xs
+
+      val source = random.shuffle(IndexedSeq.from(1 to 10_000))
+      val heap = Heap.from(source)
+
+      val spec = source
         .map { x =>
           for {
             _ <- contains(x).map(c => assert(c === true))
@@ -515,6 +518,7 @@ final class HeapSpec extends BaseSpec {
         .toList
         .sequence_
       spec.run(heap).value
+
     }
 
   }
@@ -524,8 +528,9 @@ final class HeapSpec extends BaseSpec {
     val seed = System.nanoTime()
     withClue(seed) {
       val random = new Random(seed)
-      val xs = random.shuffle(IndexedSeq.from(1 to 10_000))
-      val heap = Heap.from(xs)
+
+      val source = random.shuffle(IndexedSeq.from(1 to 10_000))
+      val heap = Heap.from(source)
 
       def updateSpec(
           oldValue: Int,
@@ -563,7 +568,7 @@ final class HeapSpec extends BaseSpec {
         _ <- size.map(s => assert(s === sz))
       } yield ()
 
-      val spec = xs
+      val spec = source
         .map { oldValue =>
           val newValue = oldValue + 100
           updateSpec(oldValue, newValue)
