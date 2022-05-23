@@ -30,28 +30,33 @@ final class QuickSelectSpec extends BaseSpec {
   "selects k-th smallest element of an unsorted unique collection" in {
 
     val seed = System.nanoTime()
-    Random.setSeed(seed)
-    withClue(s"[seed=$seed]") {
-      val values = Random.shuffle((1 to 100).toIndexedSeq)
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val values = random.shuffle((1 to 100).toIndexedSeq)
       for (i <- 0 until 100) {
         val expectedValue = i + 1
         assert(values.select(i) === expectedValue)
       }
+
     }
 
   }
 
   "selects k-th greatest element of an unsorted unique collection" in {
 
+    implicit val ordering: Ordering[Int] = Ordering.Int.reverse
+
     val seed = System.nanoTime()
-    Random.setSeed(seed)
-    withClue(s"[seed=$seed]") {
-      implicit val ordering: Ordering[Int] = Ordering.Int.reverse
-      val values = Random.shuffle((1 to 100).toIndexedSeq)
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val values = random.shuffle((1 to 100).toIndexedSeq)
       for (i <- 0 until 100) {
         val expectedValue = 100 - i
         assert(values.select(i) === expectedValue)
       }
+
     }
 
   }
@@ -59,30 +64,35 @@ final class QuickSelectSpec extends BaseSpec {
   "selects k-th smallest element of an unsorted non-unique collection" in {
 
     val seed = System.nanoTime()
-    Random.setSeed(seed)
-    withClue(s"[seed=$seed] ") {
-      val values = IndexedSeq.fill(100)(Random.nextInt(30))
-      val sorted = values.sorted
+    withClue(s"seed=[$seed] ") {
+      val random = new Random(seed)
+
+      val values = IndexedSeq.fill(100)(random.nextInt(30))
+      val sortedValues = values.sorted
       for (i <- 0 until 100) {
-        val expectedValue = sorted(i)
+        val expectedValue = sortedValues(i)
         assert(values.select(i) === expectedValue)
       }
+
     }
 
   }
 
   "selects k-th greatest element of an unsorted non-unique collection" in {
 
+    implicit val ordering: Ordering[Int] = Ordering.Int.reverse
+
     val seed = System.nanoTime()
-    Random.setSeed(seed)
-    withClue(s"[seed=$seed] ") {
-      val values = IndexedSeq.fill(100)(Random.nextInt(30))
-      val sorted = values.sorted
+    withClue(s"seed=[$seed] ") {
+      val random = new Random(seed)
+
+      val values = IndexedSeq.fill(100)(random.nextInt(30))
+      val sortedValues = values.sorted
       for (i <- 0 until 100) {
-        implicit val ordering: Ordering[Int] = Ordering.Int.reverse
-        val expectedValue = sorted(100 - 1 - i)
+        val expectedValue = sortedValues(i)
         assert(values.select(i) === expectedValue)
       }
+
     }
 
   }
