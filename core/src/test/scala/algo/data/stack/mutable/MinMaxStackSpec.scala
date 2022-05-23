@@ -14,7 +14,7 @@ final class MinMaxStackSpec extends BaseSpec {
 
   }
 
-  "From|from" in {
+  "Factory|from" in {
 
     val source = Vector(1, 2, 3)
     val stack = MinMaxStack.from(source)
@@ -41,7 +41,7 @@ final class MinMaxStackSpec extends BaseSpec {
 
     assert(minmaxStack.size === stack.size)
     while (minmaxStack.nonEmpty) {
-      val expectedMinMax = (minmaxStack.iterator.min, minmaxStack.iterator.max)
+      val expectedMinMax = (stack.min, stack.max)
       assert(minmaxStack.minmax === expectedMinMax)
       assert(minmaxStack.pop() === stack.pop())
     }
@@ -59,9 +59,8 @@ final class MinMaxStackSpec extends BaseSpec {
 
   "push" in {
 
-    val size = 100
     val stack = MinMaxStack.empty[Int]
-    for (i <- 0 to size) {
+    for (i <- 0 to 100) {
       stack.push(i)
       assert(stack.top === i)
       assert(stack.size === i + 1)
@@ -71,58 +70,75 @@ final class MinMaxStackSpec extends BaseSpec {
 
   "push(value, ...)" in {
 
-    val stack = MinMaxStack.empty[Int]
-    val source = Seq.fill(10)(Random.nextInt())
-    stack.push(0, source.reverse*)
-    for (i <- source.indices) {
-      assert(stack.min === stack.iterator.min)
-      assert(stack.max === stack.iterator.max)
-      assert(stack.pop() === source(i))
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(100)(random.nextInt())
+      val stack = MinMaxStack.empty[Int]
+      stack.push(0, source.reverse*)
+      for (i <- source.indices) {
+        assert(stack.min === math.min(source.drop(i).min, 0))
+        assert(stack.max === math.max(source.drop(i).max, 0))
+        assert(stack.pop() === source(i))
+      }
+      assert(stack.pop() === 0)
+
     }
-    assert(stack.pop() === 0)
 
   }
 
   "pushAll" in {
 
-    val stack = MinMaxStack.empty[Int]
-    val source = Seq.fill(10)(Random.nextInt())
-    stack.pushAll(source.reverse)
-    for (i <- source.indices) {
-      assert(stack.min === stack.iterator.min)
-      assert(stack.max === stack.iterator.max)
-      assert(stack.pop() === source(i))
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(100)(random.nextInt())
+      val stack = MinMaxStack.empty[Int]
+      stack.pushAll(source.reverse)
+      for (i <- source.indices) {
+        assert(stack.min === source.drop(i).min)
+        assert(stack.max === source.drop(i).max)
+        assert(stack.pop() === source(i))
+      }
+
     }
 
   }
 
   "pop" in {
 
-    val size = 100
-    val stack = MinMaxStack.from(Seq.tabulate(size)(identity))
-    for (s <- 0 until size) {
-      assert(stack.pop() === s)
-      assert(stack.size === size - (s + 1))
+    val stack = MinMaxStack.from(Seq.tabulate(100)(identity))
+    for (i <- 0 until 100) {
+      assert(stack.pop() === i)
+      assert(stack.size === 100 - (i + 1))
     }
 
   }
 
   "pop from an empty stack" in {
 
-    val emptyStack = MinMaxStack.empty[Int]
+    val stack = MinMaxStack.empty[Int]
     intercept[NoSuchElementException] {
-      emptyStack.pop()
+      stack.pop()
     }
 
   }
 
   "popAll" in {
 
-    val source = Seq.fill(100)(Random.nextInt())
-    val stack = MinMaxStack.from(source)
-    val elements = stack.popAll()
-    assert(elements === source)
-    assert(stack.isEmpty)
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(100)(random.nextInt())
+      val stack = MinMaxStack.from(source)
+      val elements = stack.popAll()
+      assert(elements === source)
+      assert(stack.isEmpty)
+
+    }
 
   }
 
@@ -154,9 +170,9 @@ final class MinMaxStackSpec extends BaseSpec {
 
   "top of an empty stack" in {
 
-    val emptyStack = MinMaxStack.empty[Int]
+    val stack = MinMaxStack.empty[Int]
     intercept[NoSuchElementException] {
-      emptyStack.top
+      stack.top
     }
 
   }
@@ -174,34 +190,46 @@ final class MinMaxStackSpec extends BaseSpec {
 
   "bottom" in {
 
-    val stack = MinMaxStack.empty[Int]
-    val bottomElement = Random.nextInt()
-    stack.push(bottomElement)
-    for (i <- 0 until 10) {
-      stack.push(i)
-      assert(stack.bottom === bottomElement)
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val expectedBottom = random.nextInt()
+      val stack = MinMaxStack.empty[Int]
+      stack.push(expectedBottom)
+      for (i <- 0 until 10) {
+        stack.push(i)
+        assert(stack.bottom === expectedBottom)
+      }
+
     }
 
   }
 
   "bottom of an empty stack" in {
 
-    val emptyStack = MinMaxStack.empty[Int]
+    val stack = MinMaxStack.empty[Int]
     intercept[NoSuchElementException] {
-      emptyStack.bottom
+      stack.bottom
     }
 
   }
 
   "bottomOption" in {
 
-    val stack = MinMaxStack.empty[Int]
-    assert(stack.bottomOption === None)
-    val bottomElement = Random.nextInt()
-    stack.push(bottomElement)
-    for (i <- 0 until 10) {
-      stack.push(i)
-      assert(stack.bottomOption === Option(bottomElement))
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val expectedBottom = random.nextInt()
+      val stack = MinMaxStack.empty[Int]
+      assert(stack.bottomOption === None)
+      stack.push(expectedBottom)
+      for (i <- 0 until 10) {
+        stack.push(i)
+        assert(stack.bottomOption === Option(expectedBottom))
+      }
+
     }
 
   }
@@ -236,28 +264,25 @@ final class MinMaxStackSpec extends BaseSpec {
     val stack = MinMaxStack.empty[Int]
     assert(stack.ordering === ordering)
 
-    stack.push(2)
-    assert(stack.min === 2)
-    assert(stack.max === 2)
-    stack.push(3)
-    assert(stack.min === 3)
-    assert(stack.max === 2)
-    stack.push(1)
-    assert(stack.min === 3)
-    assert(stack.max === 1)
-
   }
 
   "min" in {
 
-    val stack = MinMaxStack.empty[Int]
-    for (_ <- 0 until 100) {
-      stack.push(Random.nextInt())
-      assert(stack.min === stack.iterator.min)
-    }
-    for (_ <- 0 until 100) {
-      assert(stack.min === stack.iterator.min)
-      stack.pop()
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(100)(random.nextInt())
+      val stack = MinMaxStack.empty[Int]
+      for (i <- source.indices) {
+        stack.push(source(i))
+        assert(stack.min === source.take(i + 1).min)
+      }
+      for (i <- source.indices) {
+        assert(stack.min === source.dropRight(i).min)
+        stack.pop()
+      }
+
     }
 
   }
@@ -265,7 +290,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "min of an empty stack" in {
 
     val stack = MinMaxStack.empty[Int]
-    intercept[UnsupportedOperationException] {
+    intercept[NoSuchElementException] {
       stack.min
     }
 
@@ -273,30 +298,44 @@ final class MinMaxStackSpec extends BaseSpec {
 
   "minOption" in {
 
-    val stack = MinMaxStack.empty[Int]
-    assert(stack.minOption === None)
-    for (_ <- 0 until 100) {
-      stack.push(Random.nextInt())
-      assert(stack.minOption === Option(stack.iterator.min))
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(100)(random.nextInt())
+      val stack = MinMaxStack.empty[Int]
+      assert(stack.minOption === None)
+      for (i <- source.indices) {
+        stack.push(source(i))
+        assert(stack.minOption === Option(source.take(i + 1).min))
+      }
+      for (i <- source.indices) {
+        assert(stack.minOption === Option(source.dropRight(i).min))
+        stack.pop()
+      }
+      assert(stack.minOption === None)
+
     }
-    for (_ <- 0 until 100) {
-      assert(stack.minOption === Option(stack.iterator.min))
-      stack.pop()
-    }
-    assert(stack.minOption === None)
 
   }
 
   "max" in {
 
-    val stack = MinMaxStack.empty[Int]
-    for (_ <- 0 until 100) {
-      stack.push(Random.nextInt())
-      assert(stack.max === stack.iterator.max)
-    }
-    for (_ <- 0 until 100) {
-      assert(stack.max === stack.iterator.max)
-      stack.pop()
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(100)(random.nextInt())
+      val stack = MinMaxStack.empty[Int]
+      for (i <- source.indices) {
+        stack.push(source(i))
+        assert(stack.max === source.take(i + 1).max)
+      }
+      for (i <- source.indices) {
+        assert(stack.max === source.dropRight(i).max)
+        stack.pop()
+      }
+
     }
 
   }
@@ -304,7 +343,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "max of an empty stack" in {
 
     val stack = MinMaxStack.empty[Int]
-    intercept[UnsupportedOperationException] {
+    intercept[NoSuchElementException] {
       stack.max
     }
 
@@ -312,32 +351,46 @@ final class MinMaxStackSpec extends BaseSpec {
 
   "maxOption" in {
 
-    val stack = MinMaxStack.empty[Int]
-    assert(stack.maxOption === None)
-    for (_ <- 0 until 100) {
-      stack.push(Random.nextInt())
-      assert(stack.maxOption === Option(stack.iterator.max))
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(100)(random.nextInt())
+      val stack = MinMaxStack.empty[Int]
+      assert(stack.maxOption === None)
+      for (i <- source.indices) {
+        stack.push(source(i))
+        assert(stack.maxOption === Option(source.take(i + 1).max))
+      }
+      for (i <- source.indices) {
+        assert(stack.maxOption === Option(source.dropRight(i).max))
+        stack.pop()
+      }
+      assert(stack.maxOption === None)
+
     }
-    for (_ <- 0 until 100) {
-      assert(stack.maxOption === Option(stack.iterator.max))
-      stack.pop()
-    }
-    assert(stack.maxOption === None)
 
   }
 
   "minmax" in {
 
-    val stack = MinMaxStack.empty[Int]
-    for (_ <- 0 until 100) {
-      stack.push(Random.nextInt())
-      val expectedValue = (stack.iterator.min, stack.iterator.max)
-      assert(stack.minmax === expectedValue)
-    }
-    for (_ <- 0 until 100) {
-      val expectedValue = (stack.iterator.min, stack.iterator.max)
-      assert(stack.minmax === expectedValue)
-      stack.pop()
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(100)(random.nextInt())
+      val stack = MinMaxStack.empty[Int]
+      for (i <- source.indices) {
+        stack.push(source(i))
+        val expectedValue = (source.take(i + 1).min, source.take(i + 1).max)
+        assert(stack.minmax === expectedValue)
+      }
+      for (i <- source.indices) {
+        val expectedValue = (source.dropRight(i).min, source.dropRight(i).max)
+        assert(stack.minmax === expectedValue)
+        stack.pop()
+      }
+
     }
 
   }
@@ -345,7 +398,7 @@ final class MinMaxStackSpec extends BaseSpec {
   "minmax of an empty stack" in {
 
     val stack = MinMaxStack.empty[Int]
-    intercept[UnsupportedOperationException] {
+    intercept[NoSuchElementException] {
       stack.minmax
     }
 
@@ -353,19 +406,28 @@ final class MinMaxStackSpec extends BaseSpec {
 
   "minmaxOption" in {
 
-    val stack = MinMaxStack.empty[Int]
-    assert(stack.minmaxOption === None)
-    for (_ <- 0 until 100) {
-      stack.push(Random.nextInt())
-      val expectedValue = Option((stack.iterator.min, stack.iterator.max))
-      assert(stack.minmaxOption === expectedValue)
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(100)(random.nextInt())
+      val stack = MinMaxStack.empty[Int]
+      assert(stack.minmaxOption === None)
+      for (i <- source.indices) {
+        stack.push(source(i))
+        val expectedValue =
+          Option((source.take(i + 1).min, source.take(i + 1).max))
+        assert(stack.minmaxOption === expectedValue)
+      }
+      for (i <- source.indices) {
+        val expectedValue =
+          Option((source.dropRight(i).min, source.dropRight(i).max))
+        assert(stack.minmaxOption === expectedValue)
+        stack.pop()
+      }
+      assert(stack.minmaxOption === None)
+
     }
-    for (_ <- 0 until 100) {
-      val expectedValue = Option((stack.iterator.min, stack.iterator.max))
-      assert(stack.minmaxOption === expectedValue)
-      stack.pop()
-    }
-    assert(stack.minmaxOption === None)
 
   }
 
@@ -399,6 +461,15 @@ final class MinMaxStackSpec extends BaseSpec {
 
   }
 
+  "knownSize" in {
+
+    for (size <- 0 until 100) {
+      val stack = MinMaxStack.from(Seq.tabulate(size)(identity))
+      assert(stack.knownSize === size)
+    }
+
+  }
+
   "reverseIterator" in {
 
     val stack = MinMaxStack.empty[Int]
@@ -417,6 +488,19 @@ final class MinMaxStackSpec extends BaseSpec {
     assert(stack.size === minmaxStack.size)
     while (stack.nonEmpty) {
       assert(stack.pop() === minmaxStack.pop())
+    }
+
+  }
+
+  "clone" in {
+
+    val minmaxStack = MinMaxStack(1, 2, 3)
+    val clonedMinMaxStack = minmaxStack.clone
+
+    assert(clonedMinMaxStack.size === minmaxStack.size)
+    while (clonedMinMaxStack.nonEmpty) {
+      assert(clonedMinMaxStack.minmax === minmaxStack.minmax)
+      assert(clonedMinMaxStack.pop() === minmaxStack.pop())
     }
 
   }

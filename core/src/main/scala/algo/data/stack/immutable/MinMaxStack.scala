@@ -1,14 +1,13 @@
-package algo.data.stack.mutable
+package algo.data.stack.immutable
 
 import scala.collection.{Factory, mutable}
 
-/** Allows to push and pop elements in a last-in-first-out (LIFO) fashion. This
-  * data structure also allows to retrieval of the minimum and maximum value
-  * efficiently.
+/** MinMaxStack
+  *
+  * @see
+  *   [[algo.data.stack.mutable.MinMaxStack]]
   */
-trait MinMaxStack[A]
-    extends IterableOnce[A]
-    with mutable.Cloneable[MinMaxStack[A]] {
+trait MinMaxStack[A] extends IterableOnce[A] {
 
   /** Returns the size of this stack
     *
@@ -22,13 +21,13 @@ trait MinMaxStack[A]
     * @note
     *   Time Complexity: O(1)
     */
-  def push(value: A): this.type
+  def push(value: A): MinMaxStack[A]
 
   /** Pushes the given elements onto this stack */
-  def push(value: A, values: A*): this.type
+  def push(value: A, values: A*): MinMaxStack[A]
 
   /** Pushes all elements of the given iterable onto this stack */
-  def pushAll(iterable: IterableOnce[A]): this.type
+  def pushAll(iterable: IterableOnce[A]): MinMaxStack[A]
 
   /** Pops and returns the top element from this stack
     *
@@ -38,19 +37,19 @@ trait MinMaxStack[A]
     * @note
     *   Time Complexity: O(1)
     */
-  def pop(): A
+  def pop(): (A, MinMaxStack[A])
 
   /** Pops and returns all elements from this stack
     *
     * @note
     *   Time Complexity: O(N)
     */
-  def popAll(): IndexedSeq[A]
+  def popAll(): (IndexedSeq[A], MinMaxStack[A])
 
   /** Pops and returns all elements from this stack that satisfy the given
     * predicate
     */
-  def popWhile(f: A => Boolean): IndexedSeq[A]
+  def popWhile(f: A => Boolean): (IndexedSeq[A], MinMaxStack[A])
 
   /** Returns the top element of this stack
     *
@@ -101,7 +100,7 @@ trait MinMaxStack[A]
     * @note
     *   Time Complexity: O(N)
     */
-  def clear(): Unit
+  def clear(): MinMaxStack[A]
 
   /** Returns the ordering of this stack
     *
@@ -168,7 +167,7 @@ trait MinMaxStack[A]
     */
   def isEmpty: Boolean
 
-  /** Returns true if this stack is not empty
+  /** Returns true if this stack not empty
     *
     * @note
     *   Time Complexity: O(1)
@@ -223,8 +222,7 @@ object MinMaxStack {
       override def clear(): Unit = buffer.clear()
       override def result(): MinMaxStack[A] = {
         val stack = MinMaxStack.empty
-        buffer.reverseIterator.foreach(stack.push)
-        stack
+        stack.pushAll(buffer.reverseIterator)
       }
       override def addOne(elem: A): this.type = {
         buffer.addOne(elem)
