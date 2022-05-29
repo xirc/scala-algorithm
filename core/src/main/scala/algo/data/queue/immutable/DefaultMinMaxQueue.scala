@@ -1,63 +1,82 @@
-package algo.data.queue.mutable
+package algo.data.queue.immutable
 
-import algo.data.stack.mutable
+import algo.data.stack.immutable
 import cats.Semigroupal
 import cats.kernel.Semigroup
 import cats.syntax.semigroup.*
 
 import scala.collection.Factory
 
-private final class DefaultMinMaxQueue[A: Ordering] extends MinMaxQueue[A] {
+private final class DefaultMinMaxQueue[A: Ordering](
+    inStack: immutable.MinMaxStack[A],
+    outStack: immutable.MinMaxStack[A]
+) extends MinMaxQueue[A] {
 
-  private val inStack: mutable.MinMaxStack[A] = mutable.MinMaxStack.empty
-  private val outStack: mutable.MinMaxStack[A] = mutable.MinMaxStack.empty
   private val minSemigroup: Semigroup[A] = Semigroup.instance(Ordering[A].min)
   private val maxSemigroup: Semigroup[A] = Semigroup.instance(Ordering[A].max)
 
   override def size: Int =
     inStack.size + outStack.size
 
-  override def enqueue(value: A): this.type = {
-    inStack.push(value)
-    this
+  override def enqueue(value: A): MinMaxQueue[A] = {
+    val newInStack = inStack.push(value)
+    new DefaultMinMaxQueue(newInStack, outStack)
   }
 
-  override def enqueue(value: A, values: A*): this.type = {
-    inStack.push(value, values*)
-    this
+  override def enqueue(value: A, values: A*): MinMaxQueue[A] = {
+    val newInStack = inStack.push(value, values*)
+    new DefaultMinMaxQueue(newInStack, outStack)
   }
 
-  override def enqueueAll(values: IterableOnce[A]): this.type = {
-    inStack.pushAll(values)
-    this
+  override def enqueueAll(values: IterableOnce[A]): MinMaxQueue[A] = {
+    val newInStack = inStack.pushAll(values)
+    new DefaultMinMaxQueue(newInStack, outStack)
   }
 
-  override def dequeue(): A = {
+  override def dequeue(): (A, MinMaxQueue[A]) = {
     if (outStack.isEmpty) {
-      outStack.pushAll(inStack.popAll())
+      val (values, newInStack) = inStack.popAll()
+      val newOutStackContainingValue = outStack.pushAll(values)
+      if (newOutStackContainingValue.isEmpty) {
+        throw new NoSuchElementException("The queue is empty.")
+      }
+      val (value, newOutStack) = newOutStackContainingValue.pop()
+      (value, new DefaultMinMaxQueue(newInStack, newOutStack))
+    } else {
+      val (value, newOutStack) = outStack.pop()
+      (value, new DefaultMinMaxQueue(inStack, newOutStack))
     }
-    if (outStack.isEmpty) {
-      throw new NoSuchElementException("The queue is empty.")
-    }
-    outStack.pop()
   }
 
-  override def dequeueAll(): IndexedSeq[A] = {
+  override def dequeueAll(): (IndexedSeq[A], MinMaxQueue[A]) = {
     val builder = IndexedSeq.newBuilder[A]
     builder.sizeHint(size)
     builder.addAll(outStack.iterator)
     builder.addAll(inStack.reverseIterator)
-    outStack.clear()
-    inStack.clear()
-    builder.result()
+    (builder.result(), DefaultMinMaxQueue.empty)
   }
 
-  override def dequeueWhile(f: A => Boolean): IndexedSeq[A] = {
+  override def dequeueWhile(
+      f: A => Boolean
+  ): (IndexedSeq[A], MinMaxQueue[A]) = {
     val builder = IndexedSeq.newBuilder[A]
-    while (nonEmpty && f(front)) {
-      builder += dequeue()
+    var newOutStack = outStack
+    var newInStack = inStack
+    newOutStack = {
+      val (values, stack) = newOutStack.popWhile(f)
+      builder.addAll(values)
+      stack
     }
-    builder.result()
+    if (newOutStack.isEmpty) {
+      newOutStack = newOutStack.pushAll(newInStack.iterator)
+      newInStack = newInStack.clear()
+    }
+    newOutStack = {
+      val (values, stack) = newOutStack.popWhile(f)
+      builder.addAll(values)
+      stack
+    }
+    (builder.result(), new DefaultMinMaxQueue(newInStack, newOutStack))
   }
 
   override def front: A =
@@ -87,10 +106,8 @@ private final class DefaultMinMaxQueue[A: Ordering] extends MinMaxQueue[A] {
     else inStack(inStack.size - 1 - (index - outStack.size))
   }
 
-  override def clear(): Unit = {
-    inStack.clear()
-    outStack.clear()
-  }
+  override def clear(): MinMaxQueue[A] =
+    DefaultMinMaxQueue.empty
 
   override def ordering: Ordering[A] = Ordering[A]
 
@@ -138,5 +155,15 @@ private final class DefaultMinMaxQueue[A: Ordering] extends MinMaxQueue[A] {
 
   override def to[C](factory: Factory[A, C]): C =
     factory.fromSpecific(iterator)
+
+}
+
+private object DefaultMinMaxQueue {
+
+  def empty[A: Ordering]: DefaultMinMaxQueue[A] =
+    new DefaultMinMaxQueue(
+      immutable.MinMaxStack.empty,
+      immutable.MinMaxStack.empty
+    )
 
 }

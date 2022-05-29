@@ -1,10 +1,11 @@
-package algo.data.queue.mutable
+package algo.data.queue.immutable
 
 import scala.collection.{Factory, mutable}
 
-/** Allows to enqueue and dequeue elements in a last-in-last-out (LILO) fashion.
-  * This data structure also allows to retrieval of the minimum and maximum
-  * value efficiently.
+/** MinMaxQueue
+  *
+  * @see
+  *   [[algo.data.queue.mutable.MinMaxQueue]]
   */
 trait MinMaxQueue[A] extends IterableOnce[A] {
 
@@ -20,13 +21,13 @@ trait MinMaxQueue[A] extends IterableOnce[A] {
     * @note
     *   Time Complexity: O(1)
     */
-  def enqueue(value: A): this.type
+  def enqueue(value: A): MinMaxQueue[A]
 
   /** Enqueues all elements to the last of this queue */
-  def enqueue(value: A, values: A*): this.type
+  def enqueue(value: A, values: A*): MinMaxQueue[A]
 
   /** Enqueues elements of the given iterable to the last of this queue */
-  def enqueueAll(values: IterableOnce[A]): this.type
+  def enqueueAll(values: IterableOnce[A]): MinMaxQueue[A]
 
   /** Dequeues and returns the first element from this queue
     *
@@ -36,15 +37,15 @@ trait MinMaxQueue[A] extends IterableOnce[A] {
     * @note
     *   Time Complexity: amortized O(1)
     */
-  def dequeue(): A
+  def dequeue(): (A, MinMaxQueue[A])
 
   /** Dequeues and returns all elements from this queue */
-  def dequeueAll(): IndexedSeq[A]
+  def dequeueAll(): (IndexedSeq[A], MinMaxQueue[A])
 
   /** Dequeues and returns elements from this queue that satisfy the given
     * predicate
     */
-  def dequeueWhile(f: A => Boolean): IndexedSeq[A]
+  def dequeueWhile(f: A => Boolean): (IndexedSeq[A], MinMaxQueue[A])
 
   /** Returns the first element of this queue
     *
@@ -93,9 +94,9 @@ trait MinMaxQueue[A] extends IterableOnce[A] {
   /** Removes all elements from this queue
     *
     * @note
-    *   Time Complexity: O(N)
+    *   Time Complexity: O(1)
     */
-  def clear(): Unit
+  def clear(): MinMaxQueue[A]
 
   /** Returns the ordering of this queue
     *
@@ -189,7 +190,7 @@ object MinMaxQueue {
     *   Time Complexity: O(1)
     */
   def empty[A: Ordering]: MinMaxQueue[A] =
-    new DefaultMinMaxQueue[A]()
+    DefaultMinMaxQueue.empty
 
   /** Creates a queue from the given iterable
     *
@@ -217,8 +218,7 @@ object MinMaxQueue {
       override def clear(): Unit = buffer.clear()
       override def result(): MinMaxQueue[A] = {
         val queue = MinMaxQueue.empty
-        buffer.iterator.foreach(queue.enqueue)
-        queue
+        queue.enqueueAll(buffer.iterator)
       }
       override def addOne(elem: A): this.type = {
         buffer.addOne(elem)

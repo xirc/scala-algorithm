@@ -41,7 +41,7 @@ final class MinMaxQueueSpec extends BaseSpec {
 
     assert(minmaxQueue.size === queue.size)
     while (minmaxQueue.nonEmpty) {
-      val expectedMinMax = (minmaxQueue.iterator.min, minmaxQueue.iterator.max)
+      val expectedMinMax = (queue.min, queue.max)
       assert(minmaxQueue.minmax === expectedMinMax)
       assert(minmaxQueue.dequeue() === queue.dequeue())
     }
@@ -50,19 +50,19 @@ final class MinMaxQueueSpec extends BaseSpec {
 
   "size" in {
 
-    for (sz <- 0 until 100) {
-      val queue = MinMaxQueue.from(Seq.tabulate(sz)(identity))
-      assert(queue.size === sz)
+    for (size <- 0 until 100) {
+      val queue = MinMaxQueue.from(Seq.tabulate(size)(identity))
+      assert(queue.size === size)
     }
 
   }
 
   "enqueue" in {
 
-    val size = 100
     val queue = MinMaxQueue.empty[Int]
-    for (i <- 0 to size) {
+    for (i <- 0 until 100) {
       queue.enqueue(i)
+      assert(queue.back === i)
       assert(queue.size === i + 1)
     }
 
@@ -70,37 +70,48 @@ final class MinMaxQueueSpec extends BaseSpec {
 
   "enqueue(value, ...)" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    val source = Seq.fill(100)(Random.nextInt())
-    queue.enqueue(0, source*)
-    for (elem <- 0 +: source) {
-      assert(queue.min === queue.iterator.min)
-      assert(queue.max === queue.iterator.max)
-      assert(queue.dequeue() === elem)
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(100)(random.nextInt())
+      val queue = MinMaxQueue.empty[Int]
+      queue.enqueue(source.head, source.drop(1)*)
+      for (i <- source.indices) {
+        assert(queue.min === source.drop(i).min)
+        assert(queue.max === source.drop(i).max)
+        assert(queue.dequeue() === source(i))
+      }
+
     }
 
   }
 
   "enqueueAll" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    val source = Seq.fill(100)(Random.nextInt())
-    queue.enqueueAll(source)
-    for (elem <- source) {
-      assert(queue.min === queue.iterator.min)
-      assert(queue.max === queue.iterator.max)
-      assert(queue.dequeue() === elem)
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(100)(random.nextInt())
+      val queue = MinMaxQueue.empty[Int]
+      queue.enqueueAll(source)
+      for (i <- source.indices) {
+        assert(queue.min === source.drop(i).min)
+        assert(queue.max === source.drop(i).max)
+        assert(queue.dequeue() === source(i))
+      }
+
     }
 
   }
 
   "dequeue" in {
 
-    val size = 100
-    val queue = MinMaxQueue.from(Seq.tabulate(size)(identity))
-    for (s <- 0 until size) {
-      assert(queue.dequeue() === s)
-      assert(queue.size === size - (s + 1))
+    val queue = MinMaxQueue.from(IndexedSeq.tabulate(100)(identity))
+    for (i <- 0 until 100) {
+      assert(queue.dequeue() === i)
+      assert(queue.size === 100 - (i + 1))
     }
 
   }
@@ -116,11 +127,17 @@ final class MinMaxQueueSpec extends BaseSpec {
 
   "dequeueAll" in {
 
-    val source = Seq.fill(10)(Random.nextInt())
-    val queue = MinMaxQueue.from(source)
-    val elements = queue.dequeueAll()
-    assert(elements === source)
-    assert(queue.isEmpty)
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(10)(random.nextInt())
+      val queue = MinMaxQueue.from(source)
+      val elements = queue.dequeueAll()
+      assert(elements === source)
+      assert(queue.isEmpty)
+
+    }
 
   }
 
@@ -143,12 +160,18 @@ final class MinMaxQueueSpec extends BaseSpec {
 
   "front" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    val frontElement = Random.nextInt()
-    queue.enqueue(frontElement)
-    for (i <- 0 until 100) {
-      queue.enqueue(i)
-      assert(queue.front === frontElement)
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val queue = MinMaxQueue.empty[Int]
+      val expectedFront = random.nextInt()
+      queue.enqueue(expectedFront)
+      for (i <- 0 until 100) {
+        queue.enqueue(i)
+        assert(queue.front === expectedFront)
+      }
+
     }
 
   }
@@ -164,13 +187,19 @@ final class MinMaxQueueSpec extends BaseSpec {
 
   "frontOption" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    assert(queue.frontOption === None)
-    val frontElement = Random.nextInt()
-    queue.enqueue(frontElement)
-    for (i <- 0 until 100) {
-      queue.enqueue(i)
-      assert(queue.frontOption === Option(frontElement))
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val queue = MinMaxQueue.empty[Int]
+      val expectedFront = random.nextInt()
+      assert(queue.frontOption === None)
+      queue.enqueue(expectedFront)
+      for (i <- 0 until 100) {
+        queue.enqueue(i)
+        assert(queue.frontOption === Option(expectedFront))
+      }
+
     }
 
   }
@@ -178,7 +207,7 @@ final class MinMaxQueueSpec extends BaseSpec {
   "back" in {
 
     val queue = MinMaxQueue.empty[Int]
-    for (i <- 0 until 10) {
+    for (i <- 0 until 100) {
       queue.enqueue(i)
       assert(queue.back === i)
     }
@@ -197,7 +226,8 @@ final class MinMaxQueueSpec extends BaseSpec {
   "backOption" in {
 
     val queue = MinMaxQueue.empty[Int]
-    for (i <- 0 until 10) {
+    assert(queue.backOption === None)
+    for (i <- 0 until 100) {
       queue.enqueue(i)
       assert(queue.backOption === Option(i))
     }
@@ -207,7 +237,7 @@ final class MinMaxQueueSpec extends BaseSpec {
   "apply" in {
 
     val queue = MinMaxQueue.empty[Int]
-    // To ensure internal structure varies, do some enqueue & dequeue
+    // To vary internal, do some enqueue & dequeue
     queue.enqueue(1)
     queue.enqueue(2)
     queue.enqueue(3)
@@ -243,203 +273,225 @@ final class MinMaxQueueSpec extends BaseSpec {
     val queue = MinMaxQueue.empty[Int]
     assert(queue.ordering === ordering)
 
-    // [2]
-    queue.enqueue(2)
-    assert(queue.min === 2)
-    assert(queue.max === 2)
-
-    // [2,3]
-    queue.enqueue(3)
-    assert(queue.min === 3)
-    assert(queue.max === 2)
-
-    // [2,3,1]
-    queue.enqueue(1)
-    assert(queue.min === 3)
-    assert(queue.max === 1)
-
-    // [3,1]
-    queue.dequeue()
-    assert(queue.min === 3)
-    assert(queue.max === 1)
-
-    // [3,1,4]
-    queue.enqueue(4)
-    assert(queue.min === 4)
-    assert(queue.max === 1)
-
   }
 
   "min" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    for (_ <- 0 until 100) {
-      queue.enqueue(Random.nextInt())
-      assert(queue.min === queue.iterator.min)
-    }
-    for (_ <- 0 until 50) {
-      assert(queue.min === queue.iterator.min)
-      queue.dequeue()
-    }
-    for (_ <- 0 until 50) {
-      queue.enqueue(Random.nextInt())
-      assert(queue.min === queue.iterator.min)
-    }
-    for (_ <- 0 until 100) {
-      assert(queue.min === queue.iterator.min)
-      queue.dequeue()
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(150)(random.nextInt())
+      val queue = MinMaxQueue.empty[Int]
+      for (i <- 0 until 100) {
+        queue.enqueue(source(i))
+        assert(queue.min === source.take(i + 1).min)
+      }
+      for (i <- 0 until 50) {
+        assert(queue.min === source.slice(i, 100).min)
+        queue.dequeue()
+      }
+      for (i <- 100 until 150) {
+        queue.enqueue(source(i))
+        assert(queue.min === source.slice(50, i + 1).min)
+      }
+      for (i <- 50 until 150) {
+        assert(queue.min === source.drop(i).min)
+        queue.dequeue()
+      }
+
     }
 
   }
 
   "min of an empty queue" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    intercept[UnsupportedOperationException] {
-      queue.min
+    val emptyQueue = MinMaxQueue.empty[Int]
+    intercept[NoSuchElementException] {
+      emptyQueue.min
     }
 
   }
 
   "minOption" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    assert(queue.minOption === None)
-    for (_ <- 0 until 100) {
-      queue.enqueue(Random.nextInt())
-      assert(queue.minOption === Option(queue.iterator.min))
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(150)(random.nextInt())
+      val queue = MinMaxQueue.empty[Int]
+      assert(queue.minOption === None)
+      for (i <- 0 until 100) {
+        queue.enqueue(source(i))
+        assert(queue.minOption === source.take(i + 1).minOption)
+      }
+      for (i <- 0 until 50) {
+        assert(queue.minOption === source.slice(i, 100).minOption)
+        queue.dequeue()
+      }
+      for (i <- 100 until 150) {
+        queue.enqueue(source(i))
+        assert(queue.minOption === source.slice(50, i + 1).minOption)
+      }
+      for (i <- 50 until 150) {
+        assert(queue.minOption === source.drop(i).minOption)
+        queue.dequeue()
+      }
+      assert(queue.minOption === None)
+
     }
-    for (_ <- 0 until 50) {
-      assert(queue.minOption === Option(queue.iterator.min))
-      queue.dequeue()
-    }
-    for (_ <- 0 until 50) {
-      queue.enqueue(Random.nextInt())
-      assert(queue.minOption === Option(queue.iterator.min))
-    }
-    for (_ <- 0 until 100) {
-      assert(queue.minOption === Option(queue.iterator.min))
-      queue.dequeue()
-    }
-    assert(queue.minOption === None)
 
   }
 
   "max" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    for (_ <- 0 until 100) {
-      queue.enqueue(Random.nextInt())
-      assert(queue.max === queue.iterator.max)
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(150)(random.nextInt())
+      val queue = MinMaxQueue.empty[Int]
+      for (i <- 0 until 100) {
+        queue.enqueue(source(i))
+        assert(queue.max === source.take(i + 1).max)
+      }
+      for (i <- 0 until 50) {
+        assert(queue.max === source.slice(i, 100).max)
+        queue.dequeue()
+      }
+      for (i <- 100 until 150) {
+        queue.enqueue(source(i))
+        assert(queue.max === source.slice(50, i + 1).max)
+      }
+      for (i <- 50 until 150) {
+        assert(queue.max === source.drop(i).max)
+        queue.dequeue()
+      }
+
     }
-    for (_ <- 0 until 50) {
-      assert(queue.max === queue.iterator.max)
-      queue.dequeue()
-    }
-    for (_ <- 0 until 50) {
-      queue.enqueue(Random.nextInt())
-      assert(queue.max === queue.iterator.max)
-    }
-    for (_ <- 0 until 100) {
-      assert(queue.max === queue.iterator.max)
-      queue.dequeue()
+
+  }
+
+  "max of an empty queue" in {
+
+    val emptyQueue = MinMaxQueue.empty[Int]
+    intercept[NoSuchElementException] {
+      emptyQueue.max
     }
 
   }
 
   "maxOption" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    assert(queue.maxOption === None)
-    for (_ <- 0 until 100) {
-      queue.enqueue(Random.nextInt())
-      assert(queue.maxOption === Option(queue.iterator.max))
-    }
-    for (_ <- 0 until 50) {
-      assert(queue.maxOption === Option(queue.iterator.max))
-      queue.dequeue()
-    }
-    for (_ <- 0 until 50) {
-      queue.enqueue(Random.nextInt())
-      assert(queue.maxOption === Option(queue.iterator.max))
-    }
-    for (_ <- 0 until 100) {
-      assert(queue.maxOption === Option(queue.iterator.max))
-      queue.dequeue()
-    }
-    assert(queue.maxOption === None)
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
 
-  }
+      val source = IndexedSeq.fill(150)(random.nextInt())
+      val queue = MinMaxQueue.empty[Int]
+      assert(queue.maxOption === None)
+      for (i <- 0 until 100) {
+        queue.enqueue(source(i))
+        assert(queue.maxOption === source.take(i + 1).maxOption)
+      }
+      for (i <- 0 until 50) {
+        assert(queue.maxOption === source.slice(i, 100).maxOption)
+        queue.dequeue()
+      }
+      for (i <- 100 until 150) {
+        queue.enqueue(source(i))
+        assert(queue.maxOption === source.slice(50, i + 1).maxOption)
+      }
+      for (i <- 50 until 150) {
+        assert(queue.maxOption === source.drop(i).maxOption)
+        queue.dequeue()
+      }
+      assert(queue.maxOption === None)
 
-  "max of an empty queue" in {
-
-    val queue = MinMaxQueue.empty[Int]
-    intercept[UnsupportedOperationException] {
-      queue.max
     }
 
   }
 
   "minmax" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    for (_ <- 0 until 100) {
-      queue.enqueue(Random.nextInt())
-      val expectedValue = (queue.iterator.min, queue.iterator.max)
-      assert(queue.minmax === expectedValue)
-    }
-    for (_ <- 0 until 50) {
-      val expectedValue = (queue.iterator.min, queue.iterator.max)
-      assert(queue.minmax === expectedValue)
-      queue.dequeue()
-    }
-    for (_ <- 0 until 50) {
-      queue.enqueue(Random.nextInt())
-      val expectedValue = (queue.iterator.min, queue.iterator.max)
-      assert(queue.minmax === expectedValue)
-    }
-    for (_ <- 0 until 100) {
-      val expectedValue = (queue.iterator.min, queue.iterator.max)
-      assert(queue.minmax === expectedValue)
-      queue.dequeue()
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(150)(random.nextInt())
+      val queue = MinMaxQueue.empty[Int]
+      for (i <- 0 until 100) {
+        queue.enqueue(source(i))
+        val expected = (source.take(i + 1).min, source.take(i + 1).max)
+        assert(queue.minmax === expected)
+      }
+      for (i <- 0 until 50) {
+        val expected = (source.slice(i, 100).min, source.slice(i, 100).max)
+        assert(queue.minmax === expected)
+        queue.dequeue()
+      }
+      for (i <- 100 until 150) {
+        queue.enqueue(source(i))
+        val expected =
+          (source.slice(50, i + 1).min, source.slice(50, i + 1).max)
+        assert(queue.minmax === expected)
+      }
+      for (i <- 50 until 150) {
+        val expected =
+          (source.drop(i).min, source.drop(i).max)
+        assert(queue.minmax === expected)
+        queue.dequeue()
+      }
+
     }
 
   }
 
   "minmax of an empty queue" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    intercept[UnsupportedOperationException] {
-      queue.minmax
+    val emptyQueue = MinMaxQueue.empty[Int]
+    intercept[NoSuchElementException] {
+      emptyQueue.minmax
     }
 
   }
 
   "minmaxOption" in {
 
-    val queue = MinMaxQueue.empty[Int]
-    assert(queue.minmaxOption === None)
-    for (_ <- 0 until 100) {
-      queue.enqueue(Random.nextInt())
-      val expectedValue = Option((queue.iterator.min, queue.iterator.max))
-      assert(queue.minmaxOption === expectedValue)
+    val seed = System.nanoTime()
+    withClue(s"seed=[$seed]") {
+      val random = new Random(seed)
+
+      val source = IndexedSeq.fill(150)(random.nextInt())
+      val queue = MinMaxQueue.empty[Int]
+      assert(queue.minmaxOption === None)
+      for (i <- 0 until 100) {
+        queue.enqueue(source(i))
+        val expected = Option((source.take(i + 1).min, source.take(i + 1).max))
+        assert(queue.minmaxOption === expected)
+      }
+      for (i <- 0 until 50) {
+        val expected =
+          Option((source.slice(i, 100).min, source.slice(i, 100).max))
+        assert(queue.minmaxOption === expected)
+        queue.dequeue()
+      }
+      for (i <- 100 until 150) {
+        queue.enqueue(source(i))
+        val expected =
+          Option((source.slice(50, i + 1).min, source.slice(50, i + 1).max))
+        assert(queue.minmaxOption === expected)
+      }
+      for (i <- 50 until 150) {
+        val expected =
+          Option((source.drop(i).min, source.drop(i).max))
+        assert(queue.minmaxOption === expected)
+        queue.dequeue()
+      }
+      assert(queue.minmaxOption === None)
+
     }
-    for (_ <- 0 until 50) {
-      val expectedValue = Option((queue.iterator.min, queue.iterator.max))
-      assert(queue.minmaxOption === expectedValue)
-      queue.dequeue()
-    }
-    for (_ <- 0 until 50) {
-      queue.enqueue(Random.nextInt())
-      val expectedValue = Option((queue.iterator.min, queue.iterator.max))
-      assert(queue.minmaxOption === expectedValue)
-    }
-    for (_ <- 0 until 100) {
-      val expectedValue = Option((queue.iterator.min, queue.iterator.max))
-      assert(queue.minmaxOption === expectedValue)
-      queue.dequeue()
-    }
-    assert(queue.minmaxOption === None)
 
   }
 
@@ -468,8 +520,19 @@ final class MinMaxQueueSpec extends BaseSpec {
     val queue = MinMaxQueue.empty[Int]
     queue.enqueue(1)
     queue.enqueue(2)
+    queue.dequeue()
     queue.enqueue(3)
-    assert(queue.iterator.toSeq === Seq(1, 2, 3))
+    queue.enqueue(4)
+    assert(queue.iterator.toSeq === Seq(2, 3, 4))
+
+  }
+
+  "knownSize" in {
+
+    for (size <- 0 until 100) {
+      val queue = MinMaxQueue.from(Seq.tabulate(size)(identity))
+      assert(queue.knownSize === size)
+    }
 
   }
 
@@ -478,8 +541,10 @@ final class MinMaxQueueSpec extends BaseSpec {
     val queue = MinMaxQueue.empty[Int]
     queue.enqueue(1)
     queue.enqueue(2)
+    queue.dequeue()
     queue.enqueue(3)
-    assert(queue.reverseIterator.toSeq === Seq(3, 2, 1))
+    queue.enqueue(4)
+    assert(queue.reverseIterator.toSeq === Seq(4, 3, 2))
 
   }
 
