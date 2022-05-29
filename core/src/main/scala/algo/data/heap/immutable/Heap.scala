@@ -77,7 +77,7 @@ trait Heap[A] extends IterableOnce[A] {
     * @note
     *   Time Complexity: O(n log n)
     */
-  def popAll(): (Seq[A], Heap[A])
+  def popAll(): (IndexedSeq[A], Heap[A])
 
   /** Inserts the given value into this heap
     *

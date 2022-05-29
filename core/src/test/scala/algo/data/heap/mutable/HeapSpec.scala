@@ -233,7 +233,7 @@ final class HeapSpec extends BaseSpec {
   "popAll from empty heap" in {
 
     val heap = Heap.empty[Int]
-    assert(heap.popAll() === Seq.empty)
+    assert(heap.popAll().isEmpty)
 
   }
 

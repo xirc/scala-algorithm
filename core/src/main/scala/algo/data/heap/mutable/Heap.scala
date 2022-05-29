@@ -96,7 +96,7 @@ trait Heap[A] extends mutable.Cloneable[Heap[A]] {
     * @note
     *   Time Complexity: O(n log n)
     */
-  def popAll(): Seq[A]
+  def popAll(): IndexedSeq[A]
 
   /** Inserts the given value into this heap
     *

@@ -265,7 +265,7 @@ final class HeapSpec extends BaseSpec {
 
   "popAll from an empty heap" in {
 
-    assert(popAll[Int].runA(Heap.empty[Int]).value === Seq.empty)
+    assert(popAll[Int].runA(Heap.empty[Int]).value.isEmpty)
 
   }
 
