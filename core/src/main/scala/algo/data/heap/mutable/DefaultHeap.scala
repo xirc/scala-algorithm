@@ -41,8 +41,8 @@ private final class DefaultHeap[V: Ordering] private (
     remove(0)
   }
 
-  override def popAll(): Seq[V] = {
-    val builder = Seq.newBuilder[V]
+  override def popAll(): IndexedSeq[V] = {
+    val builder = IndexedSeq.newBuilder[V]
     while (count > 0) {
       builder += remove(0)
     }

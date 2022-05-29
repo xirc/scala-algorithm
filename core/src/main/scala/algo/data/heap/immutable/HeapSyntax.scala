@@ -45,7 +45,7 @@ trait HeapSyntax {
   }
 
   /** @see [[Heap.popAll]] */
-  def popAll[V]: State[Heap[V], Seq[V]] = State { s =>
+  def popAll[V]: State[Heap[V], IndexedSeq[V]] = State { s =>
     s.popAll().swap
   }
 

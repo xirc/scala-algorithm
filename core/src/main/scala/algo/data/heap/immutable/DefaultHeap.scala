@@ -36,8 +36,8 @@ private final class DefaultHeap[V: Ordering] private (
     (element, newHeap(newBuffer, newIndexOfElement))
   }
 
-  override def popAll(): (Seq[V], Heap[V]) = {
-    val builder = Seq.newBuilder[V]
+  override def popAll(): (IndexedSeq[V], Heap[V]) = {
+    val builder = IndexedSeq.newBuilder[V]
     builder.addAll(iterator)
     (builder.result(), newHeap(Vector.empty, HashMap.empty))
   }
