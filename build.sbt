@@ -1,4 +1,4 @@
-val ScalaTestVersion = "3.2.12"
+val ScalaTestVersion = "3.2.13"
 val CatsVersion = "2.8.0"
 
 ThisBuild / scalaVersion := "2.13.8"
