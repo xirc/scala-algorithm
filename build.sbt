@@ -1,13 +1,11 @@
 val ScalaTestVersion = "3.2.14"
 val CatsVersion = "2.8.0"
 
-ThisBuild / scalaVersion := "2.13.8"
+ThisBuild / scalaVersion := "3.1.0"
 ThisBuild / scalacOptions ++= Seq(
   "-deprecation",
   "-unchecked",
-  "-Xlint",
-  "-Xsource:3",
-  "-Werror"
+  "-Xfatal-warnings"
 )
 ThisBuild / Compile / doc / autoAPIMappings := true
 ThisBuild / git.remoteRepo := "git@github.com:xirc/scala-algorithm.git"

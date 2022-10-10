@@ -3,7 +3,6 @@ package algo.data.dsu
 import cats.kernel.CommutativeSemigroup
 
 import scala.collection.{EvidenceIterableFactory, Iterable}
-import scala.collection.mutable
 
 trait DisjointSetUnionFactory[Collection[_]]
     extends EvidenceIterableFactory[Collection, CommutativeSemigroup] {
@@ -13,9 +12,10 @@ trait DisjointSetUnionFactory[Collection[_]]
     from(Iterator.concat(xss*))
 
   override def newBuilder[V: CommutativeSemigroup]
-      : mutable.Builder[V, Collection[V]] = {
-    new mutable.Builder[V, Collection[V]]() {
-      val buffer: mutable.ArrayBuffer[V] = mutable.ArrayBuffer.empty
+      : collection.mutable.Builder[V, Collection[V]] = {
+    new collection.mutable.Builder[V, Collection[V]]() {
+      val buffer: collection.mutable.ArrayBuffer[V] =
+        collection.mutable.ArrayBuffer.empty
       override def clear(): Unit = buffer.clear()
       override def result(): Collection[V] = {
         from(buffer)
