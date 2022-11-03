@@ -7,6 +7,7 @@ Data Structures and Algorithms in Scala Programming Language
 @@@ index
 
 * @ref:[Binary Exponentiation](binexp.md)
+* @ref:[Bloom Filter](bloom-filter.md)
 * @ref:[Quick Select](quick-select.md)
 * @ref:[Stack](stack.md)
 * @ref:[Queue](queue.md)

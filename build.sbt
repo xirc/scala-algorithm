@@ -30,13 +30,14 @@ lazy val docs = (project in file("docs"))
     GhpagesPlugin
   )
   .aggregate(core)
+  .dependsOn(core)
   .settings(
     name := "Scala Algorithm",
     Compile / paradoxMaterialTheme ~= {
       _.withRepository(uri("https://github.com/xirc/scala-algorithm"))
     },
     Compile / paradoxProperties ++= Map(
-      "scaladoc.algo.base_url" -> s"/api"
+      "scaladoc.algo.base_url" -> s"api"
     ),
     ScalaUnidoc / siteSubdirName := "api",
     addMappingsToSiteDir(
